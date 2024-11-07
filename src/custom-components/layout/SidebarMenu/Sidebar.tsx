@@ -8,8 +8,8 @@ interface Props {
 const Sidebar = ({ menuItems }: Props) => {
   return (
     <div>
-      {menuItems.map((x) => (
-        <MenuItem item={x} />
+      {menuItems.map((x, index) => (
+        <MenuItem key={index} item={x} />
       ))}
     </div>
   );

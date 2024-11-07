@@ -11,10 +11,10 @@ const MenuItem = ({ item }: Props) => {
 
   return (
     <div>
-      <div onClick={toggleSubMenu} className="menu-item">
+      <button onClick={toggleSubMenu} style={{ background: 'none', border: 'none', padding: 0 }}>
         <div>{item.icon}</div>
         <div>{item.label}</div>
-      </div>
+      </button>
       {isOpen && item.children && (
         <div className="sub-menu">
           {item.children.map((child, idx) => (
