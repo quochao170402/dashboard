@@ -1,28 +1,77 @@
 import { MenuItemType } from "@/@types/MenuItem";
-import { useState } from "react";
+import HoverCard from "@/custom-components/hover-card/HoverCard";
+import { useEffect, useRef, useState } from "react";
+import { NavLink } from "react-router-dom";
 
 interface Props {
   item: MenuItemType;
+  isMenuExpanded: boolean;
 }
 
-const MenuItem = ({ item }: Props) => {
+const MenuItem = ({ item, isMenuExpanded }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
-  const toggleSubMenu = () => setIsOpen(!isOpen);
+  const [isHovered, setIsHovered] = useState(false);
+  const menuItemRef = useRef<HTMLLIElement>(null); // Reference to the MenuItem
+
+  const toggleSubMenu = () => {
+    if (isMenuExpanded) {
+      setIsOpen((prev) => !prev);
+    } else {
+      setIsHovered(true);
+    }
+  };
+  useEffect(() => {
+    setIsOpen(false);
+  }, [isMenuExpanded]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        menuItemRef.current &&
+        !menuItemRef.current.contains(event.target as Node)
+      ) {
+        setIsHovered(false); // Set isHovered to false if clicked outside
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
-    <div>
-      <button onClick={toggleSubMenu} style={{ background: 'none', border: 'none', padding: 0 }}>
+    <li ref={menuItemRef} key={item.path} className="items-center ">
+      <NavLink
+        to={item.children ? "#" : item.path}
+        className="relative flex items-center gap-4 "
+        onClick={toggleSubMenu}
+        style={{ background: "none", border: "none", padding: 0 }}
+      >
         <div>{item.icon}</div>
-        <div>{item.label}</div>
-      </button>
-      {isOpen && item.children && (
-        <div className="sub-menu">
-          {item.children.map((child, idx) => (
-            <MenuItem key={idx} item={child} />
-          ))}
+        <div hidden={!isMenuExpanded}>{item.label}</div>
+        <div hidden={isMenuExpanded} className="absolute z-10 ml-12">
+          {isHovered && item.children && item.children.length > 0 && (
+            <HoverCard isShow={isHovered}>
+              <ul className="flex flex-col gap-3">
+                {item.children.map((child, idx) => (
+                  <li key={idx}>
+                    <NavLink to={child.path}>{child.label}</NavLink>
+                  </li>
+                ))}
+              </ul>
+            </HoverCard>
+          )}
         </div>
+      </NavLink>
+      {isOpen && item.children && item.children.length > 0 && (
+        <ul className="flex flex-col gap-3 mt-3 ml-6 transition-all duration-300">
+          {item.children.map((child, idx) => (
+            <MenuItem key={idx} item={child} isMenuExpanded={isMenuExpanded} />
+          ))}
+        </ul>
       )}
-    </div>
+    </li>
   );
 };
 
