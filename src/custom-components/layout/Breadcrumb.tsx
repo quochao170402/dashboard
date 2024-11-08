@@ -14,7 +14,7 @@ const Breadcrumb = () => {
         {pathnames.map((name, index) => {
           const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
           return (
-            <li key={index}>
+            <li key={`${index}_${routeTo}}`}>
               <a href={routeTo}>{name}</a>
             </li>
           );

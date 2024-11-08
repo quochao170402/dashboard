@@ -1,14 +1,9 @@
 import { MenuItemType } from "@/@types/MenuItem";
 import {
-  Bell,
-  CalendarDays,
   FolderKanban,
-  FolderOpen,
   Info,
   LayoutDashboard,
-  LayoutList,
   Settings,
-  SquareChartGantt,
   User,
 } from "lucide-react";
 import { ReactNode, useState } from "react";
@@ -24,93 +19,31 @@ interface Props {
 const menuItems: MenuItemType[] = [
   {
     icon: <LayoutDashboard size={24} />,
-    label: "Dashboard",  
+    label: "Dashboard",
     path: "/dashboard",
-    children: [
-      {
-        icon: <SquareChartGantt size={24} />,
-        label: "Overview",
-        path: "/dashboard/overview",
-        children: [],
-      },
-      {
-        icon: <CalendarDays size={24} />,
-        label: "Calendar",
-        path: "/dashboard/calendar",
-        children: [],
-      },
-    ],
   },
   {
     icon: <FolderKanban size={24} />,
     label: "Projects",
     path: "/projects",
-    children: [
-      {
-        icon: <FolderOpen size={24} />,
-        label: "Projects",
-        path: "/projects/list",
-        children: [],
-      },
-      {
-        icon: <LayoutList size={24} />,
-        label: "Tasks",
-        path: "/projects/tasks",
-        children: [],
-      },
-      {
-        icon: <Bell size={24} />,
-        label: "Notifications",
-        path: "/projects/notifications",
-        children: [],
-      },
-    ],
   },
   {
     icon: <User size={24} />,
     label: "Users",
     path: "/users",
-    // children: [
-    //   {
-    //     icon: <PiUserBold size={24} />,
-    //     label: "User List",
-    //     path: "/users/list",
-    //     children: [],
-    //   },
-    //   {
-    //     icon: "🔒",
-    //     label: "Roles & Permissions",
-    //     path: "/users/roles",
-    //     children: [],
-    //   },
-    // ],
   },
   {
     icon: <Settings size={24} />,
     label: "Settings",
     path: "/settings",
-    // children: [
-    //   {
-    //     icon: "🔧",
-    //     label: "General Settings",
-    //     path: "/settings/general",
-    //     children: [],
-    //   },
-    //   {
-    //     icon: "🔔",
-    //     label: "Notifications",
-    //     path: "/settings/notifications",
-    //     children: [],
-    //   },
-    // ],
   },
   {
     icon: <Info size={24} />,
     label: "Support",
     path: "/support",
-    children: [],
   },
 ];
+
 
 const Layout = ({ children }: Props) => {
   const [isExpanded, setIsExpanded] = useState(true);
@@ -134,7 +67,7 @@ const Layout = ({ children }: Props) => {
             />
           </NavLink>
         </div>
-        <div className="ml-4">
+        <div>
           <Sidebar isExpanded={isExpanded} menuItems={menuItems} />
         </div>
       </div>

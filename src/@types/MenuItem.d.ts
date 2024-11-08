@@ -4,12 +4,12 @@ interface MenuItemType {
   icon: ReactNode;
   label: string;
   path: string;
-  children?: MenuItemType[];
+  // children?: MenuItemType[];
 }
 
 interface Route {
   path: string;
   name: string;
   component: ReactNode;
-  children?: Route[]; // Optional children property for nested routes
+  // children?: Route[]; // Optional children property for nested routes
 }
