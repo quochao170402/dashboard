@@ -1,7 +1,7 @@
 import { MenuItemType } from "@/@types/MenuItem";
 import HoverCard from "@/custom-components/hover-card/HoverCard";
 import { useEffect, useRef, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 interface Props {
   item: MenuItemType;
@@ -9,6 +9,7 @@ interface Props {
 }
 
 const MenuItem = ({ item, isMenuExpanded }: Props) => {
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const menuItemRef = useRef<HTMLLIElement>(null); // Reference to the MenuItem
@@ -20,6 +21,11 @@ const MenuItem = ({ item, isMenuExpanded }: Props) => {
       setIsHovered(true);
     }
   };
+
+  const isActive = (path: string) => {
+    return location.pathname.includes(path);
+  };
+
   useEffect(() => {
     setIsOpen(false);
   }, [isMenuExpanded]);
@@ -43,10 +49,12 @@ const MenuItem = ({ item, isMenuExpanded }: Props) => {
   return (
     <li ref={menuItemRef} key={item.path} className="items-center ">
       <NavLink
-        to={item.children ? "#" : item.path}
-        className="relative flex items-center gap-4 "
+        to={item.children && item.children.length > 0 ? "#" : item.path}
         onClick={toggleSubMenu}
         style={{ background: "none", border: "none", padding: 0 }}
+        className={`${
+          isActive(item.path) ? "text-red-500" : ""
+        } relative flex items-center gap-4 `}
       >
         <div>{item.icon}</div>
         <div hidden={!isMenuExpanded}>{item.label}</div>

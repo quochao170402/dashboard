@@ -14,7 +14,6 @@ import {
 import { ReactNode, useState } from "react";
 import { TbLayoutSidebarLeftExpand } from "react-icons/tb";
 import { NavLink } from "react-router-dom";
-import Footer from "./Footer";
 import Breadcrumbs from "./SidebarMenu/Breadcrumbs";
 import Sidebar from "./SidebarMenu/Sidebar";
 
@@ -25,7 +24,7 @@ interface Props {
 const menuItems: MenuItemType[] = [
   {
     icon: <LayoutDashboard size={24} />,
-    label: "Dashboard",
+    label: "Dashboard",  
     path: "/dashboard",
     children: [
       {
@@ -50,7 +49,7 @@ const menuItems: MenuItemType[] = [
       {
         icon: <FolderOpen size={24} />,
         label: "Projects",
-        path: "/projects",
+        path: "/projects/list",
         children: [],
       },
       {
@@ -120,12 +119,12 @@ const Layout = ({ children }: Props) => {
   return (
     <div className="flex h-screen">
       <div
-        className={`duration-300 transition-width ${
+        className={`duration-300 transition-width shadow-2xl ${
           isExpanded ? "w-[12%]" : "w-[60px]"
         }`}
       >
         <div className="flex justify-center mb-5">
-          <NavLink to={""}>
+          <NavLink to={"/"}>
             <img
               width={56}
               height={56}
@@ -141,11 +140,11 @@ const Layout = ({ children }: Props) => {
       </div>
 
       <div
-        className={`duration-300 transition-width flex flex-col h-screen bg-green-300 ${
+        className={`duration-300 transition-width flex flex-col h-screen pl-6 ${
           isExpanded ? "w-[88%]" : "w-[calc(100%-60px)]"
         }`}
       >
-        <div className="flex items-center gap-4 p-4 bg-red-300">
+        <div className="flex items-center gap-4 py-4">
           <TbLayoutSidebarLeftExpand
             onClick={handleToggle}
             size={24}
@@ -156,12 +155,9 @@ const Layout = ({ children }: Props) => {
           <Breadcrumbs />
         </div>
 
-        <main className="flex items-center justify-center flex-grow bg-yellow-300">
+        <main className="flex items-center justify-center flex-grow">
           <div className="w-full h-full">{children}</div>
         </main>
-        <div className="flex-none bg-red-300 h-14">
-          <Footer />
-        </div>
       </div>
     </div>
   );

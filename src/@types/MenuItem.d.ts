@@ -10,6 +10,6 @@ interface MenuItemType {
 interface Route {
   path: string;
   name: string;
-  component: React.FC;
+  component: ReactNode;
   children?: Route[]; // Optional children property for nested routes
 }
