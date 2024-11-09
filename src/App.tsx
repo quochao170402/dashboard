@@ -1,15 +1,7 @@
-import { routes } from "@/utils/routeConfig"; // Adjust the import path as necessary
+import { menuItems } from "@/utils/routeConfig"; // Adjust the import path as necessary
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import { Route as RouteType } from "./@types/MenuItem";
 import Layout from "./custom-components/layout/Layout";
-
-const renderRoutes = (routes: RouteType[]) => {
-  return routes.map((route) => (
-    <Route key={route.path} path={route.path} element={route.component}>
-      {route.children && renderRoutes(route.children)}
-    </Route>
-  ));
-};
+import { Dashboard } from "./pages/Dashboard";
 
 export default function App() {
   return (
@@ -39,7 +31,16 @@ export default function App() {
           <Route path="support" element={<>Support</>} />
         </Routes> */}
 
-        <Routes>{renderRoutes(routes)}</Routes>
+        <Routes>
+          <Route key={"home"} path="/" element={<Dashboard />} />
+          {menuItems.map((route) => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={route.component}
+            />
+          ))}
+        </Routes>
       </Layout>
     </Router>
   );

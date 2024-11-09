@@ -1,10 +1,11 @@
+import MenuIconProps from "@/assets/icons/common";
 import { ReactNode } from "react";
 
 interface MenuItemType {
-  icon: ReactNode;
+  icon: (props: MenuIconProps) => ReactNode;
   label: string;
   path: string;
-  // children?: MenuItemType[];
+  component: ReactNode;
 }
 
 interface Route {
@@ -12,4 +13,11 @@ interface Route {
   name: string;
   component: ReactNode;
   // children?: Route[]; // Optional children property for nested routes
+}
+
+interface IRoute {
+  icon: ReactNode;
+  path: string;
+  name: string;
+  component: ReactNode;
 }

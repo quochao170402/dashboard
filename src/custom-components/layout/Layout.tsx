@@ -1,11 +1,4 @@
-import { MenuItemType } from "@/@types/MenuItem";
-import {
-  FolderKanban,
-  Info,
-  LayoutDashboard,
-  Settings,
-  User,
-} from "lucide-react";
+import { menuItems } from "@/utils/routeConfig";
 import { ReactNode, useState } from "react";
 import { TbLayoutSidebarLeftExpand } from "react-icons/tb";
 import { NavLink } from "react-router-dom";
@@ -15,35 +8,6 @@ import Sidebar from "./SidebarMenu/Sidebar";
 interface Props {
   children: ReactNode;
 }
-
-const menuItems: MenuItemType[] = [
-  {
-    icon: <LayoutDashboard size={24} />,
-    label: "Dashboard",
-    path: "/dashboard",
-  },
-  {
-    icon: <FolderKanban size={24} />,
-    label: "Projects",
-    path: "/projects",
-  },
-  {
-    icon: <User size={24} />,
-    label: "Users",
-    path: "/users",
-  },
-  {
-    icon: <Settings size={24} />,
-    label: "Settings",
-    path: "/settings",
-  },
-  {
-    icon: <Info size={24} />,
-    label: "Support",
-    path: "/support",
-  },
-];
-
 
 const Layout = ({ children }: Props) => {
   const [isExpanded, setIsExpanded] = useState(true);

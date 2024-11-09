@@ -1,16 +1,15 @@
 // src/components/Breadcrumbs.tsx
-import { Route } from "@/@types/MenuItem";
-import { routes } from "@/utils/routeConfig";
+import { MenuItemType } from "@/@types/MenuItem";
+import { menuItems } from "@/utils/routeConfig";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
-const findRoute = (path: string, routes: Route[]): Route | undefined => {
+const findRoute = (
+  path: string,
+  routes: MenuItemType[]
+): MenuItemType | undefined => {
   for (const route of routes) {
     if (route.path === path) return route;
-    if (route.children) {
-      const childRoute = findRoute(path, route.children);
-      if (childRoute) return childRoute;
-    }
   }
   return undefined;
 };
@@ -22,7 +21,7 @@ const Breadcrumbs: React.FC = () => {
   // Generate breadcrumbs based on current path segments
   const breadcrumbs = pathnames.map((_, index) => {
     const routePath = `/${pathnames.slice(0, index + 1).join("/")}`;
-    const route = findRoute(routePath, routes);
+    const route = findRoute(routePath, menuItems);
 
     return route ? (
       <Link
@@ -30,7 +29,7 @@ const Breadcrumbs: React.FC = () => {
         to={routePath}
         className="text-blue-600 hover:underline"
       >
-        {route.name}
+        {route.label}
       </Link>
     ) : null;
   });

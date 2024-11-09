@@ -16,18 +16,18 @@ const MenuItem = ({ item, isMenuExpanded }: Props) => {
   return (
     <li
       key={item.path}
-      className={`items-center p-2 w-full rounded-xl ${
-        isActive(item.path) ? "bg-gray-100 text-blue-700" : ""
+      className={`items-center p-2 w-full text-[#3754DB] rounded-xl ${
+        isActive(item.path) ? "bg-gray-100 font-bold" : ""
       }`}
     >
       <NavLink
         to={item.path}
         style={{ background: "none", border: "none", padding: 0 }}
         className={`${
-          isActive(item.path) ? "text-blue-700" : ""
+          isActive(item.path) ? "font-bold" : ""
         } relative flex items-center gap-4 `}
       >
-        <div>{item.icon}</div>
+        {item.icon({ filled: isActive(item.path) })}
         <div hidden={!isMenuExpanded}>{item.label}</div>
       </NavLink>
     </li>
