@@ -37,7 +37,7 @@ const Layout = ({ children }: Props) => {
       </div>
 
       <div
-        className={`duration-300 transition-width flex flex-col h-screen pl-6 ${
+        className={`duration-300 transition-width flex flex-col h-screen px-6 ${
           isExpanded ? "w-[88%]" : "w-[calc(100%-60px)]"
         }`}
       >

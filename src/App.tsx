@@ -7,30 +7,6 @@ export default function App() {
   return (
     <Router>
       <Layout>
-        {/* <Routes>
-          <Route path="/" element={<>Home</>} />
-          <Route
-            path="dashboard"
-            element={<Dashboard />}
-            children={[
-              <Route path="dashboard/overview" element={<Dashboard />} />,
-              <Route path="dashboard/calendar" element={<Dashboard />} />,
-            ]}
-          />
-          <Route
-            path="projects"
-            element={<Dashboard />}
-            children={[
-              <Route path="projects" element={<Dashboard />} />,
-              <Route path="projects/tasks" element={<Dashboard />} />,
-              <Route path="projects/notifications" element={<Dashboard />} />,
-            ]}
-          />
-          <Route path="users" element={<>User</>} />
-          <Route path="settings" element={<>Setting</>} />
-          <Route path="support" element={<>Support</>} />
-        </Routes> */}
-
         <Routes>
           <Route key={"home"} path="/" element={<Dashboard />} />
           {menuItems.map((route) => (
