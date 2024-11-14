@@ -7,8 +7,8 @@ import SettingIcon from "@/assets/icons/SettingIcon";
 import TaskIcon from "@/assets/icons/TaskIcon";
 import UserIcon from "@/assets/icons/UserIcon";
 import { Dashboard } from "@/pages/Dashboard";
-import { Project } from "@/pages/ProjectManagement";
-import User from "@/pages/UserManagement/User";
+import { Project } from "@/pages/Projects";
+import User from "@/pages/Users/User";
 
 // export const routes: Route[] = [
 //   {
