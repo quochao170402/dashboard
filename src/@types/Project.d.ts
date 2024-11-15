@@ -1,5 +1,6 @@
 interface IProject {
   id: string;
+  logo?: string;
   name: string;
   key: string;
   type?: string;
