@@ -35,8 +35,10 @@ const Table = <T, K extends keyof T>({
                 width={column.width}
               >
                 {column.render
-                  ? column.render(row[column.key], row, rowIndex)
-                  : (row[column.key] as React.ReactNode)}
+                  ? column.render(undefined, row, rowIndex)
+                  : column.key
+                  ? (row[column.key] as React.ReactNode)
+                  : ""}
               </td>
             ))}
           </tr>

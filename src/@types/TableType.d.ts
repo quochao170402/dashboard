@@ -7,10 +7,14 @@ interface TableProps<T, K extends keyof T = keyof T> {
 }
 
 interface ColumnProps<T, K extends keyof T = keyof T> {
-  key: K;
+  key?: K;
   header: string;
   width?: number;
-  render?: (value: T[keyof T], row: T, rowIndex: number) => React.ReactNode;
+  render?: (
+    value: T[K] | undefined,
+    row: T,
+    rowIndex: number
+  ) => React.ReactNode | string;
   align?: "left" | "right" | "center";
 }
 
