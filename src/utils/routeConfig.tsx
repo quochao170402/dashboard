@@ -8,6 +8,7 @@ import TaskIcon from "@/assets/icons/TaskIcon";
 import UserIcon from "@/assets/icons/UserIcon";
 import { Dashboard } from "@/pages/Dashboard";
 import { Project } from "@/pages/Projects";
+import { Task } from "@/pages/Tasks";
 import User from "@/pages/Users/User";
 
 // export const routes: Route[] = [
@@ -67,7 +68,7 @@ export const menuItems: MenuItemType[] = [
     icon: (props) => <TaskIcon size={24} filled={props.filled} />,
     label: "Tasks",
     path: "/tasks",
-    component: <Project />,
+    component: <Task />,
   },
   {
     icon: (props) => <ProjectIcon size={24} filled={props.filled} />,
