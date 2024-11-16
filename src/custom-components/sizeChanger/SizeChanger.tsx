@@ -1,15 +1,21 @@
+import { useSearchParams } from "react-router-dom";
+
 interface Props {
   visible?: boolean;
-  pageSize?: number;
-  onChange?: (pageSize: number) => void;
 }
 
 const selectOption = [5, 10, 20, 30, 50, 100];
 
-const SizeChanger = ({ visible, pageSize, onChange }: Props) => {
+const SizeChanger = ({ visible }: Props) => {
+  const [_searchParams, setSearchParams] = useSearchParams();
   return (
     <div className="flex gap-4items-center" hidden={!visible}>
-      <select className="flex items-center justify-center appearance-none px-2 py-2 border border-gray-300 rounded-lg overflow-hidden">
+      <select
+        onChange={(e) => {
+          setSearchParams({ pageSize: e.target.value });
+        }}
+        className="flex items-center justify-center appearance-none px-2 py-2 border border-gray-300 rounded-lg overflow-hidden"
+      >
         {selectOption.map((item) => (
           <option className="flex flex-col gap-2" value={item}>
             {item} / page

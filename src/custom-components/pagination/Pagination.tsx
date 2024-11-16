@@ -1,12 +1,31 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 interface Props {
-  totalPage: number;
   currentPage: number;
+  totalItems: number;
   onPageChange: (page: number) => void;
 }
 
-const Pagination = ({ totalPage, currentPage, onPageChange }: Props) => {
+const Pagination = ({ totalItems, currentPage, onPageChange }: Props) => {
+  const [totalPage, setTotalPage] = useState(0);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const queryPageSize = searchParams.get("pageSize");
+  useEffect(() => {
+    if (queryPageSize === null || queryPageSize === "0") {
+      setTotalPage(1);
+    } else {
+      const page = Math.ceil(totalItems / +queryPageSize);
+      setTotalPage(page === 0 ? 1 : page);
+    }
+  }, [queryPageSize, totalItems]);
+
+  useEffect(() => {
+    setSearchParams({ pageIndex: currentPage.toString() });
+  }, [currentPage]);
+
   const handleGoToPreviousPage = () => {
     if (currentPage > 1) {
       onPageChange(currentPage - 1);
