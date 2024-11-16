@@ -20,13 +20,7 @@ const Project = () => {
             onPageChange={handlePageChange}
           />
         </div>
-        <Modal
-          visible={visible}
-          onClose={() => {
-            console.log("onClose visible", visible);
-            setVisible(false);
-          }}
-        />
+        <Modal visible={visible} onClose={() => setVisible(false)} />
       </div>
     </div>
   );
