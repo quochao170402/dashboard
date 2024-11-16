@@ -1,5 +1,15 @@
+import SizeChanger from "@/custom-components/sizeChanger/SizeChanger";
+import { useSearchParams } from "react-router-dom";
+
 const Task = () => {
-  return <div>My task</div>;
+  const [searchParams, _setSearchParams] = useSearchParams();
+  const pageSize = searchParams.get("pageSize");
+  console.log("🚀 ~ Task ~ pageSize:", pageSize);
+  return (
+    <div>
+      <SizeChanger visible={true} />
+    </div>
+  );
 };
 
 export default Task;
