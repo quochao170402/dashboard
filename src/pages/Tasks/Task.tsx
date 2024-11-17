@@ -4,7 +4,6 @@ import { useSearchParams } from "react-router-dom";
 const Task = () => {
   const [searchParams, _setSearchParams] = useSearchParams();
   const pageSize = searchParams.get("pageSize");
-  console.log("🚀 ~ Task ~ pageSize:", pageSize);
   return (
     <div>
       <SizeChanger visible={true} />

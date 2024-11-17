@@ -17,7 +17,7 @@ const Layout = ({ children }: Props) => {
     <div className="flex h-screen">
       <div
         className={`duration-300 transition-width shadow-2xl ${
-          isExpanded ? "w-[12%]" : "w-[60px]"
+          isExpanded ? "w-[240px]" : "w-[60px]"
         }`}
       >
         <div className="flex justify-center mb-5">
@@ -37,8 +37,8 @@ const Layout = ({ children }: Props) => {
       </div>
 
       <div
-        className={`duration-300 transition-width flex flex-col h-screen px-6 ${
-          isExpanded ? "w-[88%]" : "w-[calc(100%-60px)]"
+        className={`duration-300 transition-width flex flex-col h-screen px-6 overflow-scroll ${
+          isExpanded ? "w-[calc(100%-240px)]" : "w-[calc(100%-60px)]"
         }`}
       >
         <div className="flex items-center gap-4 py-4">

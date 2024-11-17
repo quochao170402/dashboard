@@ -1,6 +1,6 @@
 interface Pagination {
   current: number;
-  totalItems: number;
+  totalPage: number;
 }
 
 interface Option {

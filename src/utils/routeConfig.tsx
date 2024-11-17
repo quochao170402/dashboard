@@ -1,4 +1,4 @@
-import { MenuItemType } from "@/@types/MenuItem";
+import { MenuItemType, Route } from "@/@types/MenuItem";
 import AnnouncementIcon from "@/assets/icons/AnnouncementIcon";
 import ChatIcon from "@/assets/icons/ChatIcon";
 import OverviewIcon from "@/assets/icons/OverviewIcon";
@@ -8,6 +8,7 @@ import TaskIcon from "@/assets/icons/TaskIcon";
 import UserIcon from "@/assets/icons/UserIcon";
 import { Dashboard } from "@/pages/Dashboard";
 import { Project } from "@/pages/Projects";
+import UpsertProject from "@/pages/Projects/components/UpsertProject";
 import { Task } from "@/pages/Tasks";
 import User from "@/pages/Users/User";
 
@@ -96,6 +97,56 @@ export const menuItems: MenuItemType[] = [
   },
   {
     icon: (props) => <SettingIcon size={24} filled={props.filled} />,
+    label: "Settings",
+    path: "/settings",
+    component: <Dashboard />,
+  },
+];
+
+export const routes: Route[] = [
+  {
+    label: "Overview",
+    path: "/overview",
+    component: <Dashboard />,
+  },
+  {
+    label: "Tasks",
+    path: "/tasks",
+    component: <Task />,
+  },
+  {
+    label: "Projects",
+    path: "/projects",
+    component: <Project />,
+    // children: [
+    //   {
+    //     label: "Add new Project",
+    //     path: "addProject",
+    //     component: <UpsertProject />,
+    //   },
+    // ],
+  },
+  {
+    label: "Add new Project",
+    path: "/projects/addProject",
+    component: <UpsertProject />,
+  },
+  {
+    label: "Users",
+    path: "/users",
+    component: <User />,
+  },
+  {
+    label: "Chat",
+    path: "/chat",
+    component: <User />,
+  },
+  {
+    label: "Announcements",
+    path: "/announcements",
+    component: <Dashboard />,
+  },
+  {
     label: "Settings",
     path: "/settings",
     component: <Dashboard />,

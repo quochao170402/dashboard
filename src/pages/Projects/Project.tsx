@@ -1,28 +1,41 @@
-import Modal from "@/custom-components/modal/Modal";
 import Pagination from "@/custom-components/pagination/Pagination";
 import SizeChanger from "@/custom-components/sizeChanger/SizeChanger";
 import Table from "@/custom-components/table/Table";
 import Title from "@/custom-components/title/Title";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import ProjectFilterBar from "./components/ProjectFilterBar";
 import useProject from "./hooks/useProject";
 
 const Project = () => {
-  const { pagination, columns, dummyData, handlePageChange } = useProject();
-  const [visible, setVisible] = useState(true);
+  const { pagination, columns, data, handlePageChange, handleChangePageSize } =
+    useProject();
+  const navigate = useNavigate(); // Initialize navigation
   return (
     <div>
-      <Title className="mb-4" title={"Project"} />
+      <div className="flex items-center justify-between px-2">
+        <Title className="mb-4" title={"Project"} />
+        <button
+          className="py-2 px-4 rounded-md bg-green-500 text-white w-24"
+          onClick={() => {
+            navigate("/projects/addProject");
+          }}
+        >
+          Create
+        </button>
+      </div>
       <div>
-        <Table border={false} data={dummyData} columns={columns} />
+        <ProjectFilterBar />
+      </div>
+      <div>
+        <Table border={false} data={data} columns={columns} />
         <div className="my-4 flex items-center justify-between">
-          <SizeChanger visible={true} />
+          <SizeChanger visible={false} onChange={handleChangePageSize} />
           <Pagination
-            totalItems={pagination.totalItems}
+            totalPage={pagination.totalPage}
             currentPage={pagination.current}
             onPageChange={handlePageChange}
           />
         </div>
-        <Modal visible={visible} onClose={() => setVisible(false)} />
       </div>
     </div>
   );

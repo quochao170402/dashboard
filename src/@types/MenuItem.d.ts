@@ -10,14 +10,7 @@ interface MenuItemType {
 
 interface Route {
   path: string;
-  name: string;
+  label: string;
   component: ReactNode;
-  // children?: Route[]; // Optional children property for nested routes
-}
-
-interface IRoute {
-  icon: ReactNode;
-  path: string;
-  name: string;
-  component: ReactNode;
+  children?: Route[];
 }
