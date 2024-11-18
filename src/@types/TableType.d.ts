@@ -4,6 +4,7 @@ interface TableProps<T, K extends keyof T = keyof T> {
   columns: Array<ColumnProps<T, K>>;
   pagination?: boolean;
   border?: boolean;
+  onDoubleClick?: (row: T, rowIndex: number) => void;
 }
 
 interface ColumnProps<T, K extends keyof T = keyof T> {

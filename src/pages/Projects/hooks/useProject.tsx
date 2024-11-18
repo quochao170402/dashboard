@@ -1,5 +1,6 @@
 import { SquarePen, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import IUpsertProject from "../common/IUpsertProject";
 
 const generateRecords = () => {
   const records = [];
@@ -22,6 +23,12 @@ const defaultPageSize = 5;
 const useProject = () => {
   const dummyData = generateRecords();
   const [pageSize, setPageSize] = useState(defaultPageSize);
+
+  const [upsertProjectData, setUpsertProjectData] = useState<IUpsertProject>({
+    visible: false,
+    updatable: true,
+    data: undefined,
+  } as IUpsertProject);
 
   const [pagination, setPagination] = useState<Pagination>({
     current: 1,
@@ -48,9 +55,25 @@ const useProject = () => {
     );
   }, [pageSize, pagination.current]);
 
-  const handleDelete = () => {};
+  const handleDelete = (data: IProject) => {
+    console.log("handleDelete data", data);
+    setData(
+      dummyData
+        .filter((item) => item.id !== data.id)
+        .slice(
+          (pagination.current - 1) * pageSize,
+          pageSize * pagination.current
+        )
+    );
+  };
 
-  const handleUpdate = () => {};
+  const handleUpdate = (data: IProject) => {
+    setUpsertProjectData({
+      ...upsertProjectData,
+      visible: true,
+      data: data,
+    });
+  };
 
   const handlePageChange = (page: number) => {
     setPagination({ ...pagination, current: page });
@@ -60,6 +83,19 @@ const useProject = () => {
     if (pageSize > 0) {
       setPageSize(pageSize);
     }
+  };
+
+  const handleDoubleClick = (row: IProject, rowIndex: number) => {
+    setUpsertProjectData({
+      ...upsertProjectData,
+      visible: true,
+      data: row,
+      updatable: false,
+    });
+  };
+
+  const handleToggleModal = (isOpen: boolean) => {
+    setUpsertProjectData({ ...upsertProjectData, visible: isOpen });
   };
 
   const columns: Array<ColumnProps<IProject>> = [
@@ -97,14 +133,13 @@ const useProject = () => {
       header: "",
       width: 100,
       align: "center",
-
-      render: (_value, _row) => {
+      render: (_value, row) => {
         return (
           <div className="flex gap-3 items-center justify-center">
-            <button onClick={handleUpdate}>
+            <button onClick={() => handleUpdate(row)}>
               <SquarePen size={18} color="#0c66e4" />
             </button>
-            <button onClick={handleDelete}>
+            <button onClick={() => handleDelete(row)}>
               <Trash2 size={18} color="red" />
             </button>
           </div>
@@ -118,10 +153,13 @@ const useProject = () => {
     pageSize,
     columns,
     data,
+    upsertProjectData,
+    handleToggleModal,
     handlePageChange,
     handleChangePageSize,
     handleDelete,
     handleUpdate,
+    handleDoubleClick,
   };
 };
 

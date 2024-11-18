@@ -1,14 +1,12 @@
 import { useState } from "react";
 
 interface Props {
-  width?: number;
-  height?: number;
   onFileSelect: (file: File) => void;
   enablePreview?: boolean;
+  className?: string;
 }
 const FileUploader = ({
-  width = 200,
-  height = 200,
+  className,
   enablePreview = false,
   onFileSelect,
 }: Props) => {
@@ -26,8 +24,7 @@ const FileUploader = ({
 
   return (
     <div
-      style={{ width: width, height: height }}
-      className="flex flex-col items-center justify-center p-4 border border-dashed border-gray-300 rounded-lg bg-gray-50"
+      className={`${className} flex flex-col items-center justify-center p-4 border border-dashed border-gray-300 rounded-lg bg-gray-50`}
     >
       <label
         htmlFor="fileInput"
@@ -45,11 +42,7 @@ const FileUploader = ({
         onChange={handleFileChange}
       />
       {enablePreview && previewUrl && previewUrl.length > 0 && (
-        <img
-          width={100}
-          src={previewUrl}
-          alt="Preview"
-        />
+        <img width={100} src={previewUrl} alt="Preview" />
       )}
 
       {!enablePreview && selectedFile && (

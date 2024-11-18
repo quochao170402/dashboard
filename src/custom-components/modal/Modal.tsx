@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 
 interface Props {
   title?: string;
@@ -20,6 +20,30 @@ const Modal = ({
   type = "form",
   onClose,
 }: Props) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  const handleOutsideClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      onClose();
+    }
+  };
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      onClose();
+    }
+  };
+
+  useEffect(() => {
+    if (visible) {
+      window.addEventListener("keydown", handleKeyDown);
+    } else {
+      window.removeEventListener("keydown", handleKeyDown);
+    }
+
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [visible]);
+
   const buttonGroup = (type: "form" | "confirm" | "notification") => {
     switch (type) {
       case "form":
@@ -69,14 +93,17 @@ const Modal = ({
         );
     }
   };
+
   return (
     <>
       {visible && (
         <div
+          onClick={handleOutsideClick}
           className={`fixed inset-0 flex items-center justify-center bg-black/50 z-50`}
           hidden={!false}
         >
           <div
+            ref={modalRef}
             className={`flex flex-col rounded-lg shadow-lg bg-white ${className}`}
             style={{ width: width ?? "700px", height: height ?? "500px" }}
             hidden={!visible}

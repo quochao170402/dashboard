@@ -3,6 +3,7 @@ const Table = <T, K extends keyof T>({
   columns,
   border,
   className,
+  onDoubleClick,
 }: TableProps<T, K>) => {
   return (
     <table className={`w-full overflow-hidden rounded-sm ${className}`}>
@@ -23,6 +24,7 @@ const Table = <T, K extends keyof T>({
       <tbody>
         {data.map((row, rowIndex) => (
           <tr
+            onDoubleClick={() => onDoubleClick && onDoubleClick(row, rowIndex)}
             key={`tbody_tr_${rowIndex}`}
             className={`hover:bg-gray-100 transition-colors cursor-pointer`}
           >
