@@ -36,10 +36,10 @@ const ProjectFilterBar = ({
           className="flex-1 border appearance-none p-2"
           name="Type"
           onChange={(e) => setFilter({ ...filter, type: e.target.value })}
-          defaultValue=""
+          value={filter.type || ""}
         >
           {types.map((x) => (
-            <option selected={filter.type === x} key={`option-${x}`} value={x}>
+            <option key={`option-${x}`} value={x}>
               {x}
             </option>
           ))}
@@ -49,13 +49,10 @@ const ProjectFilterBar = ({
           name="Category"
           defaultValue=""
           onChange={(e) => setFilter({ ...filter, category: e.target.value })}
+          value={filter.category || ""}
         >
           {categories.map((x) => (
-            <option
-              selected={filter.category === x}
-              key={`option-${x}`}
-              value={x}
-            >
+            <option key={`option-${x}`} value={x}>
               {x}
             </option>
           ))}

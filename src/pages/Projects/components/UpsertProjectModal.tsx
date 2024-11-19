@@ -7,6 +7,7 @@ interface Props {
   onClose: () => void;
   data?: IProject;
   updatable?: boolean;
+  onSubmit?: Function;
 }
 
 const UpsertProjectModal = ({
@@ -14,9 +15,17 @@ const UpsertProjectModal = ({
   data,
   onClose,
   updatable = true,
+  onSubmit,
 }: Props) => {
   return (
-    <Modal height={550} width={800} visible={visible} onClose={onClose} >
+    <Modal
+      height={550}
+      width={800}
+      visible={visible}
+      onClose={onClose}
+      isShowSubmitButton={updatable}
+      onSubmit={onSubmit}
+    >
       <div>
         <div className="flex items-center justify-between px-2">
           <Title className="mb-4" title={"Add new Project"} />

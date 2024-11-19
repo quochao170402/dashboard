@@ -13,6 +13,7 @@ const Project = () => {
     data,
     filter,
     setFilter,
+    handleAdd,
     upsertProjectData,
     handleToggleModal,
     handlePageChange,
@@ -65,6 +66,7 @@ const Project = () => {
           onClose={() => handleToggleModal(false)}
           data={upsertProjectData.data}
           updatable={upsertProjectData.updatable}
+          onSubmit={handleAdd}
         />
       </div>
     </div>

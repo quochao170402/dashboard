@@ -3,13 +3,14 @@ import { ReactNode, useEffect, useRef } from "react";
 interface Props {
   title?: string;
   visible: boolean;
-  onClose: () => void;
   className?: string;
   children?: ReactNode;
   width?: number;
   height?: number;
   type?: "form" | "confirm" | "notification";
-  buttons?: ReactNode;
+  isShowSubmitButton?: boolean;
+  onClose: () => void;
+  onSubmit?: (data?: any) => void;
 }
 const Modal = ({
   title,
@@ -18,9 +19,10 @@ const Modal = ({
   children,
   width,
   height,
-  type = "form",
+  isShowSubmitButton,
   onClose,
-  buttons,
+  onSubmit,
+  type = "form",
 }: Props) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -46,20 +48,14 @@ const Modal = ({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [visible]);
 
-  const buttonGroup = (type: "form" | "confirm" | "notification") => {
+  const getSubmitButton = (type: "form" | "confirm" | "notification") => {
     switch (type) {
       case "form":
         return (
           <>
             <button
-              className="bg-red-500 py-2 px-4 rounded-lg shadow-lg active:bg-gray-200 text-white"
-              onClick={onClose}
-            >
-              Cancel
-            </button>
-            <button
               className="bg-green-700 text-white py-2 px-4 rounded-lg shadow-lg active:bg-gray-200 "
-              onClick={onClose}
+              onClick={onSubmit}
             >
               Submit
             </button>
@@ -69,30 +65,15 @@ const Modal = ({
         return (
           <>
             <button
-              className="bg-red-500 py-2 px-4 rounded-lg shadow-lg active:bg-gray-200 text-white"
-              onClick={onClose}
-            >
-              Cancel
-            </button>
-            <button
               className="bg-blue-700 text-white py-2 px-4 rounded-lg shadow-lg active:bg-gray-200 "
-              onClick={onClose}
+              onClick={onSubmit}
             >
               Confirm
             </button>
           </>
         );
       case "notification":
-        return (
-          <>
-            <button
-              className="bg-red-500 py-2 px-4 rounded-lg shadow-lg active:bg-gray-200 text-white"
-              onClick={onClose}
-            >
-              Close
-            </button>
-          </>
-        );
+        return <></>;
     }
   };
 
@@ -117,7 +98,13 @@ const Modal = ({
             )}
             <div className="flex-grow overflow-y-auto p-4">{children}</div>
             <div className="flex justify-end items-center p-4 gap-2">
-              {buttons ?? buttonGroup(type)}
+              <button
+                className="bg-red-500 py-2 px-4 rounded-lg shadow-lg active:bg-gray-200 text-white"
+                onClick={onClose}
+              >
+                Close
+              </button>
+              {isShowSubmitButton && getSubmitButton(type)}
             </div>
           </div>
         </div>
