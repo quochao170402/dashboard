@@ -16,7 +16,7 @@ const UpsertProjectModal = ({
   updatable = true,
 }: Props) => {
   return (
-    <Modal height={550} width={800} visible={visible} onClose={onClose}>
+    <Modal height={550} width={800} visible={visible} onClose={onClose} >
       <div>
         <div className="flex items-center justify-between px-2">
           <Title className="mb-4" title={"Add new Project"} />

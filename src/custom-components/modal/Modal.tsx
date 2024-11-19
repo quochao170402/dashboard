@@ -9,6 +9,7 @@ interface Props {
   width?: number;
   height?: number;
   type?: "form" | "confirm" | "notification";
+  buttons?: ReactNode;
 }
 const Modal = ({
   title,
@@ -19,6 +20,7 @@ const Modal = ({
   height,
   type = "form",
   onClose,
+  buttons,
 }: Props) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -48,7 +50,7 @@ const Modal = ({
     switch (type) {
       case "form":
         return (
-          <div className="flex justify-end items-center p-4 gap-2">
+          <>
             <button
               className="bg-red-500 py-2 px-4 rounded-lg shadow-lg active:bg-gray-200 text-white"
               onClick={onClose}
@@ -61,11 +63,11 @@ const Modal = ({
             >
               Submit
             </button>
-          </div>
+          </>
         );
       case "confirm":
         return (
-          <div className="flex justify-end items-center p-4 gap-2">
+          <>
             <button
               className="bg-red-500 py-2 px-4 rounded-lg shadow-lg active:bg-gray-200 text-white"
               onClick={onClose}
@@ -78,18 +80,18 @@ const Modal = ({
             >
               Confirm
             </button>
-          </div>
+          </>
         );
       case "notification":
         return (
-          <div className="flex justify-end items-center p-4 gap-2">
+          <>
             <button
               className="bg-red-500 py-2 px-4 rounded-lg shadow-lg active:bg-gray-200 text-white"
               onClick={onClose}
             >
               Close
             </button>
-          </div>
+          </>
         );
     }
   };
@@ -114,7 +116,9 @@ const Modal = ({
               </div>
             )}
             <div className="flex-grow overflow-y-auto p-4">{children}</div>
-            {buttonGroup(type)}
+            <div className="flex justify-end items-center p-4 gap-2">
+              {buttons ?? buttonGroup(type)}
+            </div>
           </div>
         </div>
       )}
