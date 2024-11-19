@@ -72,6 +72,10 @@ const useProject = () => {
     });
   };
 
+  const handleAdd = (data: IProject) => {
+    setDummyData((prev) => [...prev, data]);
+  };
+
   const handlePageChange = (page: number) => {
     setPagination({ ...pagination, current: page });
   };
@@ -190,6 +194,7 @@ const useProject = () => {
     handleChangePageSize,
     handleDelete,
     handleUpdate,
+    handleAdd,
     handleDoubleClick,
     handleRefetch,
     handleFilter,
