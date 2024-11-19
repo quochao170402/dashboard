@@ -9,9 +9,14 @@ interface Props {
   updatable?: boolean;
 }
 
-const UpsertProject = ({ visible, data, onClose, updatable = true }: Props) => {
+const UpsertProjectModal = ({
+  visible,
+  data,
+  onClose,
+  updatable = true,
+}: Props) => {
   return (
-    <Modal height={520} visible={visible} onClose={onClose}>
+    <Modal height={550} width={800} visible={visible} onClose={onClose}>
       <div>
         <div className="flex items-center justify-between px-2">
           <Title className="mb-4" title={"Add new Project"} />
@@ -20,6 +25,7 @@ const UpsertProject = ({ visible, data, onClose, updatable = true }: Props) => {
           <div className="grid grid-flow-col grid-cols-2 items-center gap-4 w-full h-full">
             <div className="h-full w-full">
               <FileUploader
+                disabled={!updatable}
                 className="h-full w-full"
                 enablePreview
                 onFileSelect={(file) => console.log(file)}
@@ -87,4 +93,4 @@ const UpsertProject = ({ visible, data, onClose, updatable = true }: Props) => {
   );
 };
 
-export default UpsertProject;
+export default UpsertProjectModal;

@@ -8,7 +8,7 @@ import TaskIcon from "@/assets/icons/TaskIcon";
 import UserIcon from "@/assets/icons/UserIcon";
 import { Dashboard } from "@/pages/Dashboard";
 import { Project } from "@/pages/Projects";
-import UpsertProject from "@/pages/Projects/components/UpsertProject";
+import UpsertProjectModal from "@/pages/Projects/components/UpsertProjectModal";
 import { Task } from "@/pages/Tasks";
 import User from "@/pages/Users/User";
 
@@ -129,7 +129,7 @@ export const routes: Route[] = [
   {
     label: "Add new Project",
     path: "/projects/addProject",
-    component: <UpsertProject />,
+    component: <UpsertProjectModal />,
   },
   {
     label: "Users",

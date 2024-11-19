@@ -4,11 +4,13 @@ interface Props {
   onFileSelect: (file: File) => void;
   enablePreview?: boolean;
   className?: string;
+  disabled?: boolean;
 }
 const FileUploader = ({
   className,
   enablePreview = false,
   onFileSelect,
+  disabled,
 }: Props) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
@@ -28,13 +30,16 @@ const FileUploader = ({
     >
       <label
         htmlFor="fileInput"
-        className="cursor-pointer text-center text-blue-600 hover:underline"
+        className={`${
+          disabled ? "cursor-not-allowed" : "cursor-pointer hover:underline"
+        } text-center text-blue-600 truncate`}
       >
         {selectedFile
           ? `Selected: ${selectedFile.name}`
           : "Click to upload a file"}
       </label>
       <input
+        disabled={disabled}
         id="fileInput"
         type="file"
         className="hidden"

@@ -21,7 +21,7 @@ const generateRecords = () => {
 const defaultPageSize = 5;
 
 const useProject = () => {
-  const dummyData = generateRecords();
+  const [dummyData, setDummyData] = useState<IProject[]>(generateRecords());
   const [pageSize, setPageSize] = useState(defaultPageSize);
 
   const [upsertProjectData, setUpsertProjectData] = useState<IUpsertProject>({
@@ -53,18 +53,10 @@ const useProject = () => {
         pageSize * pagination.current
       )
     );
-  }, [pageSize, pagination.current]);
+  }, [pageSize, pagination.current, dummyData.length]);
 
   const handleDelete = (data: IProject) => {
-    console.log("handleDelete data", data);
-    setData(
-      dummyData
-        .filter((item) => item.id !== data.id)
-        .slice(
-          (pagination.current - 1) * pageSize,
-          pageSize * pagination.current
-        )
-    );
+    setDummyData((prev) => prev.filter((item) => item.id !== data.id));
   };
 
   const handleUpdate = (data: IProject) => {
@@ -95,7 +87,12 @@ const useProject = () => {
   };
 
   const handleToggleModal = (isOpen: boolean) => {
-    setUpsertProjectData({ ...upsertProjectData, visible: isOpen });
+    setUpsertProjectData({
+      ...upsertProjectData,
+      data: undefined,
+      visible: isOpen,
+      updatable: true,
+    });
   };
 
   const columns: Array<ColumnProps<IProject>> = [

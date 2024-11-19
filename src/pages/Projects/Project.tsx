@@ -3,7 +3,7 @@ import SizeChanger from "@/custom-components/sizeChanger/SizeChanger";
 import Table from "@/custom-components/table/Table";
 import Title from "@/custom-components/title/Title";
 import ProjectFilterBar from "./components/ProjectFilterBar";
-import UpsertProject from "./components/UpsertProject";
+import UpsertProjectModal from "./components/UpsertProjectModal";
 import useProject from "./hooks/useProject";
 
 const Project = () => {
@@ -51,7 +51,7 @@ const Project = () => {
         </div>
       </div>
       <div>
-        <UpsertProject
+        <UpsertProjectModal
           visible={upsertProjectData.visible}
           onClose={() => handleToggleModal(false)}
           data={upsertProjectData.data}
