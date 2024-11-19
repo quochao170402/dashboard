@@ -24,12 +24,16 @@ const UpsertProjectModal = ({
         <div className="flex flex-col items-center gap-4">
           <div className="grid grid-flow-col grid-cols-2 items-center gap-4 w-full h-full">
             <div className="h-full w-full">
-              <FileUploader
-                disabled={!updatable}
-                className="h-full w-full"
-                enablePreview
-                onFileSelect={(file) => console.log(file)}
-              />
+              {data?.url && data?.url.length > 0 ? (
+                <img src={data.url} />
+              ) : (
+                <FileUploader
+                  disabled={!updatable}
+                  className="h-full w-full"
+                  enablePreview
+                  onFileSelect={(file) => console.log(file)}
+                />
+              )}
             </div>
 
             <div className="grid grid-flow-row grid-rows-3 gap-4">

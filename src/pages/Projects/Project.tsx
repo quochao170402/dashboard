@@ -11,11 +11,15 @@ const Project = () => {
     pagination,
     columns,
     data,
+    filter,
+    setFilter,
     upsertProjectData,
     handleToggleModal,
     handlePageChange,
     handleChangePageSize,
     handleDoubleClick,
+    handleFilter,
+    handleRefetch,
   } = useProject();
 
   return (
@@ -32,7 +36,12 @@ const Project = () => {
         </button>
       </div>
       <div>
-        <ProjectFilterBar />
+        <ProjectFilterBar
+          filter={filter}
+          handleFilter={handleFilter}
+          handleRefetch={handleRefetch}
+          setFilter={setFilter}
+        />
       </div>
       <div>
         <Table

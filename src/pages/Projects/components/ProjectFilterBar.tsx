@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { IProjectFilter } from "../common/IUpsertProject";
 
 const categories = [
   "Category 1",
@@ -9,19 +9,19 @@ const categories = [
 ];
 const types = ["Type A", "Type B", "Type C", "Type D", "Type E"];
 
-const ProjectFilterBar = () => {
-  const [keyword, setKeyword] = useState("");
-  const [type, setType] = useState("");
-  const [category, setCategory] = useState("");
+interface Props {
+  filter: IProjectFilter;
+  handleFilter: () => void;
+  handleRefetch: () => void;
+  setFilter: (filter: IProjectFilter) => void;
+}
 
-  const handleRefetch = () => {
-    setKeyword("");
-    setType("");
-    setCategory("");
-  };
-
-  const handleFilter = () => {};
-
+const ProjectFilterBar = ({
+  filter,
+  handleFilter,
+  handleRefetch,
+  setFilter,
+}: Props) => {
   return (
     <div className="flex gap-4 overflow-hidden p-2">
       <div className="flex flex-1 gap-4 items-center">
@@ -29,17 +29,17 @@ const ProjectFilterBar = () => {
           className="flex-1 border p-2"
           type="text"
           placeholder="Keyword"
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
+          value={filter.keyword}
+          onChange={(e) => setFilter({ ...filter, keyword: e.target.value })}
         />
         <select
           className="flex-1 border appearance-none p-2"
           name="Type"
-          onChange={(e) => setType(e.target.value)}
+          onChange={(e) => setFilter({ ...filter, type: e.target.value })}
           defaultValue=""
         >
           {types.map((x) => (
-            <option key={`option-${x}`} value={x}>
+            <option selected={filter.type === x} key={`option-${x}`} value={x}>
               {x}
             </option>
           ))}
@@ -48,10 +48,14 @@ const ProjectFilterBar = () => {
           className="flex-1 border appearance-none p-2"
           name="Category"
           defaultValue=""
-          onChange={(e) => setCategory(e.target.value)}
+          onChange={(e) => setFilter({ ...filter, category: e.target.value })}
         >
           {categories.map((x) => (
-            <option key={`option-${x}`} value={x}>
+            <option
+              selected={filter.category === x}
+              key={`option-${x}`}
+              value={x}
+            >
               {x}
             </option>
           ))}

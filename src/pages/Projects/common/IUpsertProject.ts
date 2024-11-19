@@ -3,3 +3,9 @@ export default interface IUpsertProject {
   data?: IProject;
   updatable?: boolean;
 }
+
+export interface IProjectFilter {
+  keyword: string;
+  type: string;
+  category: string;
+}

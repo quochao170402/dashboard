@@ -1,6 +1,6 @@
 import { SquarePen, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import IUpsertProject from "../common/IUpsertProject";
+import IUpsertProject, { IProjectFilter } from "../common/IUpsertProject";
 
 const generateRecords = () => {
   const records = [];
@@ -23,6 +23,11 @@ const defaultPageSize = 5;
 const useProject = () => {
   const [dummyData, setDummyData] = useState<IProject[]>(generateRecords());
   const [pageSize, setPageSize] = useState(defaultPageSize);
+  const [filter, setFilter] = useState<IProjectFilter>({
+    keyword: "",
+    type: "",
+    category: "",
+  });
 
   const [upsertProjectData, setUpsertProjectData] = useState<IUpsertProject>({
     visible: false,
@@ -95,6 +100,33 @@ const useProject = () => {
     });
   };
 
+  const handleRefetch = () => {
+    setFilter({ keyword: "", type: "", category: "" });
+  };
+
+  const handleFilter = () => {
+    let temp: IProject[] = dummyData;
+
+    if (filter.keyword && filter.keyword.length > 0) {
+      temp = dummyData.filter((x) =>
+        x.name.toLowerCase().includes(filter.keyword.toLowerCase())
+      );
+    }
+    if (filter.type && filter.type.length > 0) {
+      temp = dummyData.filter((x) => x.type === filter.type);
+    }
+    if (filter.category && filter.category.length > 0) {
+      temp = dummyData.filter((x) => x.category === filter.category);
+    }
+
+    setData(
+      temp.slice(
+        (pagination.current - 1) * pageSize,
+        pageSize * pagination.current
+      )
+    );
+  };
+
   const columns: Array<ColumnProps<IProject>> = [
     {
       key: "id",
@@ -151,12 +183,16 @@ const useProject = () => {
     columns,
     data,
     upsertProjectData,
+    filter,
+    setFilter,
     handleToggleModal,
     handlePageChange,
     handleChangePageSize,
     handleDelete,
     handleUpdate,
     handleDoubleClick,
+    handleRefetch,
+    handleFilter,
   };
 };
 
