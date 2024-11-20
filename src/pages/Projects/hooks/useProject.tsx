@@ -22,12 +22,8 @@ const defaultPageSize = 5;
 
 const useProject = () => {
   const [dummyData, setDummyData] = useState<IProject[]>(generateRecords());
+
   const [pageSize, setPageSize] = useState(defaultPageSize);
-  const [filter, setFilter] = useState<IProjectFilter>({
-    keyword: "",
-    type: "",
-    category: "",
-  });
 
   const [upsertProjectData, setUpsertProjectData] = useState<IUpsertProject>({
     visible: false,
@@ -112,22 +108,22 @@ const useProject = () => {
   };
 
   const handleRefetch = () => {
-    setFilter({ keyword: "", type: "", category: "" });
+    console.log("Refetch");
   };
 
-  const handleFilter = () => {
+  const handleFilter = (filter: IProjectFilter) => {
     let temp: IProject[] = dummyData;
 
     if (filter.keyword && filter.keyword.length > 0) {
-      temp = dummyData.filter((x) =>
+      temp = temp.filter((x) =>
         x.name.toLowerCase().includes(filter.keyword.toLowerCase())
       );
     }
     if (filter.type && filter.type.length > 0) {
-      temp = dummyData.filter((x) => x.type === filter.type);
+      temp = temp.filter((x) => x.type === filter.type);
     }
     if (filter.category && filter.category.length > 0) {
-      temp = dummyData.filter((x) => x.category === filter.category);
+      temp = temp.filter((x) => x.category === filter.category);
     }
 
     setData(
@@ -136,6 +132,10 @@ const useProject = () => {
         pageSize * pagination.current
       )
     );
+    setPagination({
+      current: 1,
+      totalPage: Math.ceil(temp.length / pageSize),
+    });
   };
 
   const columns: Array<ColumnProps<IProject>> = [
@@ -195,8 +195,6 @@ const useProject = () => {
     data,
     upsertProjectData,
     newProject,
-    filter,
-    setFilter,
     setNewProject,
     handleToggleModal,
     handlePageChange,

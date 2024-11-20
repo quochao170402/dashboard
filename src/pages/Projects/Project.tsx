@@ -11,9 +11,7 @@ const Project = () => {
     pagination,
     columns,
     data,
-    filter,
     newProject,
-    setFilter,
     setNewProject,
     handleAdd,
     upsertProjectData,
@@ -41,10 +39,8 @@ const Project = () => {
       </div>
       <div>
         <ProjectFilterBar
-          filter={filter}
           handleFilter={handleFilter}
           handleRefetch={handleRefetch}
-          setFilter={setFilter}
         />
       </div>
       <div>

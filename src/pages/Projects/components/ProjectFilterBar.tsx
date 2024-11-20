@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { IProjectFilter } from "../common/IUpsertProject";
 
 const categories = [
@@ -10,18 +11,18 @@ const categories = [
 const types = ["Type A", "Type B", "Type C", "Type D", "Type E"];
 
 interface Props {
-  filter: IProjectFilter;
-  handleFilter: () => void;
+  handleFilter: (filter: IProjectFilter) => void;
   handleRefetch: () => void;
-  setFilter: (filter: IProjectFilter) => void;
 }
 
-const ProjectFilterBar = ({
-  filter,
-  handleFilter,
-  handleRefetch,
-  setFilter,
-}: Props) => {
+const initialState: IProjectFilter = {
+  keyword: "",
+  type: "",
+  category: "",
+};
+
+const ProjectFilterBar = ({ handleFilter, handleRefetch }: Props) => {
+  const [filter, setFilter] = useState<IProjectFilter>(initialState);
   return (
     <div className="flex gap-4 overflow-hidden p-2">
       <div className="flex flex-1 gap-4 items-center">
@@ -36,8 +37,11 @@ const ProjectFilterBar = ({
           className="flex-1 border appearance-none p-2"
           name="Type"
           onChange={(e) => setFilter({ ...filter, type: e.target.value })}
-          value={filter.type || ""}
+          value={filter.type}
         >
+          <option disabled hidden value="">
+            -- Select Type --
+          </option>{" "}
           {types.map((x) => (
             <option key={`option-${x}`} value={x}>
               {x}
@@ -47,10 +51,12 @@ const ProjectFilterBar = ({
         <select
           className="flex-1 border appearance-none p-2"
           name="Category"
-          defaultValue=""
           onChange={(e) => setFilter({ ...filter, category: e.target.value })}
-          value={filter.category || ""}
+          value={filter.category}
         >
+          <option disabled hidden value="">
+            -- Select Category --
+          </option>{" "}
           {categories.map((x) => (
             <option key={`option-${x}`} value={x}>
               {x}
@@ -61,13 +67,16 @@ const ProjectFilterBar = ({
       <div className="flex gap-4">
         <button
           className="p-2 rounded-md w-24 bg-gray-100"
-          onClick={handleRefetch}
+          onClick={() => {
+            setFilter(initialState);
+            handleRefetch();
+          }}
         >
           Refetch
         </button>
         <button
           className="p-2 rounded-md w-24 bg-blue-500 text-white"
-          onClick={handleFilter}
+          onClick={() => handleFilter(filter)}
         >
           Filter
         </button>
