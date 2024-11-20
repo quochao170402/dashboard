@@ -29,12 +29,10 @@ const ProjectFilterBar = ({ handleFilter, handleRefetch }: Props) => {
     <div className="flex gap-4 overflow-hidden p-2">
       <div className="grid grid-cols-3 flex-1 gap-4 items-center">
         <Input
-          type="text"
           placeholder="Keyword"
           value={filter.keyword}
           onChange={(e) => setFilter({ ...filter, keyword: e.target.value })}
         />
-
         <Select
           onChange={(e) => setFilter({ ...filter, type: e.target.value })}
           options={types.map((x) => ({ label: x, value: x }))}

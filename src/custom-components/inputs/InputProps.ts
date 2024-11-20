@@ -1,7 +1,7 @@
 import { ChangeEvent, InputHTMLAttributes } from "react";
 
-export default interface InputProps
+export interface InputProps<T extends string | number>
   extends InputHTMLAttributes<HTMLInputElement> {
-  value?: string;
+  value?: T;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
