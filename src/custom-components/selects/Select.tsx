@@ -1,29 +1,25 @@
-import { HTMLAttributes } from "react";
+import SelectProps from "./SelectProps";
 
-interface Props<T> extends HTMLAttributes<HTMLSelectElement> {
-  name?: string;
-  value?: string;
-  selected?: T;
-  defaultValue?: string;
-  className?: string;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  options: IOption<T>[];
-}
 const Select = <T extends string | number>({
   name,
   defaultValue,
   options,
   onChange,
+  placeholder,
   ...rest
-}: Props<T>) => {
+}: SelectProps<T>) => {
   return (
     <select
       className="flex-1 border appearance-none p-2 rounded-md"
       name={name}
-      defaultValue={defaultValue}
       onChange={onChange}
       {...rest}
     >
+      {placeholder && placeholder.length > 0 && (
+        <option key={"option-placeholder"} value={defaultValue} hidden>
+          {placeholder}
+        </option>
+      )}
       {options.map((x, index) => (
         <option key={`option-${x}${index}`} value={x.value}>
           {x.label}

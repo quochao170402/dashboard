@@ -1,9 +1,11 @@
+import { ReactNode } from "react";
+
 interface IPagination {
   current: number;
   totalPage: number;
 }
 
 interface IOption<T> {
-  label: string;
+  label: ReactNode;
   value: T;
 }

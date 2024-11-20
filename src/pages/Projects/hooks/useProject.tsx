@@ -1,3 +1,5 @@
+import { IPagination } from "@/@types/Common";
+import { ColumnProps } from "@/custom-components/table/TableProps";
 import { SquarePen, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import IUpsertProject, { IProjectFilter } from "../common/IUpsertProject";
@@ -56,7 +58,7 @@ const useProject = () => {
         pageSize * pagination.current
       )
     );
-  }, [pageSize, pagination.current, dummyData.length]);
+  }, [pageSize, pagination, dummyData]);
 
   const handleDelete = (data: IProject) => {
     setDummyData((prev) => prev.filter((item) => item.id !== data.id));
@@ -89,7 +91,7 @@ const useProject = () => {
     }
   };
 
-  const handleDoubleClick = (row: IProject, rowIndex: number) => {
+  const handleDoubleClick = (row: IProject, _rowIndex: number) => {
     setUpsertProjectData({
       ...upsertProjectData,
       visible: true,
@@ -108,10 +110,11 @@ const useProject = () => {
   };
 
   const handleRefetch = () => {
-    console.log("Refetch");
+    setPagination({ ...pagination, current: 1 });
   };
 
   const handleFilter = (filter: IProjectFilter) => {
+    console.log("🚀 ~ handleFilter ~ filter:", filter);
     let temp: IProject[] = dummyData;
 
     if (filter.keyword && filter.keyword.length > 0) {
@@ -132,10 +135,6 @@ const useProject = () => {
         pageSize * pagination.current
       )
     );
-    setPagination({
-      current: 1,
-      totalPage: Math.ceil(temp.length / pageSize),
-    });
   };
 
   const columns: Array<ColumnProps<IProject>> = [

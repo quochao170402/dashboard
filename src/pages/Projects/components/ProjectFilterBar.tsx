@@ -1,3 +1,5 @@
+import Input from "@/custom-components/inputs/Input";
+import Select from "@/custom-components/selects/Select";
 import { useState } from "react";
 import { IProjectFilter } from "../common/IUpsertProject";
 
@@ -25,44 +27,26 @@ const ProjectFilterBar = ({ handleFilter, handleRefetch }: Props) => {
   const [filter, setFilter] = useState<IProjectFilter>(initialState);
   return (
     <div className="flex gap-4 overflow-hidden p-2">
-      <div className="flex flex-1 gap-4 items-center">
-        <input
-          className="flex-1 border p-2"
+      <div className="grid grid-cols-3 flex-1 gap-4 items-center">
+        <Input
           type="text"
           placeholder="Keyword"
           value={filter.keyword}
           onChange={(e) => setFilter({ ...filter, keyword: e.target.value })}
         />
-        <select
-          className="flex-1 border appearance-none p-2"
-          name="Type"
+
+        <Select
           onChange={(e) => setFilter({ ...filter, type: e.target.value })}
+          options={types.map((x) => ({ label: x, value: x }))}
           value={filter.type}
-        >
-          <option disabled hidden value="">
-            -- Select Type --
-          </option>{" "}
-          {types.map((x) => (
-            <option key={`option-${x}`} value={x}>
-              {x}
-            </option>
-          ))}
-        </select>
-        <select
-          className="flex-1 border appearance-none p-2"
-          name="Category"
+          placeholder="Select Type"
+        ></Select>
+        <Select
           onChange={(e) => setFilter({ ...filter, category: e.target.value })}
+          options={categories.map((x) => ({ label: x, value: x }))}
           value={filter.category}
-        >
-          <option disabled hidden value="">
-            -- Select Category --
-          </option>{" "}
-          {categories.map((x) => (
-            <option key={`option-${x}`} value={x}>
-              {x}
-            </option>
-          ))}
-        </select>
+          placeholder="Select Category"
+        ></Select>
       </div>
       <div className="flex gap-4">
         <button

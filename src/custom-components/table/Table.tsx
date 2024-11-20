@@ -1,3 +1,5 @@
+import { TableProps } from "./TableProps";
+
 const Table = <T, K extends keyof T>({
   data,
   columns,

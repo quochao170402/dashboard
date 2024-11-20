@@ -54,47 +54,49 @@ const Pagination = ({ totalPage, currentPage, onPageChange }: Props) => {
 
   return (
     <>
-      <div className="h-10 flex justify-center gap-2 items-center">
-        <button
-          onClick={handleGoToPreviousPage}
-          disabled={currentPage === 1}
-          className="px-3 py-1 bg-none rounded-md"
-        >
-          <ChevronLeft size={27} />
-        </button>
+      {totalPage > 0 && (
+        <div className="h-10 flex justify-center gap-2 items-center">
+          <button
+            onClick={handleGoToPreviousPage}
+            disabled={currentPage === 1}
+            className="px-3 py-1 bg-none rounded-md"
+          >
+            <ChevronLeft size={27} />
+          </button>
 
-        {paginationItems.map((page, index) =>
-          typeof page === "number" ? (
-            <button
-              key={index}
-              onClick={() => onPageChange(page)}
-              className={`px-3 py-1 rounded-md bg-none border ${
-                currentPage === page
-                  ? "text-[#0c66e4] border-[#0c66e4]"
-                  : "hover:bg-gray-200 border-[#f0f8ff]"
-              }`}
-            >
-              {page}
-            </button>
-          ) : (
-            <button
-              key={index}
-              className="px-3 py-1 rounded-md bg-none cursor-default"
-              disabled
-            >
-              ...
-            </button>
-          )
-        )}
+          {paginationItems.map((page, index) =>
+            typeof page === "number" ? (
+              <button
+                key={index}
+                onClick={() => onPageChange(page)}
+                className={`px-3 py-1 rounded-md bg-none border ${
+                  currentPage === page
+                    ? "text-[#0c66e4] border-[#0c66e4]"
+                    : "hover:bg-gray-200 border-[#f0f8ff]"
+                }`}
+              >
+                {page}
+              </button>
+            ) : (
+              <button
+                key={index}
+                className="px-3 py-1 rounded-md bg-none cursor-default"
+                disabled
+              >
+                ...
+              </button>
+            )
+          )}
 
-        <button
-          onClick={handleGoToNextPage}
-          disabled={currentPage === totalPage}
-          className="px-3 py-1 bg-none rounded-md"
-        >
-          <ChevronRight size={27} />
-        </button>
-      </div>
+          <button
+            onClick={handleGoToNextPage}
+            disabled={currentPage === totalPage}
+            className="px-3 py-1 bg-none rounded-md"
+          >
+            <ChevronRight size={27} />
+          </button>
+        </div>
+      )}
     </>
   );
 };

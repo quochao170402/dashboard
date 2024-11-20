@@ -1,9 +1,16 @@
-import React from 'react'
+import InputProps from "./InputProps";
 
-const Input = () => {
+const Input = ({ value, onChange, className, ...rest }: InputProps) => {
   return (
-    <div>Input</div>
-  )
-}
+    <div>
+      <input
+        className={`${className} w-full h-full border p-2 rounded-md`}
+        value={value}
+        onChange={onChange}
+        {...rest}
+      />
+    </div>
+  );
+};
 
-export default Input
+export default Input;

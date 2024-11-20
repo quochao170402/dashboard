@@ -1,4 +1,4 @@
-interface TableProps<T, K extends keyof T = keyof T> {
+export interface TableProps<T, K extends keyof T = keyof T> {
   className?: string;
   data: Array<T>;
   columns: Array<ColumnProps<T, K>>;
@@ -7,7 +7,7 @@ interface TableProps<T, K extends keyof T = keyof T> {
   onDoubleClick?: (row: T, rowIndex: number) => void;
 }
 
-interface ColumnProps<T, K extends keyof T = keyof T> {
+export interface ColumnProps<T, K extends keyof T = keyof T> {
   key?: K;
   header: string;
   width?: number;
@@ -19,6 +19,6 @@ interface ColumnProps<T, K extends keyof T = keyof T> {
   align?: "left" | "right" | "center";
 }
 
-interface TableHeaderProps<T, K extends keyof T = keyof T> {
+export interface TableHeaderProps<T, K extends keyof T = keyof T> {
   columns: Array<ColumnProps<T, K>>;
 }

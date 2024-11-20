@@ -1,7 +1,8 @@
-import Select from "@/custom-components/inputs/selects/Select";
-import FileUploader from "@/custom-components/inputs/uploader/FileUploader";
+import { IOption } from "@/@types/Common";
 import Modal from "@/custom-components/modal/Modal";
+import Select from "@/custom-components/selects/Select";
 import Title from "@/custom-components/title/Title";
+import FileUploader from "@/custom-components/uploader/FileUploader";
 
 interface Props {
   visible: boolean;
@@ -84,7 +85,9 @@ const UpsertProjectModal = ({
                 options={types.map((x): IOption<string> => {
                   return { label: x, value: x };
                 })}
-              />
+                value={data?.type}
+                placeholder="Select Type"
+              ></Select>
             </div>
           </div>
           <div className="grid grid-flow-col grid-cols-2 items-center gap-4 w-full h-full">
@@ -98,6 +101,8 @@ const UpsertProjectModal = ({
                 options={categories.map((x): IOption<string> => {
                   return { label: x, value: x };
                 })}
+                value={data?.category}
+                placeholder="Select Category"
               />
               <input
                 disabled={!updatable}
