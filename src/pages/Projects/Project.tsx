@@ -70,6 +70,7 @@ const Project = () => {
           data={newProject ?? upsertProjectData.data}
           updatable={upsertProjectData.updatable}
           onSubmit={handleAdd}
+          setData={setNewProject}
         />
       </div>
     </div>

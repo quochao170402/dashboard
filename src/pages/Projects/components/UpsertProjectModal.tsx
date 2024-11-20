@@ -1,3 +1,4 @@
+import Select from "@/custom-components/inputs/selects/Select";
 import FileUploader from "@/custom-components/inputs/uploader/FileUploader";
 import Modal from "@/custom-components/modal/Modal";
 import Title from "@/custom-components/title/Title";
@@ -10,6 +11,14 @@ interface Props {
   updatable?: boolean;
   onSubmit?: VoidFunction;
 }
+const types = ["Type A", "Type B", "Type C", "Type D", "Type E"];
+const categories = [
+  "Category 1",
+  "Category 2",
+  "Category 3",
+  "Category 4",
+  "Category 5",
+];
 
 const UpsertProjectModal = ({
   visible,
@@ -68,31 +77,27 @@ const UpsertProjectModal = ({
                   setData && data && setData({ ...data, key: e.target.value })
                 }
               />
-              <input
-                disabled={!updatable}
-                placeholder="Type"
-                type="text"
-                className="p-2 border rounded-md"
-                value={data?.type}
+              <Select
                 onChange={(e) =>
                   setData && data && setData({ ...data, type: e.target.value })
                 }
+                options={types.map((x): IOption<string> => {
+                  return { label: x, value: x };
+                })}
               />
             </div>
           </div>
           <div className="grid grid-flow-col grid-cols-2 items-center gap-4 w-full h-full">
             <div className="grid grid-flow-row grid-rows-3 gap-4">
-              <input
-                disabled={!updatable}
-                placeholder="Category"
-                type="text"
-                className="p-2 border rounded-md"
-                value={data?.category}
+              <Select
                 onChange={(e) =>
                   setData &&
                   data &&
                   setData({ ...data, category: e.target.value })
                 }
+                options={categories.map((x): IOption<string> => {
+                  return { label: x, value: x };
+                })}
               />
               <input
                 disabled={!updatable}

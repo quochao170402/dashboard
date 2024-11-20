@@ -1,9 +1,9 @@
-interface Pagination {
+interface IPagination {
   current: number;
   totalPage: number;
 }
 
-interface Option {
+interface IOption<T> {
   label: string;
-  value: string;
+  value: T;
 }

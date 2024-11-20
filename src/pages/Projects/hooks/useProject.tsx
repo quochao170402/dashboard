@@ -35,7 +35,7 @@ const useProject = () => {
     data: undefined,
   } as IUpsertProject);
 
-  const [pagination, setPagination] = useState<Pagination>({
+  const [pagination, setPagination] = useState<IPagination>({
     current: 1,
     totalPage: Math.ceil(dummyData.length / defaultPageSize),
   });
@@ -75,9 +75,11 @@ const useProject = () => {
   };
 
   const handleAdd = () => {
-    console.log("🚀 ~ handleAdd ~ newProject:", newProject);
-    if (newProject) {
-      setDummyData((prev) => [...prev, newProject]);
+    if (newProject && newProject.name) {
+      newProject.category ??= "Category 1";
+      newProject.type ??= "Type A";
+      setDummyData((prev) => [newProject, ...prev]);
+      setUpsertProjectData({ ...upsertProjectData, visible: false });
     }
   };
 
