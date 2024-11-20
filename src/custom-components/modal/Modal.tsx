@@ -10,7 +10,7 @@ interface Props {
   type?: "form" | "confirm" | "notification";
   isShowSubmitButton?: boolean;
   onClose: () => void;
-  onSubmit?: (data?: any) => void;
+  onSubmit?: VoidFunction;
 }
 const Modal = ({
   title,

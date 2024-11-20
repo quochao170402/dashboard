@@ -44,6 +44,8 @@ const useProject = () => {
     dummyData.slice(0, defaultPageSize)
   );
 
+  const [newProject, setNewProject] = useState<IProject>();
+
   useEffect(() => {
     setPagination({
       current: 1,
@@ -72,8 +74,11 @@ const useProject = () => {
     });
   };
 
-  const handleAdd = (data: IProject) => {
-    setDummyData((prev) => [...prev, data]);
+  const handleAdd = () => {
+    console.log("🚀 ~ handleAdd ~ newProject:", newProject);
+    if (newProject) {
+      setDummyData((prev) => [...prev, newProject]);
+    }
   };
 
   const handlePageChange = (page: number) => {
@@ -187,8 +192,10 @@ const useProject = () => {
     columns,
     data,
     upsertProjectData,
+    newProject,
     filter,
     setFilter,
+    setNewProject,
     handleToggleModal,
     handlePageChange,
     handleChangePageSize,

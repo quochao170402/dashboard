@@ -6,13 +6,15 @@ interface Props {
   visible: boolean;
   onClose: () => void;
   data?: IProject;
+  setData?: (data: IProject) => void;
   updatable?: boolean;
-  onSubmit?: Function;
+  onSubmit?: VoidFunction;
 }
 
 const UpsertProjectModal = ({
   visible,
   data,
+  setData,
   onClose,
   updatable = true,
   onSubmit,
@@ -52,6 +54,9 @@ const UpsertProjectModal = ({
                 type="text"
                 className="p-2 border rounded-md"
                 value={data?.name}
+                onChange={(e) =>
+                  setData && data && setData({ ...data, name: e.target.value })
+                }
               />
               <input
                 disabled={!updatable}
@@ -59,6 +64,9 @@ const UpsertProjectModal = ({
                 type="text"
                 className="p-2 border rounded-md"
                 value={data?.key}
+                onChange={(e) =>
+                  setData && data && setData({ ...data, key: e.target.value })
+                }
               />
               <input
                 disabled={!updatable}
@@ -66,6 +74,9 @@ const UpsertProjectModal = ({
                 type="text"
                 className="p-2 border rounded-md"
                 value={data?.type}
+                onChange={(e) =>
+                  setData && data && setData({ ...data, type: e.target.value })
+                }
               />
             </div>
           </div>
@@ -77,6 +88,11 @@ const UpsertProjectModal = ({
                 type="text"
                 className="p-2 border rounded-md"
                 value={data?.category}
+                onChange={(e) =>
+                  setData &&
+                  data &&
+                  setData({ ...data, category: e.target.value })
+                }
               />
               <input
                 disabled={!updatable}
@@ -84,6 +100,9 @@ const UpsertProjectModal = ({
                 type="text"
                 className="p-2 border rounded-md"
                 value={data?.lead}
+                onChange={(e) =>
+                  setData && data && setData({ ...data, lead: e.target.value })
+                }
               />
               <input
                 disabled={!updatable}
@@ -91,6 +110,9 @@ const UpsertProjectModal = ({
                 type="text"
                 className="p-2 border rounded-md"
                 value={data?.url}
+                onChange={(e) =>
+                  setData && data && setData({ ...data, url: e.target.value })
+                }
               />
             </div>
             <textarea
@@ -98,6 +120,11 @@ const UpsertProjectModal = ({
               className="h-full p-2 w-full border rounded-md placeholder-gray-400"
               placeholder="Description..."
               value={data?.description}
+              onChange={(e) =>
+                setData &&
+                data &&
+                setData({ ...data, description: e.target.value })
+              }
             />
           </div>
         </div>

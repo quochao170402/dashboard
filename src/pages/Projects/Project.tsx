@@ -12,7 +12,9 @@ const Project = () => {
     columns,
     data,
     filter,
+    newProject,
     setFilter,
+    setNewProject,
     handleAdd,
     upsertProjectData,
     handleToggleModal,
@@ -30,6 +32,7 @@ const Project = () => {
         <button
           className="py-2 px-4 rounded-md bg-green-500 text-white w-24"
           onClick={() => {
+            setNewProject({} as IProject);
             handleToggleModal(true);
           }}
         >
@@ -64,7 +67,7 @@ const Project = () => {
         <UpsertProjectModal
           visible={upsertProjectData.visible}
           onClose={() => handleToggleModal(false)}
-          data={upsertProjectData.data}
+          data={newProject ?? upsertProjectData.data}
           updatable={upsertProjectData.updatable}
           onSubmit={handleAdd}
         />
