@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useToast } from "@/contexts/ToastContext";
+import useToast from "@/hooks/useToast";
 import ToastMessage from "./ToastMessage";
 const ToastContainer: React.FC = () => {
   const { toastMessages } = useToast();

@@ -1,4 +1,4 @@
-import { useToast } from "@/contexts/ToastContext";
+import useToast from "@/hooks/useToast";
 import { CircleAlert, CircleCheck, CircleX, TriangleAlert } from "lucide-react";
 import { ReactNode, useEffect, useState } from "react";
 import { ToastProps } from "./ToastProps";
