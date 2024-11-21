@@ -1,3 +1,4 @@
+import NoData from "@/custom-components/no-data/NoData";
 import Pagination from "@/custom-components/pagination/Pagination";
 import SizeChanger from "@/custom-components/sizeChanger/SizeChanger";
 import Table from "@/custom-components/table/Table";
@@ -43,22 +44,26 @@ const Project = () => {
           handleRefetch={handleRefetch}
         />
       </div>
-      <div>
-        <Table
-          border={false}
-          data={data}
-          columns={columns}
-          onDoubleClick={handleDoubleClick}
-        />
-        <div className="my-4 flex items-center justify-between">
-          <SizeChanger visible={false} onChange={handleChangePageSize} />
-          <Pagination
-            totalPage={pagination.totalPage}
-            currentPage={pagination.current}
-            onPageChange={handlePageChange}
+      {data.length > 0 ? (
+        <div>
+          <Table
+            border={false}
+            data={data}
+            columns={columns}
+            onDoubleClick={handleDoubleClick}
           />
+          <div className="my-4 flex items-center justify-between">
+            <SizeChanger visible={false} onChange={handleChangePageSize} />
+            <Pagination
+              totalPage={pagination.totalPage}
+              currentPage={pagination.current}
+              onPageChange={handlePageChange}
+            />
+          </div>
         </div>
-      </div>
+      ) : (
+        <NoData />
+      )}
       <div>
         <UpsertProjectModal
           visible={upsertProjectData.visible}

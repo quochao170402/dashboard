@@ -1,4 +1,5 @@
 import { IOption } from "@/@types/Common";
+import Input from "@/custom-components/inputs/Input";
 import Modal from "@/custom-components/modal/Modal";
 import Select from "@/custom-components/selects/Select";
 import Title from "@/custom-components/title/Title";
@@ -58,7 +59,7 @@ const UpsertProjectModal = ({
             </div>
 
             <div className="grid grid-flow-row grid-rows-3 gap-4">
-              <input
+              <Input
                 disabled={!updatable}
                 placeholder="Name"
                 type="text"
@@ -68,7 +69,7 @@ const UpsertProjectModal = ({
                   setData && data && setData({ ...data, name: e.target.value })
                 }
               />
-              <input
+              <Input
                 disabled={!updatable}
                 placeholder="Key"
                 type="text"
@@ -104,7 +105,7 @@ const UpsertProjectModal = ({
                 value={data?.category}
                 placeholder="Select Category"
               />
-              <input
+              <Input
                 disabled={!updatable}
                 placeholder="Lead"
                 type="text"
@@ -114,7 +115,7 @@ const UpsertProjectModal = ({
                   setData && data && setData({ ...data, lead: e.target.value })
                 }
               />
-              <input
+              <Input
                 disabled={!updatable}
                 placeholder="URL"
                 type="text"
