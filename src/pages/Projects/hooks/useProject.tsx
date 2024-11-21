@@ -1,4 +1,5 @@
 import { IPagination } from "@/@types/Common";
+import { useToast } from "@/contexts/ToastContext";
 import { ColumnProps } from "@/custom-components/table/TableProps";
 import { SquarePen, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -23,6 +24,7 @@ const generateRecords = () => {
 const defaultPageSize = 5;
 
 const useProject = () => {
+  const { toast } = useToast();
   const [dummyData, setDummyData] = useState<IProject[]>(generateRecords());
 
   const [pageSize, setPageSize] = useState(defaultPageSize);
@@ -62,6 +64,7 @@ const useProject = () => {
 
   const handleDelete = (data: IProject) => {
     setDummyData((prev) => prev.filter((item) => item.id !== data.id));
+    toast.success("Delete project successful");
   };
 
   const handleUpdate = (data: IProject) => {
@@ -70,6 +73,7 @@ const useProject = () => {
       visible: true,
       data: data,
     });
+    toast.success("Update project successful");
   };
 
   const handleAdd = () => {
@@ -79,6 +83,7 @@ const useProject = () => {
       setDummyData((prev) => [newProject, ...prev]);
       setUpsertProjectData({ ...upsertProjectData, visible: false });
     }
+    toast.success("Create project successful");
   };
 
   const handlePageChange = (page: number) => {

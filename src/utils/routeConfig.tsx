@@ -11,52 +11,6 @@ import { Project } from "@/pages/Projects";
 import { Task } from "@/pages/Tasks";
 import User from "@/pages/Users/User";
 
-// export const routes: Route[] = [
-//   {
-//     path: "/dashboard",
-//     name: "Dashboard",
-//     component: <Dashboard />,
-//     children: [
-//       {
-//         path: "/dashboard/overview",
-//         name: "Overview",
-//         component: <Dashboard />,
-//       },
-//       {
-//         path: "/dashboard/calendar",
-//         name: "Calendar",
-//         component: <Dashboard />,
-//       },
-//     ],
-//   },
-//   {
-//     path: "/projects",
-//     name: "Projects",
-//     component: <Project />,
-//     children: [
-//       {
-//         path: "/projects/list",
-//         name: "Project Home",
-//         component: <Project />,
-//       },
-//       {
-//         path: "/projects/tasks",
-//         name: "Tasks",
-//         component: <Task />,
-//       },
-//       {
-//         path: "/projects/notifications",
-//         name: "Notifications",
-//         component: <Project />,
-//       },
-//     ],
-//   },
-//   { path: "/tasks", name: "Tasks", component: <Task /> },
-//   { path: "/users", name: "User", component: <Task /> },
-//   { path: "/settings", name: "Setting", component: <Task /> },
-//   { path: "/support", name: "Support", component: <Task /> },
-// ];
-
 export const menuItems: MenuItemType[] = [
   {
     icon: (props) => <OverviewIcon size={24} filled={props.filled} />,
@@ -117,13 +71,6 @@ export const routes: Route[] = [
     label: "Projects",
     path: "/projects",
     component: <Project />,
-    // children: [
-    //   {
-    //     label: "Add new Project",
-    //     path: "addProject",
-    //     component: <UpsertProject />,
-    //   },
-    // ],
   },
   {
     label: "Users",
