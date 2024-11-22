@@ -6,7 +6,7 @@ interface Props {
 const Title = ({ className, title }: Props) => {
   return (
     <h2
-      className={`font-bold text-gray-900 text-2xl/7 sm:truncate sm:text-3xl sm:tracking-tight ${className}`}
+      className={`font-bold text-gray-900 text-2xl sm:truncate sm:tracking-tight ${className}`}
     >
       {title}
     </h2>

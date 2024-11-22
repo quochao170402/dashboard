@@ -1,17 +1,16 @@
-import useTheme from "@/hooks/useTheme";
+import { useState } from "react";
+import Header from "./components/Header";
+
+export type ViewType = "backlog" | "board" | "list";
 
 const Task = () => {
-  const { theme, setTheme } = useTheme();
-
-  const handleClick = () => {
-    console.log("object :>> ", theme === "light" ? "dark" : "light");
-    setTheme(theme === "light" ? "dark" : "light");
-  };
+  const [view, setView] = useState<ViewType>("backlog");
   return (
-    <div className="w-full h-full flex flex-col gap-4 items-end">
-      <button className="p-2 rounded-md w-24 bg-gray-100" onClick={handleClick}>
-        Toggle theme: {theme}
-      </button>
+    <div>
+      <div className="mb-3 border-b ">
+        <Header view={view} onChangeView={setView} />
+      </div>
+      <div>{view}</div>
     </div>
   );
 };

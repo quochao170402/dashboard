@@ -82,7 +82,7 @@
 }
 
 html * {
-  font-size: 18px;
+  font-size: 16px;
 }
 /* Hide number input spinner buttons for Chrome, Edge, and Safari */
 input[type="number"]::-webkit-inner-spin-button,

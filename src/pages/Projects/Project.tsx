@@ -26,8 +26,8 @@ const Project = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between px-2">
-        <Title className="mb-4" title={"Project"} />
+      <div className="flex items-center justify-between px-2 pb-2 border-b">
+        <Title title={"Project"} />
         <button
           className="py-2 px-4 rounded-md bg-green-500 text-white w-24"
           onClick={() => {

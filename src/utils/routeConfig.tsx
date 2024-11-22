@@ -1,5 +1,4 @@
 import { MenuItemType, Route } from "@/@types/MenuItem";
-import AnnouncementIcon from "@/assets/icons/AnnouncementIcon";
 import ChatIcon from "@/assets/icons/ChatIcon";
 import OverviewIcon from "@/assets/icons/OverviewIcon";
 import ProjectIcon from "@/assets/icons/ProjectIcon";
@@ -43,12 +42,6 @@ export const menuItems: MenuItemType[] = [
     component: <User />,
   },
   {
-    icon: (props) => <AnnouncementIcon size={24} filled={props.filled} />,
-    label: "Announcements",
-    path: "/announcements",
-    component: <Dashboard />,
-  },
-  {
     icon: (props) => <SettingIcon size={24} filled={props.filled} />,
     label: "Settings",
     path: "/settings",
@@ -81,11 +74,6 @@ export const routes: Route[] = [
     label: "Chat",
     path: "/chat",
     component: <User />,
-  },
-  {
-    label: "Announcements",
-    path: "/announcements",
-    component: <Dashboard />,
   },
   {
     label: "Settings",
