@@ -8,19 +8,28 @@ interface Props {
   onChangeView: (view: ViewType) => void;
 }
 
-const Header = ({ onChangeView }: Props) => {
+const Header = ({ view, onChangeView }: Props) => {
   return (
     <div className="flex items-center justify-between">
       <Title title={"Tasks"} />
       <div className="flex items-center gap-4">
         <Tooltip text={"Backlog"}>
-          <Columns3 onClick={() => onChangeView("backlog")} />
+          <Columns3
+            className={`${view === "backlog" ? "text-[#0c66e4]" : ""}`}
+            onClick={() => onChangeView("backlog")}
+          />
         </Tooltip>
         <Tooltip text={"Board"}>
-          <SquareKanban onClick={() => onChangeView("board")} />
+          <SquareKanban
+            className={`${view === "board" ? "text-[#0c66e4]" : ""}`}
+            onClick={() => onChangeView("board")}
+          />
         </Tooltip>
         <Tooltip text={"List"}>
-          <List onClick={() => onChangeView("list")} />
+          <List
+            className={`${view === "list" ? "text-[#0c66e4]" : ""}`}
+            onClick={() => onChangeView("list")}
+          />
         </Tooltip>
       </div>
     </div>
