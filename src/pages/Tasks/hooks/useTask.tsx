@@ -1,8 +1,32 @@
-import ITask from "@/@types/Task";
+import { TaskStatus } from "@/@types/Enums";
+import { faker } from "@faker-js/faker";
 import { useState } from "react";
 
+const generateDummyTask = (): ITask => ({
+  id: faker.string.uuid(),
+  name: faker.lorem.words(3),
+  type: faker.helpers.arrayElement(["Story", "Task", "SubTask"]),
+  key: faker.string.alphanumeric(4).toUpperCase(),
+  summary: faker.lorem.sentence(),
+  status: faker.helpers.arrayElement(Object.values(TaskStatus)),
+  priority: faker.number.int({ min: 1, max: 5 }),
+  dueDate: faker.date.future(),
+  assignee: faker.name.fullName(),
+  reporter: faker.name.fullName(),
+  project: faker.commerce.department(),
+  createdAt: faker.date.past(),
+  updatedAt: faker.date.recent(),
+  parent: faker.datatype.boolean() ? faker.string.uuid() : "",
+  team: faker.datatype.boolean() ? faker.company.name() : "",
+  sprint: `Sprint ${faker.number.int({ min: 1, max: 5 })}`,
+});
+
+const generateDummyTasks = (count: number): ITask[] => {
+  return Array.from({ length: count }, generateDummyTask);
+};
 const useTask = () => {
-  const [tasks, setTasks] = useState<ITask[]>([]);
+  const [tasks, setTasks] = useState<ITask[]>(generateDummyTasks(40));
+
   return {
     tasks,
   };

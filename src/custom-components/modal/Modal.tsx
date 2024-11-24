@@ -87,8 +87,12 @@ const Modal = ({
         >
           <div
             ref={modalRef}
-            className={`flex flex-col rounded-lg shadow-lg bg-white ${className}`}
-            style={{ width: width ?? "700px", height: height ?? "500px" }}
+            className={`flex flex-col rounded-lg shadow-lg bg-white ${className} max-h-[600px] h-fit overflow-hidden`}
+            style={{
+              width: width ?? "700px",
+              maxHeight: height ?? "90vh",
+              overflow: "hidden", // Prevent modal scrolling
+            }}
             hidden={!visible}
           >
             {title && (
@@ -97,7 +101,7 @@ const Modal = ({
               </div>
             )}
             <div className="flex-grow overflow-y-auto p-4">{children}</div>
-            <div className="flex justify-end items-center p-4 gap-2">
+            <div className="flex justify-end items-center px-4 pb-4 gap-2">
               <button
                 className="bg-red-500 py-2 px-4 rounded-lg shadow-lg active:bg-gray-200 text-white"
                 onClick={onClose}

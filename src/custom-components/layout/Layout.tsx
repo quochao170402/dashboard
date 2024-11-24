@@ -28,7 +28,7 @@ const Layout = ({ children }: Props) => {
         </div>
 
         <div
-          className={`duration-300 transition-width flex flex-col flex-grow h-full px-6 overflow-scroll ${
+          className={`duration-300 transition-width flex flex-col flex-grow h-full px-6 ${
             isExpanded ? "w-[calc(100%-240px)]" : "w-[calc(100%-60px)]"
           }`}
         >
