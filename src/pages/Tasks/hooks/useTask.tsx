@@ -11,14 +11,14 @@ const generateDummyTask = (): ITask => ({
   status: faker.helpers.arrayElement(Object.values(TaskStatus)),
   priority: faker.number.int({ min: 1, max: 5 }),
   dueDate: faker.date.future(),
-  assignee: faker.name.fullName(),
-  reporter: faker.name.fullName(),
-  project: faker.commerce.department(),
+  assigneeId: faker.name.fullName(),
+  reporterId: faker.name.fullName(),
+  projectId: faker.commerce.department(),
   createdAt: faker.date.past(),
   updatedAt: faker.date.recent(),
   parent: faker.datatype.boolean() ? faker.string.uuid() : "",
-  team: faker.datatype.boolean() ? faker.company.name() : "",
-  sprint: `Sprint ${faker.number.int({ min: 1, max: 5 })}`,
+  teamId: faker.datatype.boolean() ? faker.company.name() : "",
+  sprintId: `Sprint ${faker.number.int({ min: 1, max: 5 })}`,
 });
 
 const generateDummyTasks = (count: number): ITask[] => {
