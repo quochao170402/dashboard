@@ -30,6 +30,7 @@ const Task = () => {
         {activeTask && (
           <TaskModal
             data={activeTask}
+            onChangeTask={setActiveTask}
             visible={true}
             onClose={() => setActiveTask(undefined)}
           />

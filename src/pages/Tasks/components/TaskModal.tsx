@@ -1,13 +1,16 @@
+import Editor from "@/custom-components/editor/Editor";
 import Modal from "@/custom-components/modal/Modal";
+import TaskComment from "./taskComment/TaskComment";
 import TaskProperty from "./taskDetail/TaskProperty";
 
 interface Props {
   data: ITask;
   visible: boolean;
+  onChangeTask: (task: ITask) => void;
   onClose: () => void;
 }
 
-const TaskModal = ({ data, visible, onClose }: Props) => {
+const TaskModal = ({ data, visible, onClose, onChangeTask }: Props) => {
   return (
     <Modal visible={visible} onClose={onClose} width={1000}>
       <div className="w-full h-full">
@@ -15,24 +18,29 @@ const TaskModal = ({ data, visible, onClose }: Props) => {
         <div className="grid grid-cols-12 h-[calc(90vh-150px)]">
           <div className="col-span-8 mr-4 overflow-y-auto">
             <span className="text-2xl font-semibold">{data.summary}</span>
-            <div className="bg-primary w-full min-h-64 mt-4">
-              {/* TODO: Implement CkEditor */}
+            <div className="w-full mt-4 flex flex-col gap-2">
+              <label htmlFor="description">Description</label>
               {data.description && data.description.length > 0 ? (
-                <p>{data.description}</p>
+                <div dangerouslySetInnerHTML={{ __html: data.description }} />
               ) : (
-                <div>
-                  <label htmlFor="description">Description</label>
-                  <textarea id="description" className="w-full h-full" rows={8}>
-                    {data.description}
-                  </textarea>
-                </div>
+                <Editor
+                  value={data.description ?? ""}
+                  onChange={(value) =>
+                    onChangeTask({ ...data, description: value })
+                  }
+                />
               )}
             </div>
-            <div>{/* Comments */}</div>
+            <div className="mt-4">
+              <h1 className="uppercase font-semibold text-lg">Comment</h1>
+              <div>
+                <TaskComment comments={data.comments ?? []} />
+              </div>
+            </div>
           </div>
 
           <div className="col-span-4 overflow-y-auto">
-            <TaskProperty data={data} />
+            <TaskProperty data={data} onChangeTask={onChangeTask} />
           </div>
         </div>
       </div>

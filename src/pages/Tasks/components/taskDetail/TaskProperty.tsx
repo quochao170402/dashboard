@@ -1,86 +1,96 @@
-import { Button } from "@/custom-components/button";
+import { TaskStatus } from "@/@types/Enums";
 import Input from "@/custom-components/inputs/Input";
-import { User } from "lucide-react";
+import { Select } from "@/custom-components/selects";
 
 interface Props {
   data: ITask;
+  onChangeTask: (task: ITask) => void;
 }
 
-const TaskProperty = ({ data }: Props) => {
+const TaskProperty = ({ data, onChangeTask }: Props) => {
+  const statuses: string[] = Object.values(TaskStatus);
+  const priorities: string[] = ["1", "2", "3", "4", "5"];
   return (
     <div className="p-2 flex flex-col gap-4">
       <div>
-        <Button
-          icon={<User />}
-          label={"Review"}
-          variant={"primary"}
-          size="md"
-          onClick={() => console.log("Button")}
+        <Select
+          className="outline-none"
+          value={data?.status}
+          options={statuses.map((status) => ({
+            label: status,
+            value: status,
+          }))}
+          onChange={(e) =>
+            onChangeTask({ ...data, status: e.target.value as TaskStatus })
+          }
         />
       </div>
-      <div className="flex flex-col gap-4">
-        <div className="mr-4">
+      <div className="flex flex-col gap-5">
+        <div className="mr-4 flex flex-col gap-2">
           <label htmlFor="Assignee">Assignee</label>
           <Input
-            value={data.assigneeId}
+            value={data?.assigneeId}
             id="Assignee"
-            onChange={(e) => console.log("Assignee", e.target.value)}
+            onChange={(e) =>
+              onChangeTask({ ...data, assigneeId: e.target.value })
+            }
           />
         </div>
-        <div className="mr-4">
+        <div className="mr-4 flex flex-col gap-2">
           <label htmlFor="Reporter">Reporter</label>
           <Input
-            value={data.reporterId}
+            value={data?.reporterId}
             id="Reporter"
-            onChange={(e) => console.log("Reporter", e.target.value)}
+            onChange={(e) =>
+              onChangeTask({ ...data, reporterId: e.target.value })
+            }
           />
         </div>
-        <div className="mr-4">
-          <label htmlFor="Status">Status</label>
-          <Input
-            value={data.status}
-            id="Status"
-            onChange={(e) => console.log("Status", e.target.value)}
-          />
-        </div>
-        <div className="mr-4">
+        <div className="mr-4 flex flex-col gap-2">
           <label htmlFor="Label">Label</label>
           <Input
-            value={data.label}
+            value={data?.label}
             id="Label"
-            onChange={(e) => console.log("Label", e.target.value)}
+            onChange={(e) => onChangeTask({ ...data, label: e.target.value })}
           />
         </div>
-        <div className="mr-4">
+        <div className="mr-4 flex flex-col gap-2">
           <label htmlFor="Key">Key</label>
-          <Input
-            value={data.key}
-            id="Key"
-            onChange={(e) => console.log("Key", e.target.value)}
-          />
+          <Input value={data?.key} id="Key" />
         </div>
-        <div className="mr-4">
+        <div className="mr-4 flex flex-col gap-2">
           <label htmlFor="Epic">Epic</label>
           <Input
-            value={data.epicId}
+            value={data?.epicId}
             id="Epic"
-            onChange={(e) => console.log("Epic", e.target.value)}
+            onChange={(e) => onChangeTask({ ...data, epicId: e.target.value })}
           />
         </div>
-        <div className="mr-4">
+        <div className="mr-4 flex flex-col gap-2">
           <label htmlFor="Sprint">Sprint</label>
           <Input
-            value={data.sprintId}
+            value={data?.sprintId}
             id="Sprint"
-            onChange={(e) => console.log("Sprint", e.target.value)}
+            onChange={(e) =>
+              onChangeTask({ ...data, sprintId: e.target.value })
+            }
           />
         </div>
-        <div className="mr-4">
-          <label htmlFor="Priority">Priority</label>
-          <Input
-            value={data.priority}
+        <div className="mr-4 flex items-center gap-2">
+          <label htmlFor="Priority" className="mr-2">
+            Priority
+          </label>
+          <Select
             id="Priority"
-            onChange={(e) => console.log("Priority", e.target.value)}
+            className="outline-none min-w-10 max-w-10"
+            value={data?.priority?.toString()}
+            options={priorities.map((priority) => ({
+              label: priority,
+              value: priority,
+            }))}
+            onChange={(e) =>
+              onChangeTask({ ...data, priority: +e.target.value })
+            }
           />
         </div>
       </div>

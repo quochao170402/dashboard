@@ -1,6 +1,6 @@
 import { TaskStatus } from "@/@types/Enums";
-import Stage from "@/pages/Tasks/components/board/components/Stage";
-import useTask from "../Tasks/hooks/useTask";
+import Editor from "@/custom-components/editor/Editor";
+import { useState } from "react";
 
 const stageNames: Record<TaskStatus, string> = {
   [TaskStatus.TODO]: "To Do",
@@ -11,17 +11,11 @@ const stageNames: Record<TaskStatus, string> = {
 };
 
 const Dashboard = () => {
-  const { tasks } = useTask();
-  const stages = Array.from(Object.values(TaskStatus), (status) => status);
- 
+  const [value, setValue] = useState<string>("");
+
   return (
-    <div className="flex gap-4 w-fit pr-4">
-      {stages.map((stage) => (
-        <Stage
-          tasks={tasks.filter((x) => x.status === stage)}
-          title={stageNames[stage]}
-        />
-      ))}
+    <div className="flex w-full h-full">
+      <Editor value={value} onChange={setValue} />
     </div>
   );
 };
