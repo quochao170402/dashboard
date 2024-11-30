@@ -16,7 +16,7 @@ const CommentItem = ({ data }: Props) => {
               height={32}
               className="rounded-full"
             />
-            <span className="font-semibold">{data.userId}</span>
+            <span className="font-semibold">{data.user?.name ?? "User"}</span>
           </div>
           {/* Datetime */}
           <div>
@@ -25,10 +25,11 @@ const CommentItem = ({ data }: Props) => {
             </span>
           </div>
         </div>
-<hr />
+        <hr />
         {/* Content */}
         <div className="ml-2 p-2 text-lg flex items-center justify-between gap-2">
-          <p>{data.content}</p>
+          <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
+          {/* <p>{data.content}</p> */}
         </div>
         {/* Actions */}
         {/* <div className={`flex items-center gap-6`}></div> */}

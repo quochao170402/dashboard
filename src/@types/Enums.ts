@@ -5,3 +5,9 @@ export enum TaskStatus {
   RELEASE = "RELEASE",
   DONE = "DONE",
 }
+
+export enum UserRole {
+  Admin = "Admin",
+  Manager = "Manager",
+  User = "User",
+}

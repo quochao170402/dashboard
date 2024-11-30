@@ -27,6 +27,7 @@ interface IComment {
   createdAt: Date;
   updatedAt: Date;
   userId: string;
+  user?: IUser;
   taskId: string;
-  children?: IComment[];
+  task?: ITask;
 }

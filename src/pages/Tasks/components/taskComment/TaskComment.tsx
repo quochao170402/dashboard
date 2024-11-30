@@ -1,3 +1,4 @@
+import { UserRole } from "@/@types/Enums";
 import Editor from "@/custom-components/editor/Editor";
 import CommentItem from "./CommentItem";
 
@@ -7,10 +8,18 @@ interface Props {
 const generateRandomId = (): string =>
   Math.random().toString(36).substring(2, 10);
 
-const generateDummyComments = (
-  count: number,
-  depth: number = 0
-): IComment[] => {
+// Generate dummy data for IUser
+const generateDummyUser = (): IUser => ({
+  id: generateRandomId(),
+  name: `User ${generateRandomId()}`,
+  email: `${generateRandomId()}@example.com`,
+  role: UserRole.User,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  isActive: false,
+});
+
+const generateDummyComments = (count: number): IComment[] => {
   const comments: IComment[] = [];
 
   for (let i = 0; i < count; i++) {
@@ -20,20 +29,13 @@ const generateDummyComments = (
 
     const comment: IComment = {
       id: id,
-      content: `This is comment ${i + 1}${
-        depth > 0 ? ` (Reply Level ${depth})` : ""
-      }`,
+      content: `This is comment This is comment This is comment This is commentThis is commentThis is comment ${i + 1}`,
       createdAt: createdAt,
       updatedAt: updatedAt,
       userId: `user-${generateRandomId()}`,
       taskId: `task-${generateRandomId()}`,
+      user: generateDummyUser(),
     };
-
-    // Add nested comments (replies) if depth is specified
-    if (depth > 0) {
-      const childCount = Math.floor(Math.random() * 3); // Random number of children (0 to 2)
-      comment.children = generateDummyComments(childCount, depth - 1);
-    }
 
     comments.push(comment);
   }
@@ -43,6 +45,7 @@ const generateDummyComments = (
 
 const TaskComment = ({ comments }: Props) => {
   const dummyData: IComment[] = generateDummyComments(Math.random() * 10);
+
   return (
     <>
       <div className="w-full h-fit flex flex-col">
@@ -72,7 +75,7 @@ const TaskComment = ({ comments }: Props) => {
         <div className="w-full h-fit">
           <>
             {dummyData.map((x) => (
-              <CommentItem data={x} />
+              <CommentItem key={x.id} data={x} />
             ))}
           </>
         </div>
