@@ -28,4 +28,5 @@ interface IComment {
   updatedAt: Date;
   userId: string;
   taskId: string;
+  children?: IComment[];
 }

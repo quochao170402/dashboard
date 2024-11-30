@@ -11,7 +11,7 @@ const TaskProperty = ({ data, onChangeTask }: Props) => {
   const statuses: string[] = Object.values(TaskStatus);
   const priorities: string[] = ["1", "2", "3", "4", "5"];
   return (
-    <div className="p-2 flex flex-col gap-4">
+    <div className="p-2 flex flex-col gap-4 no-scrollbar">
       <div>
         <Select
           className="outline-none"

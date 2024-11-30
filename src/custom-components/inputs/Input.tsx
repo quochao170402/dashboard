@@ -6,13 +6,13 @@ const Input = <T extends string | number>({
   ...rest
 }: InputProps<T>) => {
   return (
-    <div>
+    <>
       <input
         className={`${className} w-full h-full border p-2 rounded-md`}
         value={value}
         {...rest}
       />
-    </div>
+    </>
   );
 };
 
