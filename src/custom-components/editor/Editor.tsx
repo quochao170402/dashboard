@@ -81,10 +81,10 @@ import EditorProps from "./EditorProps";
 import "./index.css";
 
 export default function Editor({ value, onChange }: EditorProps) {
-  const editorContainerRef = useRef(null);
-  const editorMenuBarRef = useRef(null);
-  const editorToolbarRef = useRef(null);
-  const editorRef = useRef(null);
+  const editorContainerRef = useRef<HTMLDivElement | null>(null);
+  const editorMenuBarRef = useRef<HTMLDivElement | null>(null);
+  const editorToolbarRef = useRef<HTMLDivElement | null>(null);
+  const editorRef = useRef<HTMLDivElement | null>(null);
   const [isLayoutReady, setIsLayoutReady] = useState(false);
 
   useEffect(() => {
@@ -386,6 +386,7 @@ export default function Editor({ value, onChange }: EditorProps) {
       ],
     },
   };
+  
 
   return (
     <Fragment>
@@ -408,22 +409,22 @@ export default function Editor({ value, onChange }: EditorProps) {
                 {isLayoutReady && (
                   <CKEditor
                     data={value}
-                    onChange={(e, editor) => {
+                    onChange={(_e, editor) => {
                       onChange(editor.getData());
                     }}
                     onReady={(editor) => {
-                      editorToolbarRef.current.appendChild(
-                        editor.ui.view.toolbar.element
+                      editorToolbarRef.current?.appendChild(
+                        editor.ui.view.toolbar.element!
                       );
                       // editorMenuBarRef.current.appendChild(
                       //   editor.ui.view.menuBarView.element
                       // );
                     }}
                     onAfterDestroy={() => {
-                      Array.from(editorToolbarRef.current.children).forEach(
+                      Array.from(editorToolbarRef.current!.children).forEach(
                         (child) => child.remove()
                       );
-                      Array.from(editorMenuBarRef.current.children).forEach(
+                      Array.from(editorMenuBarRef.current!.children).forEach(
                         (child) => child.remove()
                       );
                     }}

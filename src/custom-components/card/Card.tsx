@@ -1,8 +1,6 @@
 import CardProps from "./CardProps";
 
 const Card = ({
-  height = 300,
-  width = 260,
   title,
   className,
   children,

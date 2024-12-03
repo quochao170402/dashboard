@@ -13,7 +13,7 @@ const stageNames: Record<TaskStatus, string> = {
 const TaskBoard = () => {
   const { tasks } = useTask();
   const stages = Array.from(Object.values(TaskStatus), (status) => status);
-  const { task, setTask } = useTaskGlobal();
+  const { task } = useTaskGlobal();
   console.log("🚀 ~ TaskBoard ~ task:", task);
   return (
     <div className="flex gap-4 w-fit pr-4">

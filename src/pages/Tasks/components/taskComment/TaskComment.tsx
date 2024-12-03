@@ -51,7 +51,7 @@ const TaskComment = ({ comments }: Props) => {
     () => generateDummyComments(Math.random() * 10),
     []
   );
-
+  console.log(comments);
   return (
     <>
       <div className="w-full h-fit flex flex-col">
