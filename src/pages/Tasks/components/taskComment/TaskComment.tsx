@@ -1,5 +1,6 @@
 import { UserRole } from "@/@types/Enums";
 import Editor from "@/custom-components/editor/Editor";
+import { useMemo } from "react";
 import CommentItem from "./CommentItem";
 
 interface Props {
@@ -29,7 +30,9 @@ const generateDummyComments = (count: number): IComment[] => {
 
     const comment: IComment = {
       id: id,
-      content: `This is comment This is comment This is comment This is commentThis is commentThis is comment ${i + 1}`,
+      content: `This is comment This is comment This is comment This is commentThis is commentThis is comment ${
+        i + 1
+      }`,
       createdAt: createdAt,
       updatedAt: updatedAt,
       userId: `user-${generateRandomId()}`,
@@ -44,7 +47,10 @@ const generateDummyComments = (count: number): IComment[] => {
 };
 
 const TaskComment = ({ comments }: Props) => {
-  const dummyData: IComment[] = generateDummyComments(Math.random() * 10);
+  const dummyData: IComment[] = useMemo(
+    () => generateDummyComments(Math.random() * 10),
+    []
+  );
 
   return (
     <>

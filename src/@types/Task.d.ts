@@ -1,6 +1,7 @@
 interface ITask {
   id: string;
   name: string;
+  category: "Task" | "Epic";
   type: "Story" | "Task" | "SubTask";
   label?: string;
   key: string;

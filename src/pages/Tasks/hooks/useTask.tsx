@@ -5,6 +5,7 @@ import { useState } from "react";
 const generateDummyTask = (): ITask => ({
   id: faker.string.uuid(),
   name: faker.lorem.words(3),
+  category: faker.helpers.arrayElement(["Task", "Epic"]),
   type: faker.helpers.arrayElement(["Story", "Task", "SubTask"]),
   key: faker.string.alphanumeric(4).toUpperCase(),
   summary: faker.lorem.sentence(),
@@ -29,6 +30,7 @@ const useTask = () => {
 
   return {
     tasks,
+    setTasks,
   };
 };
 

@@ -1,6 +1,7 @@
 import { TaskStatus } from "@/@types/Enums";
 import Input from "@/custom-components/inputs/Input";
 import { Select } from "@/custom-components/selects";
+import useTask from "../../hooks/useTask";
 
 interface Props {
   data: ITask;
@@ -10,6 +11,10 @@ interface Props {
 const TaskProperty = ({ data, onChangeTask }: Props) => {
   const statuses: string[] = Object.values(TaskStatus);
   const priorities: string[] = ["1", "2", "3", "4", "5"];
+
+  const { tasks } = useTask();
+  const epics = tasks.filter((x) => x.category == "Epic");
+
   return (
     <div className="p-2 flex flex-col gap-4 no-scrollbar">
       <div>
@@ -60,13 +65,19 @@ const TaskProperty = ({ data, onChangeTask }: Props) => {
         </div>
         <div className="mr-4 flex flex-col gap-2">
           <label htmlFor="Epic">Epic</label>
-          <Input
+          <Select
             value={data?.epicId}
             id="Epic"
             onChange={(e) => onChangeTask({ ...data, epicId: e.target.value })}
+            options={epics.map((x) => {
+              return {
+                label: x.key,
+                value: x.id,
+              };
+            })}
           />
         </div>
-        <div className="mr-4 flex flex-col gap-2">
+        {/* <div className="mr-4 flex flex-col gap-2">
           <label htmlFor="Sprint">Sprint</label>
           <Input
             value={data?.sprintId}
@@ -75,7 +86,7 @@ const TaskProperty = ({ data, onChangeTask }: Props) => {
               onChangeTask({ ...data, sprintId: e.target.value })
             }
           />
-        </div>
+        </div> */}
         <div className="mr-4 flex items-center gap-2">
           <label htmlFor="Priority" className="mr-2">
             Priority
