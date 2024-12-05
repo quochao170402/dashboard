@@ -8,10 +8,11 @@ import UpsertProjectModal from "./components/UpsertProjectModal";
 import useProject from "./hooks/useProject";
 
 const Project = () => {
+  console.log("renderProject :>> ");
   const {
     pagination,
     columns,
-    data,
+    projects,
     newProject,
     setNewProject,
     handleAdd,
@@ -23,7 +24,7 @@ const Project = () => {
     handleFilter,
     handleRefetch,
   } = useProject();
-
+  console.log("projects :>> ", projects);
   return (
     <div>
       <div className="flex items-center justify-between px-2 pb-2 border-b">
@@ -44,11 +45,11 @@ const Project = () => {
           handleRefetch={handleRefetch}
         />
       </div>
-      {data.length > 0 ? (
+      {projects.length > 0 ? (
         <div>
           <Table
             border={false}
-            data={data}
+            data={projects}
             columns={columns}
             onDoubleClick={handleDoubleClick}
           />

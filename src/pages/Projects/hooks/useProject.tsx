@@ -1,32 +1,38 @@
 import { IPagination } from "@/@types/Common";
 
+import ProjectApi from "@/apis/Project.Apis";
 import { ColumnProps } from "@/custom-components/table/TableProps";
 import useToast from "@/hooks/useToast";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { SquarePen, Trash2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import IUpsertProject, { IProjectFilter } from "../common/IUpsertProject";
-
-const generateRecords = () => {
-  const records = [];
-  for (let i = 1; i <= 412; i++) {
-    records.push({
-      id: i.toString(),
-      name: `Project ${String.fromCharCode(64 + i)}`, // Generates Project A, Project B, etc.
-      key: `P${String.fromCharCode(64 + i)}`, // Generates keys like PA, PB, etc.
-      type: `Type ${String.fromCharCode(64 + i)}`, // Cycles through Type A, Type B, Type C
-      lead: `Lead ${String.fromCharCode(64 + i)}`, // Generates Lead A, Lead B, etc.
-      category: `Category ${((i - 1) % 5) + 1}`, // Cycles through Category 1 to Category 5
-      url: `http://example.com/${i}`, // Generates URLs like http://example.com/1
-    } as IProject);
-  }
-  return records;
-};
 
 const defaultPageSize = 5;
 
 const useProject = () => {
   const { toast } = useToast();
-  const [dummyData, setDummyData] = useState<IProject[]>(generateRecords());
+
+  const { data: { data: projects = [], count = 0 } = {} } = useQuery({
+    queryKey: ["filter-project"],
+    queryFn: () => ProjectApi.getProject(),
+    select: (res) => {
+      const result = res.data.data;
+      return result;
+    },
+    staleTime: Infinity,
+  });
+
+  const { mutate: deleteProject } = useMutation({
+    mutationKey: ["delete-project"],
+    mutationFn: (id: string) => ProjectApi.deleteProject(id),
+    onSuccess: () => {
+      console.log("Delete project success");
+    },
+    onError: () => {
+      console.log("Delete project error");
+    },
+  });
 
   const [pageSize, setPageSize] = useState(defaultPageSize);
 
@@ -38,33 +44,13 @@ const useProject = () => {
 
   const [pagination, setPagination] = useState<IPagination>({
     current: 1,
-    totalPage: Math.ceil(dummyData.length / defaultPageSize),
+    totalPage: Math.ceil(count / defaultPageSize),
   });
-
-  const [data, setData] = useState<IProject[]>(
-    dummyData.slice(0, defaultPageSize)
-  );
 
   const [newProject, setNewProject] = useState<IProject>();
 
-  useEffect(() => {
-    setPagination({
-      current: 1,
-      totalPage: Math.ceil(dummyData.length / pageSize),
-    });
-  }, [pageSize, dummyData.length]);
-
-  useEffect(() => {
-    setData(
-      dummyData.slice(
-        (pagination.current - 1) * pageSize,
-        pageSize * pagination.current
-      )
-    );
-  }, [pageSize, pagination, dummyData]);
-
   const handleDelete = (data: IProject) => {
-    setDummyData((prev) => prev.filter((item) => item.id !== data.id));
+    deleteProject(data.id);
     toast.success("Delete project successful");
   };
 
@@ -79,9 +65,7 @@ const useProject = () => {
 
   const handleAdd = () => {
     if (newProject && newProject.name) {
-      newProject.category ??= "Category 1";
-      newProject.type ??= "Type A";
-      setDummyData((prev) => [newProject, ...prev]);
+      // setProjects((prev) => [newProject, ...prev]);
       setUpsertProjectData({ ...upsertProjectData, visible: false });
     }
     toast.success("Create project successful");
@@ -121,26 +105,13 @@ const useProject = () => {
 
   const handleFilter = (filter: IProjectFilter) => {
     console.log("🚀 ~ handleFilter ~ filter:", filter);
-    let temp: IProject[] = dummyData;
+    let temp: IProject[] = projects;
 
     if (filter.keyword && filter.keyword.length > 0) {
       temp = temp.filter((x) =>
         x.name.toLowerCase().includes(filter.keyword.toLowerCase())
       );
     }
-    if (filter.type && filter.type.length > 0) {
-      temp = temp.filter((x) => x.type === filter.type);
-    }
-    if (filter.category && filter.category.length > 0) {
-      temp = temp.filter((x) => x.category === filter.category);
-    }
-
-    setData(
-      temp.slice(
-        (pagination.current - 1) * pageSize,
-        pageSize * pagination.current
-      )
-    );
   };
 
   const columns: Array<ColumnProps<IProject>> = [
@@ -161,18 +132,12 @@ const useProject = () => {
       render: (_value, _row) => {
         return (
           <>
-            <div className="flex gap-4">
-              {_row.logo && <img width={24} height={24} src={_row.logo} />}
-              {_row.name}
-            </div>
+            <div className="flex gap-4">{_row.name}</div>
           </>
         );
       },
     },
     { key: "key", header: "Key", width: 200, align: "left" },
-    { key: "type", header: "Type", width: 150, align: "left" },
-    { key: "lead", header: "Lead", width: 200, align: "left" },
-    { key: "category", header: "Category", width: 150, align: "left" },
     { key: "url", header: "URL", width: 250, align: "left" },
     {
       header: "",
@@ -197,7 +162,7 @@ const useProject = () => {
     pagination,
     pageSize,
     columns,
-    data,
+    projects,
     upsertProjectData,
     newProject,
     setNewProject,
