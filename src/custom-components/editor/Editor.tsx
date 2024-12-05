@@ -16,6 +16,7 @@ import {
   Code,
   CodeBlock,
   DecoupledEditor,
+  EditorConfig,
   Essentials,
   FindAndReplace,
   FontBackgroundColor,
@@ -93,7 +94,7 @@ export default function Editor({ value, onChange }: EditorProps) {
     return () => setIsLayoutReady(false);
   }, []);
 
-  const editorConfig = {
+  const editorConfig: EditorConfig = {
     toolbar: {
       items: [
         "fontSize",
@@ -386,7 +387,6 @@ export default function Editor({ value, onChange }: EditorProps) {
       ],
     },
   };
-  
 
   return (
     <Fragment>
