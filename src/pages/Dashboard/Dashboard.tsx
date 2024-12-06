@@ -1,6 +1,3 @@
-import Editor from "@/custom-components/editor/Editor";
-import { useState } from "react";
-
 // const stageNames: Record<TaskStatus, string> = {
 //   [TaskStatus.TODO]: "To Do",
 //   [TaskStatus.IN_PROGRESS]: "In Progress",
@@ -10,13 +7,7 @@ import { useState } from "react";
 // };
 
 const Dashboard = () => {
-  const [value, setValue] = useState<string>("");
-
-  return (
-    <div className="flex w-full h-full">
-      <Editor value={value} onChange={setValue} />
-    </div>
-  );
+  return <div className="flex w-full h-full"></div>;
 };
 
 export default Dashboard;

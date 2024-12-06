@@ -1,11 +1,19 @@
-interface IProject {
+interface IEntity {
   id: string;
-  logo?: string;
-  name: string;
-  description?: string;
+  isDeleted: boolean;
+  createdAt: Date;
+  createdBy: string;
+  latestUpdatedAt: Date;
+  latestUpdatedBy: string;
+}
+
+interface IProject extends IEntity {
+  startDate: Date;
   key: string;
-  type?: string;
-  lead?: string;
-  category?: string;
+  endDate: Date;
+  name: string;
+  description: string;
+  status: ProjectStatus;
+  leaderId?: string;
   url?: string;
 }
