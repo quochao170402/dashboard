@@ -8,23 +8,19 @@ import UpsertProjectModal from "./components/UpsertProjectModal";
 import useProject from "./hooks/useProject";
 
 const Project = () => {
-  console.log("renderProject :>> ");
   const {
     pagination,
     columns,
     projects,
-    newProject,
-    setNewProject,
-    handleAdd,
+    handleAddProject,
     upsertProjectData,
     handleToggleModal,
     handlePageChange,
     handleChangePageSize,
     handleDoubleClick,
-    handleFilter,
     handleRefetch,
   } = useProject();
-  console.log("projects :>> ", projects);
+
   return (
     <div>
       <div className="flex items-center justify-between px-2 pb-2 border-b">
@@ -32,7 +28,6 @@ const Project = () => {
         <button
           className="py-2 px-4 rounded-md bg-green-500 text-white w-24"
           onClick={() => {
-            setNewProject({} as IProject);
             handleToggleModal(true);
           }}
         >
@@ -41,7 +36,7 @@ const Project = () => {
       </div>
       <div>
         <ProjectFilterBar
-          handleFilter={handleFilter}
+          handleFilter={() => {}}
           handleRefetch={handleRefetch}
         />
       </div>
@@ -69,10 +64,9 @@ const Project = () => {
         <UpsertProjectModal
           visible={upsertProjectData.visible}
           onClose={() => handleToggleModal(false)}
-          data={newProject ?? upsertProjectData.data}
+          data={upsertProjectData.data}
           updatable={upsertProjectData.updatable}
-          onSubmit={handleAdd}
-          setData={setNewProject}
+          onSubmit={handleAddProject}
         />
       </div>
     </div>
