@@ -6,14 +6,15 @@ import useToast from "@/hooks/useToast";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { SquarePen, Trash2 } from "lucide-react";
 import { useState } from "react";
-import IUpsertProject, { IProjectFilter } from "../common/IUpsertProject";
+import IUpsertProject from "../common/IUpsertProject";
 
 const defaultPageSize = 5;
 
 const useProject = () => {
   const { toast } = useToast();
+  const [pageSize, setPageSize] = useState(defaultPageSize);
 
-  const { data: { data: projects = [], count = 0 } = {} } = useQuery({
+  const { data: { data: projects = [], count = 0 } = {}, refetch } = useQuery({
     queryKey: ["filter-project"],
     queryFn: () => ProjectApi.getProject(),
     select: (res) => {
@@ -23,18 +24,42 @@ const useProject = () => {
     staleTime: Infinity,
   });
 
+  const { mutate: handleAddProject } = useMutation({
+    mutationKey: ["add-project"],
+    mutationFn: (project: IProject) => ProjectApi.addProject(project),
+    onSuccess: () => {
+      toast.success("Create project successful");
+      refetch();
+    },
+    onError: () => {
+      toast.success("Create project error");
+    },
+  });
+
+  const { mutate: handleUpdateProject } = useMutation({
+    mutationKey: ["update-project"],
+    mutationFn: ({ id, project }: { id: string; project: IProject }) =>
+      ProjectApi.updateProject(id, project),
+    onSuccess: () => {
+      toast.success("Create project successful");
+      refetch();
+    },
+    onError: () => {
+      toast.error("Create project error");
+    },
+  });
+
   const { mutate: deleteProject } = useMutation({
     mutationKey: ["delete-project"],
     mutationFn: (id: string) => ProjectApi.deleteProject(id),
     onSuccess: () => {
-      console.log("Delete project success");
+      toast.success("Delete project successful");
+      refetch();
     },
     onError: () => {
-      console.log("Delete project error");
+      toast.error("Delete project error");
     },
   });
-
-  const [pageSize, setPageSize] = useState(defaultPageSize);
 
   const [upsertProjectData, setUpsertProjectData] = useState<IUpsertProject>({
     visible: false,
@@ -46,30 +71,6 @@ const useProject = () => {
     current: 1,
     totalPage: Math.ceil(count / defaultPageSize),
   });
-
-  const [newProject, setNewProject] = useState<IProject>();
-
-  const handleDelete = (data: IProject) => {
-    deleteProject(data.id);
-    toast.success("Delete project successful");
-  };
-
-  const handleUpdate = (data: IProject) => {
-    setUpsertProjectData({
-      ...upsertProjectData,
-      visible: true,
-      data: data,
-    });
-    toast.success("Update project successful");
-  };
-
-  const handleAdd = () => {
-    if (newProject && newProject.name) {
-      // setProjects((prev) => [newProject, ...prev]);
-      setUpsertProjectData({ ...upsertProjectData, visible: false });
-    }
-    toast.success("Create project successful");
-  };
 
   const handlePageChange = (page: number) => {
     setPagination({ ...pagination, current: page });
@@ -90,6 +91,15 @@ const useProject = () => {
     });
   };
 
+  const handleOpenUpdateModal = (row: IProject) => {
+    setUpsertProjectData({
+      ...upsertProjectData,
+      visible: true,
+      data: row,
+      updatable: true,
+    });
+  };
+
   const handleToggleModal = (isOpen: boolean) => {
     setUpsertProjectData({
       ...upsertProjectData,
@@ -101,17 +111,6 @@ const useProject = () => {
 
   const handleRefetch = () => {
     setPagination({ ...pagination, current: 1 });
-  };
-
-  const handleFilter = (filter: IProjectFilter) => {
-    console.log("🚀 ~ handleFilter ~ filter:", filter);
-    let temp: IProject[] = projects;
-
-    if (filter.keyword && filter.keyword.length > 0) {
-      temp = temp.filter((x) =>
-        x.name.toLowerCase().includes(filter.keyword.toLowerCase())
-      );
-    }
   };
 
   const columns: Array<ColumnProps<IProject>> = [
@@ -146,10 +145,10 @@ const useProject = () => {
       render: (_value, row) => {
         return (
           <div className="flex gap-3 items-center justify-center">
-            <button onClick={() => handleUpdate(row)}>
+            <button onClick={() => handleOpenUpdateModal(row)}>
               <SquarePen size={18} color="#0c66e4" />
             </button>
-            <button onClick={() => handleDelete(row)}>
+            <button onClick={() => deleteProject(row.id)}>
               <Trash2 size={18} color="red" />
             </button>
           </div>
@@ -164,17 +163,13 @@ const useProject = () => {
     columns,
     projects,
     upsertProjectData,
-    newProject,
-    setNewProject,
     handleToggleModal,
     handlePageChange,
     handleChangePageSize,
-    handleDelete,
-    handleUpdate,
-    handleAdd,
+    handleAddProject,
     handleDoubleClick,
     handleRefetch,
-    handleFilter,
+    handleOpenUpdateModal,
   };
 };
 

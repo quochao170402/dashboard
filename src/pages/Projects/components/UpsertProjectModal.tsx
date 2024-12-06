@@ -1,33 +1,48 @@
+import DatePicker from "@/custom-components/date-picker/DatePicker";
 import Input from "@/custom-components/inputs/Input";
 import Modal from "@/custom-components/modal/Modal";
 import Title from "@/custom-components/title/Title";
-import FileUploader from "@/custom-components/uploader/FileUploader";
+import { useMemo } from "react";
+import { Controller, useForm } from "react-hook-form";
 
 interface Props {
   visible: boolean;
   onClose: () => void;
   data?: IProject;
-  setData?: (data: IProject) => void;
   updatable?: boolean;
-  onSubmit?: VoidFunction;
+  onSubmit?: (project: IProject) => void;
 }
 
 const UpsertProjectModal = ({
   visible,
   data,
-  setData,
   onClose,
   updatable = true,
   onSubmit,
 }: Props) => {
+  const { handleSubmit, control, reset } = useForm<IProject>({
+    defaultValues: useMemo(() => {
+      return data;
+    }, [data]),
+  });
+
+  const handleClose = () => {
+    onClose();
+    reset();
+  };
+
   return (
     <Modal
       height={550}
       width={800}
       visible={visible}
-      onClose={onClose}
+      onClose={handleClose}
       isShowSubmitButton={updatable}
-      onSubmit={onSubmit}
+      onSubmit={() => {
+        if (onSubmit) {
+          handleSubmit(onSubmit);
+        }
+      }}
     >
       <div>
         <div className="flex items-center justify-between px-2">
@@ -35,77 +50,92 @@ const UpsertProjectModal = ({
         </div>
         <div className="flex flex-col items-center gap-4">
           <div className="grid grid-flow-col grid-cols-2 items-center gap-4 w-full h-full">
-            <div className="h-full w-full">
-              {data?.url && data?.url.length > 0 ? (
-                <img src={data.url} />
-              ) : (
-                <FileUploader
-                  disabled={!updatable}
-                  className="h-full w-full"
-                  enablePreview
-                  onFileSelect={(file) => console.log(file)}
-                />
-              )}
-            </div>
-
             <div className="grid grid-flow-row grid-rows-3 gap-4">
-              <Input
-                disabled={!updatable}
-                placeholder="Name"
-                type="text"
-                className="p-2 border rounded-md"
-                value={data?.name}
-                onChange={(e) =>
-                  setData && data && setData({ ...data, name: e.target.value })
-                }
+              <Controller
+                defaultValue={data?.name}
+                control={control}
+                render={({ field }) => (
+                  <Input
+                    disabled={!updatable}
+                    placeholder="Name"
+                    type="text"
+                    className="p-2 border rounded-md"
+                    {...field}
+                  />
+                )}
+                name={"name"}
               />
-              <Input
-                disabled={!updatable}
-                placeholder="Key"
-                type="text"
-                className="p-2 border rounded-md"
-                value={data?.key}
-                onChange={(e) =>
-                  setData && data && setData({ ...data, key: e.target.value })
-                }
+              <Controller
+                defaultValue={data?.key}
+                control={control}
+                name="key"
+                render={({ field }) => (
+                  <Input
+                    disabled={!updatable}
+                    placeholder="Key"
+                    type="text"
+                    className="p-2 border rounded-md"
+                    {...field}
+                  />
+                )}
+              />
+              <Controller
+                defaultValue={data?.startDate || new Date()}
+                control={control}
+                name="startDate"
+                render={({ field }) => (
+                  <DatePicker
+                    {...field}
+                    disabled={!updatable}
+                    className="p-2 border rounded-md"
+                  />
+                )}
               />
             </div>
           </div>
           <div className="grid grid-flow-col grid-cols-2 items-center gap-4 w-full h-full">
             <div className="grid grid-flow-row grid-rows-3 gap-4">
-              <Input
-                disabled={!updatable}
-                placeholder="Lead"
-                type="text"
-                className="p-2 border rounded-md"
-                value={data?.leaderId}
-                onChange={(e) =>
-                  setData &&
-                  data &&
-                  setData({ ...data, leaderId: e.target.value })
-                }
+              <Controller
+                defaultValue={data?.leaderId}
+                control={control}
+                name="leaderId"
+                render={({ field }) => (
+                  <Input
+                    disabled={!updatable}
+                    placeholder="Leader"
+                    type="text"
+                    className="p-2 border rounded-md"
+                    {...field}
+                  />
+                )}
               />
-              <Input
-                disabled={!updatable}
-                placeholder="URL"
-                type="text"
-                className="p-2 border rounded-md"
-                value={data?.url}
-                onChange={(e) =>
-                  setData && data && setData({ ...data, url: e.target.value })
-                }
+              <Controller
+                defaultValue={data?.url}
+                control={control}
+                name="url"
+                render={({ field }) => (
+                  <Input
+                    disabled={!updatable}
+                    placeholder="URL"
+                    type="text"
+                    className="p-2 border rounded-md"
+                    {...field}
+                  />
+                )}
               />
             </div>
-            <textarea
-              disabled={!updatable}
-              className="h-full p-2 w-full border rounded-md placeholder-gray-400"
-              placeholder="Description..."
-              value={data?.description}
-              onChange={(e) =>
-                setData &&
-                data &&
-                setData({ ...data, description: e.target.value })
-              }
+            <Controller
+              defaultValue={data?.description}
+              control={control}
+              name="description"
+              render={({ field }) => (
+                <textarea
+                  disabled={!updatable}
+                  className="h-full p-2 w-full border rounded-md placeholder-gray-400"
+                  placeholder="Description..."
+                  {...field}
+                />
+              )}
             />
           </div>
         </div>
