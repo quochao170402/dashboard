@@ -170,6 +170,7 @@ const useProject = () => {
     handleDoubleClick,
     handleRefetch,
     handleOpenUpdateModal,
+    handleUpdateProject,
   };
 };
 
