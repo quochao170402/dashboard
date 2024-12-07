@@ -4,9 +4,7 @@ const endPoint = "api/v1/Project";
 
 const ProjectApi = {
   getProject: (keyword: string, pageSize: number, pageIndex: number) =>
-    API.get(
-      `${endPoint}/Filter?keyword=${keyword}&pageSize=${pageSize}&pageIndex=${pageIndex}`
-    ),
+    API.get(`${endPoint}/Filter`, { params: { keyword, pageSize, pageIndex } }),
   addProject: (project: IProject) =>
     API.post(`${endPoint}/AddProject`, project),
   updateProject: (id: string, project: IProject) =>
