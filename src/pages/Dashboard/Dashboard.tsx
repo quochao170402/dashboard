@@ -6,7 +6,7 @@
 //   [TaskStatus.DONE]: "Done",
 // };
 
-import DatePicker from "@/custom-components/date-picker/DatePicker";
+import DatePicker from "@/components/date-picker/DatePicker";
 import { useState } from "react";
 
 const Dashboard = () => {

@@ -1,5 +1,5 @@
-import Editor from "@/custom-components/editor/Editor";
-import Modal from "@/custom-components/modal/Modal";
+import Editor from "@/components/editor/Editor";
+import Modal from "@/components/modal/Modal";
 import TaskComment from "./taskComment/TaskComment";
 import TaskProperty from "./taskDetail/TaskProperty";
 

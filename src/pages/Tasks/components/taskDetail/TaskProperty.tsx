@@ -1,6 +1,6 @@
 import { TaskStatus } from "@/@types/Enums";
-import Input from "@/custom-components/inputs/Input";
-import { Select } from "@/custom-components/selects";
+import Input from "@/components/inputs/Input";
+import { Select } from "@/components/selects";
 import useTask from "../../hooks/useTask";
 
 interface Props {

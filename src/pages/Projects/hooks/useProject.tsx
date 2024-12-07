@@ -1,22 +1,43 @@
 import { IPagination } from "@/@types/Common";
 
 import ProjectApi from "@/apis/Project.Apis";
-import { ColumnProps } from "@/custom-components/table/TableProps";
 import useToast from "@/hooks/useToast";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { ColumnProps } from "antd/es/table";
 import { SquarePen, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import IUpsertProject from "../common/IUpsertProject";
-
-const defaultPageSize = 5;
 
 const useProject = () => {
   const { toast } = useToast();
-  const [pageSize, setPageSize] = useState(defaultPageSize);
+  const [upsertProjectData, setUpsertProjectData] = useState<IUpsertProject>({
+    visible: false,
+    updatable: true,
+    data: undefined,
+    onSubmit: undefined,
+  } as IUpsertProject);
+
+  const [pagination, setPagination] = useState<IPagination>({
+    current: 1,
+    pageSize: 10,
+  });
+
+  const [searchParams] = useSearchParams();
 
   const { data: { data: projects = [], count = 0 } = {}, refetch } = useQuery({
-    queryKey: ["filter-project"],
-    queryFn: () => ProjectApi.getProject(),
+    queryKey: [
+      "filter-project",
+      pagination.current,
+      pagination.pageSize,
+      searchParams.get("keyword"),
+    ],
+    queryFn: () =>
+      ProjectApi.getProject(
+        searchParams.get("keyword") ?? "",
+        pagination.pageSize,
+        pagination.current
+      ),
     select: (res) => {
       const result = res.data.data;
       return result;
@@ -61,28 +82,11 @@ const useProject = () => {
     },
   });
 
-  const [upsertProjectData, setUpsertProjectData] = useState<IUpsertProject>({
-    visible: false,
-    updatable: true,
-    data: undefined,
-  } as IUpsertProject);
-
-  const [pagination, setPagination] = useState<IPagination>({
-    current: 1,
-    totalPage: Math.ceil(count / defaultPageSize),
-  });
-
-  const handlePageChange = (page: number) => {
-    setPagination({ ...pagination, current: page });
+  const handlePageChange = (page: number, pageSize: number) => {
+    setPagination({ pageSize: pageSize, current: page });
   };
 
-  const handleChangePageSize = (pageSize: number) => {
-    if (pageSize > 0) {
-      setPageSize(pageSize);
-    }
-  };
-
-  const handleDoubleClick = (row: IProject, _rowIndex: number) => {
+  const handleDoubleClick = (row: IProject) => {
     setUpsertProjectData({
       ...upsertProjectData,
       visible: true,
@@ -97,6 +101,8 @@ const useProject = () => {
       visible: true,
       data: row,
       updatable: true,
+      onSubmit: (project: IProject) =>
+        handleUpdateProject({ id: row.id, project: project }),
     });
   };
 
@@ -106,6 +112,7 @@ const useProject = () => {
       data: undefined,
       visible: isOpen,
       updatable: true,
+      onSubmit: (project: IProject) => handleAddProject(project),
     });
   };
 
@@ -115,18 +122,17 @@ const useProject = () => {
 
   const columns: Array<ColumnProps<IProject>> = [
     {
-      key: "id",
-      header: "Index",
+      title: "No",
       width: 100,
       align: "center",
       render: (_value, _row, rowIndex) => {
-        return <>{pagination.current * pageSize - pageSize + rowIndex + 1}</>;
+        return <>{rowIndex + 1}</>;
       },
     },
     {
-      key: "name",
-      header: "Name",
-      width: 500,
+      dataIndex: "name",
+      title: "Name",
+
       align: "left",
       render: (_value, _row) => {
         return (
@@ -136,10 +142,41 @@ const useProject = () => {
         );
       },
     },
-    { key: "key", header: "Key", width: 200, align: "left" },
-    { key: "url", header: "URL", width: 250, align: "left" },
     {
-      header: "",
+      dataIndex: "key",
+      width: 120,
+      title: "Key",
+      align: "left",
+    },
+    {
+      title: "Leader",
+      width: 120,
+      align: "left",
+      render: (_value, _row) => {
+        return (
+          <>
+            <div className="flex gap-4">{_row.name}</div>
+          </>
+        );
+      },
+    },
+    {
+      dataIndex: "url",
+      title: "Url",
+      width: 300,
+      align: "left",
+      render(value) {
+        return (
+          <>
+            <a href={value} className="text-blue-500 underline">
+              {value}
+            </a>
+          </>
+        );
+      },
+    },
+    {
+      title: "Actions",
       width: 100,
       align: "center",
       render: (_value, row) => {
@@ -158,14 +195,13 @@ const useProject = () => {
   ];
 
   return {
+    totalRecord: count,
     pagination,
-    pageSize,
     columns,
     projects,
     upsertProjectData,
     handleToggleModal,
     handlePageChange,
-    handleChangePageSize,
     handleAddProject,
     handleDoubleClick,
     handleRefetch,

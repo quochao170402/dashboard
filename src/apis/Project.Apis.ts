@@ -3,7 +3,10 @@ import API from "@/utils/API";
 const endPoint = "api/v1/Project";
 
 const ProjectApi = {
-  getProject: () => API.get(`${endPoint}/Filter`),
+  getProject: (keyword: string, pageSize: number, pageIndex: number) =>
+    API.get(
+      `${endPoint}/Filter?keyword=${keyword}&pageSize=${pageSize}&pageIndex=${pageIndex}`
+    ),
   addProject: (project: IProject) =>
     API.post(`${endPoint}/AddProject`, project),
   updateProject: (id: string, project: IProject) =>

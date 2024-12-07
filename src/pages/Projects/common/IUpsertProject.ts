@@ -2,6 +2,7 @@ export default interface IUpsertProject {
   visible: boolean;
   data?: IProject;
   updatable?: boolean;
+  onSubmit?: (project: IProject) => void;
 }
 
 export interface IProjectFilter {

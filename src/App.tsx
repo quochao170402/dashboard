@@ -2,11 +2,11 @@ import { routes } from "@/utils/routeConfig"; // Adjust the import path as neces
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
+import Layout from "./components/layout/Layout";
+import ToastContainer from "./components/toast/ToastContainer";
 import TaskProvider from "./contexts/task/TaskProvider";
 import ThemeProvider from "./contexts/theme/ThemeProvider";
 import ToastProvider from "./contexts/toast/ToastProvider";
-import Layout from "./custom-components/layout/Layout";
-import ToastContainer from "./custom-components/toast/ToastContainer";
 import { Dashboard } from "./pages/Dashboard";
 // Create a client
 const queryClient = new QueryClient({
@@ -19,7 +19,12 @@ const queryClient = new QueryClient({
 });
 export default function App() {
   return (
-    <Router>
+    <Router
+      future={{
+        v7_relativeSplatPath: true,
+        v7_startTransition: true,
+      }}
+    >
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
           <ToastProvider>

@@ -1,4 +1,4 @@
-import { IToast } from "@/custom-components/toast/ToastProps";
+import { IToast } from "@/components/toast/ToastProps";
 import { ReactNode, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import ToastContext from "./ToastContext";

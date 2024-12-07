@@ -1,5 +1,5 @@
-import Title from "@/custom-components/title/Title";
-import { Tooltip } from "@/custom-components/tooltip";
+import Title from "@/components/title/Title";
+import { Tooltip } from "@/components/tooltip";
 import { Columns3, List, SquareKanban } from "lucide-react";
 import { ViewType } from "../Task";
 

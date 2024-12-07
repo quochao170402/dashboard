@@ -1,4 +1,4 @@
-import { IToast } from "@/custom-components/toast/ToastProps";
+import { IToast } from "@/components/toast/ToastProps";
 import { createContext } from "react";
 
 interface ToastContextType {
