@@ -1,25 +1,23 @@
-import NoData from "@/custom-components/no-data/NoData";
-import Pagination from "@/custom-components/pagination/Pagination";
-import SizeChanger from "@/custom-components/sizeChanger/SizeChanger";
-import Table from "@/custom-components/table/Table";
-import Title from "@/custom-components/title/Title";
+import NoData from "@/components/no-data/NoData";
+import Title from "@/components/title/Title";
+import { Table } from "antd";
 import ProjectFilterBar from "./components/ProjectFilterBar";
 import UpsertProjectModal from "./components/UpsertProjectModal";
 import useProject from "./hooks/useProject";
 
 const Project = () => {
   const {
+    totalRecord,
     pagination,
     columns,
     projects,
-    handleAddProject,
     upsertProjectData,
     handleToggleModal,
     handlePageChange,
-    handleChangePageSize,
     handleDoubleClick,
     handleRefetch,
   } = useProject();
+  console.log("🚀 ~ Project ~ pagination:", pagination);
 
   return (
     <div>
@@ -35,27 +33,34 @@ const Project = () => {
         </button>
       </div>
       <div>
-        <ProjectFilterBar
-          handleFilter={() => {}}
-          handleRefetch={handleRefetch}
-        />
+        <ProjectFilterBar handleRefetch={handleRefetch} />
       </div>
       {projects.length > 0 ? (
         <div>
           <Table
-            border={false}
-            data={projects}
+            bordered
             columns={columns}
-            onDoubleClick={handleDoubleClick}
+            dataSource={projects}
+            onRow={(record) => {
+              return {
+                onDoubleClick: () => {
+                  handleDoubleClick(record);
+                },
+              };
+            }}
+            pagination={{
+              position: ["bottomRight"],
+              defaultCurrent: 1,
+              defaultPageSize: 10,
+              current: pagination.current,
+              pageSize: pagination.pageSize,
+              total: totalRecord,
+              onChange(page, pageSize) {
+                handlePageChange(page, pageSize);
+              },
+              showSizeChanger: true,
+            }}
           />
-          <div className="my-4 flex items-center justify-between">
-            <SizeChanger visible={false} onChange={handleChangePageSize} />
-            <Pagination
-              totalPage={pagination.totalPage}
-              currentPage={pagination.current}
-              onPageChange={handlePageChange}
-            />
-          </div>
         </div>
       ) : (
         <NoData />
@@ -66,7 +71,7 @@ const Project = () => {
           onClose={() => handleToggleModal(false)}
           data={upsertProjectData.data}
           updatable={upsertProjectData.updatable}
-          onSubmit={handleAddProject}
+          onSubmit={upsertProjectData.onSubmit}
         />
       </div>
     </div>

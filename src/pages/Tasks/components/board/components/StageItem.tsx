@@ -1,4 +1,4 @@
-import { Card } from "@/custom-components/card";
+import { Card } from "@/components/card";
 import useTaskGlobal from "@/hooks/useTaskGlobal";
 import { ClipboardCheck, Copy, SquareCheck, UserCircle2 } from "lucide-react";
 import { ReactNode } from "react";

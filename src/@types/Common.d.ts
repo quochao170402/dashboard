@@ -8,7 +8,7 @@ interface IEntity {
 
 interface IPagination {
   current: number;
-  totalPage: number;
+  pageSize: number;
 }
 
 interface IOption<T> {

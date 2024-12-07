@@ -1,5 +1,5 @@
 import { UserRole } from "@/@types/Enums";
-import Editor from "@/custom-components/editor/Editor";
+import Editor from "@/components/editor/Editor";
 import { useMemo } from "react";
 import CommentItem from "./CommentItem";
 

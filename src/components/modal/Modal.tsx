@@ -86,7 +86,7 @@ const Modal = ({
           hidden={!false}
         >
           <div
-            ref={modalRef}
+            // ref={modalRef}
             className={`flex flex-col rounded-lg shadow-lg bg-white ${className} max-h-[600px] h-fit overflow-hidden`}
             style={{
               width: width ?? "700px",
