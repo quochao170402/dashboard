@@ -31,10 +31,7 @@ const ProjectFilterBar = ({ handleRefetch }: Props) => {
         <button
           className="p-2 rounded-md w-24 bg-blue-500 text-white"
           onClick={() => {
-            setSearchParams((prev) => {
-              prev.set("keyword", keyword);
-              return prev;
-            });
+            setSearchParams(new URLSearchParams({ keyword }));
           }}
         >
           Filter

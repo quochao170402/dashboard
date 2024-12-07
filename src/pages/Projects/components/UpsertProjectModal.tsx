@@ -36,8 +36,12 @@ const UpsertProjectModal = ({
       width={800}
       open={visible}
       onCancel={handleClose}
-      onOk={() => {
-        onSubmit!(control._formValues as IProject);
+      onOk={async () => {
+        await control.handleSubmit((data: IProject) => {
+          if (onSubmit) {
+            onSubmit(data);
+          }
+        })();
       }}
       destroyOnClose
     >
