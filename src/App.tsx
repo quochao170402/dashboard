@@ -2,12 +2,15 @@ import { routes } from "@/utils/routeConfig"; // Adjust the import path as neces
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
-import Layout from "./components/layout/Layout";
 import ToastContainer from "./components/toast/ToastContainer";
 import TaskProvider from "./contexts/task/TaskProvider";
 import ThemeProvider from "./contexts/theme/ThemeProvider";
 import ToastProvider from "./contexts/toast/ToastProvider";
 import { Dashboard } from "./pages/Dashboard";
+
+import store from "@/stores/store"; // Your Redux store
+import { Provider } from "react-redux"; // Redux Provider
+import LayoutSwitcher from "./components/layout/LayoutSwitcher";
 // Create a client
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,42 +22,44 @@ const queryClient = new QueryClient({
 });
 export default function App() {
   return (
-    <Router
-      future={{
-        v7_relativeSplatPath: true,
-        v7_startTransition: true,
-      }}
-    >
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
         <ThemeProvider>
           <ToastProvider>
             <ToastContainer />
-            <TaskProvider>
-              <Layout>
-                <Routes>
-                  <Route key={"home"} path="/" element={<Dashboard />} />
-                  {routes.map((route) => (
-                    <Route
-                      key={route.path}
-                      path={route.path}
-                      element={route.component}
-                    >
-                      {route.children &&
-                        route.children?.map((child) => (
-                          <Route
-                            key={child.path}
-                            path={child.path}
-                            element={child.component}
-                          />
-                        ))}
-                    </Route>
-                  ))}
-                </Routes>
-              </Layout>
-            </TaskProvider>
+            <Router
+              future={{
+                v7_relativeSplatPath: true,
+                v7_startTransition: true,
+              }}
+            >
+              <TaskProvider>
+                <LayoutSwitcher>
+                  <Routes>
+                    <Route index key={"home"} path="/" element={<Dashboard />} />
+                    {routes.map((route) => (
+                      <Route
+                        key={route.path}
+                        path={route.path}
+                        element={route.component}
+                      >
+                        {route.children &&
+                          route.children?.map((child) => (
+                            <Route
+                              key={child.path}
+                              path={child.path}
+                              element={child.component}
+                            />
+                          ))}
+                      </Route>
+                    ))}
+                  </Routes>
+                </LayoutSwitcher>
+              </TaskProvider>
+            </Router>
           </ToastProvider>
         </ThemeProvider>
-      </QueryClientProvider>
-    </Router>
+      </Provider>
+    </QueryClientProvider>
   );
 }

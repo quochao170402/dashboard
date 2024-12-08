@@ -1,4 +1,4 @@
-import { menuItems } from "@/utils/routeConfig";
+import { menuItems, projectMenuItems } from "@/utils/routeConfig";
 import { ReactNode, useState } from "react";
 import { TbLayoutSidebarLeftExpand } from "react-icons/tb";
 import Breadcrumbs from "./components/breadcrumb/Breadcrumbs";
@@ -24,7 +24,7 @@ const Layout = ({ children }: Props) => {
             isExpanded ? "w-[240px]" : "w-[60px]"
           }`}
         >
-          <Sidebar isExpanded={isExpanded} menuItems={menuItems} />
+          <Sidebar isExpanded={isExpanded} menuItems={projectMenuItems} />
         </div>
 
         <div
