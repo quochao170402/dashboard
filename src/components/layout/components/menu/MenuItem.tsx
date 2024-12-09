@@ -1,5 +1,5 @@
 import { MenuItemType } from "@/@types/MenuItem";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 
 interface Props {
   item: MenuItemType;
@@ -8,7 +8,9 @@ interface Props {
 
 const MenuItem = ({ item, isMenuExpanded }: Props) => {
   const location = useLocation();
+  // const { projectId } = useParams();
 
+  // const path = item.path.replace(":projectId", projectId || "");
   const isActive = (path: string) => {
     return location.pathname.includes(path);
   };

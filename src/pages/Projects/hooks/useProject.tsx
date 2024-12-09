@@ -1,16 +1,22 @@
 import { IPagination } from "@/@types/Common";
 
 import ProjectApi from "@/apis/Project.Apis";
+import { selectProject } from "@/features/ProjectSlice";
 import useToast from "@/hooks/useToast";
+import { RootState } from "@/stores/store";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { ColumnProps } from "antd/es/table";
 import { SquarePen, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import IUpsertProject from "../common/IUpsertProject";
 
 const useProject = () => {
+  const { project } = useSelector((state: RootState) => state.project);
   const { toast } = useToast();
+  const dispatch = useDispatch();
+
   const [upsertProjectData, setUpsertProjectData] = useState<IUpsertProject>({
     visible: false,
     updatable: true,
@@ -87,12 +93,9 @@ const useProject = () => {
   };
 
   const handleDoubleClick = (row: IProject) => {
-    setUpsertProjectData({
-      ...upsertProjectData,
-      visible: true,
-      data: row,
-      updatable: false,
-    });
+    if (project?.id != row.id) {
+      dispatch(selectProject(row));
+    }
   };
 
   const handleOpenUpdateModal = (row: IProject) => {
