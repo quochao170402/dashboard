@@ -1,5 +1,5 @@
 import { MenuItemType } from "@/@types/MenuItem";
-import { NavLink, useLocation, useParams } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 interface Props {
   item: MenuItemType;
