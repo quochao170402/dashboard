@@ -17,7 +17,7 @@ const Project = () => {
     handleDoubleClick,
     handleRefetch,
   } = useProject();
-  console.log("🚀 ~ Project ~ pagination:", pagination);
+  
 
   return (
     <div>

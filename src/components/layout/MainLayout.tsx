@@ -1,12 +1,7 @@
-import { ReactNode } from "react";
-import Breadcrumbs from "./components/breadcrumb/Breadcrumbs";
+import { Outlet } from "react-router-dom";
 import Header from "./components/header/Header";
 
-interface Props {
-  children: ReactNode;
-}
-
-const MainLayout = ({ children }: Props) => {
+const MainLayout = () => {
   return (
     <div className="flex h-screen flex-col">
       <div>
@@ -14,11 +9,13 @@ const MainLayout = ({ children }: Props) => {
       </div>
       <div className="duration-300 transition-width flex flex-col flex-grow h-full px-6">
         <div className="flex items-center gap-4 py-4">
-          <Breadcrumbs />
+          {/* <Breadcrumbs /> */}
         </div>
 
         <main className="flex items-center justify-center flex-grow">
-          <div className="w-full h-full">{children}</div>
+          <div className="w-full h-full">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>

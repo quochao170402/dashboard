@@ -1,7 +1,6 @@
-import { menuItems, projectMenuItems } from "@/utils/routeConfig";
+import { projectMenuItems } from "@/utils/routeConfig";
 import { ReactNode, useState } from "react";
-import { TbLayoutSidebarLeftExpand } from "react-icons/tb";
-import Breadcrumbs from "./components/breadcrumb/Breadcrumbs";
+import { Outlet } from "react-router-dom";
 import Header from "./components/header/Header";
 import Sidebar from "./components/menu/Sidebar";
 
@@ -9,7 +8,7 @@ interface Props {
   children: ReactNode;
 }
 
-const Layout = ({ children }: Props) => {
+const Layout = () => {
   const [isExpanded, setIsExpanded] = useState(true);
   const handleToggle = () => setIsExpanded((prev) => !prev);
 
@@ -32,19 +31,20 @@ const Layout = ({ children }: Props) => {
             isExpanded ? "w-[calc(100%-240px)]" : "w-[calc(100%-60px)]"
           }`}
         >
-          <div className="flex items-center gap-4 py-4">
-            <TbLayoutSidebarLeftExpand
-              onClick={handleToggle}
-              size={24}
-              className={`transition-transform duration-300 transform ${
-                isExpanded ? "rotate-180" : ""
-              }`}
-            />
-            <Breadcrumbs />
-          </div>
-
-          <main className="flex items-center justify-center flex-grow">
-            <div className="w-full h-full">{children}</div>
+          <main className="flex flex-col items-start justify-center flex-grow">
+            <div className="w-full h-full gap-4 py-4">
+              {/* <div className="flex items-center gap-4 py-4">
+                <TbLayoutSidebarLeftExpand
+                  onClick={handleToggle}
+                  size={24}
+                  className={`transition-transform duration-300 transform ${
+                    isExpanded ? "rotate-180" : ""
+                  }`}
+                />
+                <Breadcrumbs />
+              </div> */}
+              <Outlet />
+            </div>
           </main>
         </div>
       </div>
