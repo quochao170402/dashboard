@@ -16,7 +16,6 @@ import ProjectSetting from "./pages/ProjectSetting/ProjectSetting";
 import TaskBacklog from "./pages/TaskBacklog/Backlog";
 import TaskKanban from "./pages/TaskKanban/TaskKanban";
 import TaskList from "./pages/TaskList/TaskList";
-import { Task } from "./pages/Tasks";
 import { User } from "./pages/Users";
 // Create a client
 const queryClient = new QueryClient({
@@ -48,19 +47,18 @@ export default function App() {
                   element={<Layout />}
                 >
                   <Route
+                    index
                     key="overview"
-                    path="overview"
                     element={<h1>Project overview</h1>}
                   />
                   <Route
-                    index
                     key="backlog"
                     path="backlog"
                     element={<TaskBacklog />}
                   />
                   <Route key="list" path="list" element={<TaskList />} />
                   <Route key="board" path="board" element={<TaskKanban />} />
-                  <Route key="users" path="users" element={<Task />} />
+                  <Route key="users" path="users" element={<User />} />
                   <Route
                     key="settings"
                     path="settings"
