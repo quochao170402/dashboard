@@ -12,6 +12,10 @@ import { Layout } from "./components/layout";
 import MainLayout from "./components/layout/MainLayout";
 import { Dashboard } from "./pages/Dashboard";
 import { Project } from "./pages/Projects";
+import ProjectSetting from "./pages/ProjectSetting/ProjectSetting";
+import TaskBacklog from "./pages/TaskBacklog/Backlog";
+import TaskKanban from "./pages/TaskKanban/TaskKanban";
+import TaskList from "./pages/TaskList/TaskList";
 import { Task } from "./pages/Tasks";
 import { User } from "./pages/Users";
 // Create a client
@@ -48,12 +52,20 @@ export default function App() {
                     path="overview"
                     element={<h1>Project overview</h1>}
                   />
-                  <Route key="backlog" path="backlog" element={<Task />} />
-                  <Route key="list" path="list" element={<Task />} />
-                  <Route key="board" path="board" element={<Task />} />
+                  <Route
+                    index
+                    key="backlog"
+                    path="backlog"
+                    element={<TaskBacklog />}
+                  />
+                  <Route key="list" path="list" element={<TaskList />} />
+                  <Route key="board" path="board" element={<TaskKanban />} />
                   <Route key="users" path="users" element={<Task />} />
-                  <Route key="chat" path="chat" element={<Task />} />
-                  <Route key="settings" path="settings" element={<Task />} />
+                  <Route
+                    key="settings"
+                    path="settings"
+                    element={<ProjectSetting />}
+                  />
                 </Route>
               </Routes>
             </TaskProvider>

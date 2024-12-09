@@ -1,16 +1,12 @@
 import { projectMenuItems } from "@/utils/routeConfig";
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "./components/header/Header";
 import Sidebar from "./components/menu/Sidebar";
 
-interface Props {
-  children: ReactNode;
-}
-
 const Layout = () => {
-  const [isExpanded, setIsExpanded] = useState(true);
-  const handleToggle = () => setIsExpanded((prev) => !prev);
+  const [isExpanded] = useState(true);
+  // const handleToggle = () => setIsExpanded((prev) => !prev);
 
   return (
     <div className="flex h-screen flex-col">
