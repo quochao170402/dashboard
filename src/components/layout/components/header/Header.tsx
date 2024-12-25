@@ -7,6 +7,7 @@ import {
   Settings,
 } from "lucide-react";
 import Input from "../../../inputs/Input";
+import ProjectDropdown from "./project-dropdown/ProjectDropdown";
 
 const Header = () => {
   return (
@@ -24,8 +25,7 @@ const Header = () => {
               <ChevronDown size={16} />
             </nav>
             <nav className="hover:bg-gray-100 p-2 rounded-md flex items-center gap-1 font-medium">
-              Projects
-              <ChevronDown size={16} />
+              <ProjectDropdown />
             </nav>
             <nav className="hover:bg-gray-100 p-2 rounded-md flex items-center gap-1 font-medium">
               Filters
