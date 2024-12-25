@@ -1,6 +1,6 @@
 import API from "@/utils/API";
 
-const endPoint = "api/v1/Project";
+const endPoint = "projects/v1/Project";
 
 const ProjectApi = {
   getProject: (keyword?: string, pageSize?: number, pageIndex?: number) =>
