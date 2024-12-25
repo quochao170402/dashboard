@@ -1,7 +1,7 @@
 import useToast from "@/hooks/useToast";
 import axios, { HttpStatusCode } from "axios";
 
-const BASE_URL = "https://localhost:7000";
+const BASE_URL = import.meta.env.VITE_API_ENDPOINT ?? "https://localhost:8000";
 
 const API = axios.create({
   baseURL: BASE_URL,
