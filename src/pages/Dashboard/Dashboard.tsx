@@ -6,14 +6,8 @@
 //   [TaskStatus.DONE]: "Done",
 // };
 
-import ProjectDropdown from "@/components/layout/components/header/project-dropdown/ProjectDropdown";
-
 const Dashboard = () => {
-  return (
-    <>
-      <ProjectDropdown />
-    </>
-  );
+  return <></>;
 };
 
 export default Dashboard;
