@@ -2,19 +2,18 @@ import { IPagination } from "@/@types/Common";
 
 import ProjectApi from "@/apis/Project.Apis";
 import { selectProject } from "@/features/ProjectSlice";
-import useToast from "@/hooks/useToast";
 import { RootState } from "@/stores/store";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { ColumnProps } from "antd/es/table";
 import { SquarePen, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import IUpsertProject from "../common/IUpsertProject";
 
 const useProject = () => {
   const { project } = useSelector((state: RootState) => state.project);
-  const { toast } = useToast();
   const dispatch = useDispatch();
 
   const [upsertProjectData, setUpsertProjectData] = useState<IUpsertProject>({
@@ -140,7 +139,9 @@ const useProject = () => {
       render: (_value, _row) => {
         return (
           <>
-            <div className="flex gap-4">{_row.name}</div>
+            <Link to={`/projects/${_row.key}`} className="flex gap-4">
+              {_row.name}
+            </Link>
           </>
         );
       },

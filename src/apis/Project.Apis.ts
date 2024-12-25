@@ -12,6 +12,7 @@ const ProjectApi = {
   updateProjectStatus: (id: string, project: IProject) =>
     API.patch(`${endPoint}/UpdateProjectStatus/${id}`, project),
   deleteProject: (id: string) => API.delete(`${endPoint}/${id}`),
+  getAll: () => API.get(`${endPoint}/GetAll`),
 };
 
 export default ProjectApi;

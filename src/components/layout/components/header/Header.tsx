@@ -6,6 +6,7 @@ import {
   CircleUserRound,
   Settings,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import Input from "../../../inputs/Input";
 import ProjectDropdown from "./project-dropdown/ProjectDropdown";
 
@@ -16,7 +17,9 @@ const Header = () => {
         {/* left */}
         <div className="flex items-center gap-4">
           <div>
-            <JiraLogo />
+            <Link to={"/"}>
+              <JiraLogo />
+            </Link>
           </div>
           {/* nav bar */}
           <aside className="flex gap-2">

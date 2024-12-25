@@ -29,16 +29,6 @@ const Layout = () => {
         >
           <main className="flex flex-col items-start justify-center flex-grow">
             <div className="w-full h-full gap-4 py-4">
-              {/* <div className="flex items-center gap-4 py-4">
-                <TbLayoutSidebarLeftExpand
-                  onClick={handleToggle}
-                  size={24}
-                  className={`transition-transform duration-300 transform ${
-                    isExpanded ? "rotate-180" : ""
-                  }`}
-                />
-                <Breadcrumbs />
-              </div> */}
               <Outlet />
             </div>
           </main>
