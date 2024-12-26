@@ -17,3 +17,8 @@ interface IProject extends IEntity {
   leaderId?: string;
   url?: string;
 }
+
+interface IProjectResponse extends IProject {
+  leaderName?: string;
+  
+}
