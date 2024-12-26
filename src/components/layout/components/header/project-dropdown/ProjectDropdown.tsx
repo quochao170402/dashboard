@@ -29,7 +29,7 @@ const ProjectDropdown = () => {
           key: project.id,
           label: (
             <Link
-              to={`/projects/${project.id}`}
+              to={`/projects/${project.key}`}
               className="flex items-center gap-4 py-1 px-4 text-lg"
             >
               {project.name}
@@ -59,7 +59,7 @@ const ProjectDropdown = () => {
           ]);
           if (open && !clientData) {
             mutate();
-          }else{
+          } else {
             setProjects(clientData || []);
           }
         }}
