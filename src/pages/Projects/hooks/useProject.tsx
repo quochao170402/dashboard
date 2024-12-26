@@ -122,7 +122,7 @@ const useProject = () => {
     setPagination({ ...pagination, current: 1 });
   };
 
-  const columns: Array<ColumnProps<IProject>> = [
+  const columns: Array<ColumnProps<IProjectResponse>> = [
     {
       title: "No",
       width: 100,
@@ -134,7 +134,6 @@ const useProject = () => {
     {
       dataIndex: "name",
       title: "Name",
-
       align: "left",
       render: (_value, _row) => {
         return (
@@ -154,12 +153,12 @@ const useProject = () => {
     },
     {
       title: "Leader",
-      width: 120,
+      width: 200,
       align: "left",
       render: (_value, _row) => {
         return (
           <>
-            <div className="flex gap-4">{_row.name}</div>
+            <div className="flex gap-4">{`Leader ${_row.name}`}</div>
           </>
         );
       },
@@ -167,7 +166,7 @@ const useProject = () => {
     {
       dataIndex: "url",
       title: "Url",
-      width: 300,
+
       align: "left",
       render(value) {
         return (

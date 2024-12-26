@@ -9,9 +9,7 @@ const ProjectApi = {
     API.post(`${endPoint}/AddProject`, project),
   updateProject: (id: string, project: IProject) =>
     API.put(`${endPoint}/UpdateProject/${id}`, project),
-  updateProjectStatus: (id: string, project: IProject) =>
-    API.patch(`${endPoint}/UpdateProjectStatus/${id}`, project),
-  deleteProject: (id: string) => API.delete(`${endPoint}/${id}`),
+  deleteProject: (id: string) => API.delete(`${endPoint}/DeleteProject/${id}`),
   getAll: () => API.get(`${endPoint}/GetAll`),
 };
 

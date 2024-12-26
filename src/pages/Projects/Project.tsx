@@ -14,7 +14,6 @@ const Project = () => {
     handleToggleModal,
     handlePageChange,
     handleDoubleClick,
-    handleRefetch,
   } = useProject();
 
   return (
