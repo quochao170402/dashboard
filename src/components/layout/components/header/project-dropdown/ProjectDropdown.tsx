@@ -1,3 +1,4 @@
+import { IOptionData } from "@/@types/Common";
 import ProjectApi from "@/apis/Project.Apis";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { MenuProps } from "antd";
@@ -7,32 +8,32 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const ProjectDropdown = () => {
-  const [projects, setProjects] = useState<IProject[]>([]);
+  const [options, setOptions] = useState<IOptionData[]>([]);
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
     mutationKey: ["getProjects"],
-    mutationFn: () => ProjectApi.getAll(),
+    mutationFn: () => ProjectApi.getProjectOptions(),
     onSuccess: (data) => {
       if (data.data.data) {
-        const result = data.data.data as IProject[];
+        const result = data.data.data as IOptionData[];
         queryClient.setQueryData(["dropdownProjects"], result);
-        setProjects(data.data.data as IProject[]);
+        setOptions(data.data.data as IOptionData[]);
       }
     },
   });
-
+  console.log("options :>> ", options);
   const items: MenuProps["items"] =
-    projects.length > 0
-      ? projects.map((project) => ({
+    options.length > 0
+      ? options.map((value) => ({
           type: "item",
-          key: project.id,
+          key: value.key,
           label: (
             <Link
-              to={`/projects/${project.key}`}
+              to={`/projects/${value.key}`}
               className="flex items-center gap-4 py-1 px-4 text-lg"
             >
-              {project.name}
+              {value.value}
             </Link>
           ),
         }))
@@ -54,13 +55,13 @@ const ProjectDropdown = () => {
         menu={{ items }}
         arrow={{ pointAtCenter: true }}
         onOpenChange={(open) => {
-          const clientData = queryClient.getQueryData<IProject[]>([
+          const clientData = queryClient.getQueryData<IOptionData[]>([
             "dropdownProjects",
           ]);
           if (open && !clientData) {
             mutate();
           } else {
-            setProjects(clientData || []);
+            setOptions(clientData || []);
           }
         }}
       >

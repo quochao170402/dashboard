@@ -20,6 +20,8 @@ interface ITask {
   sprintId?: string;
   epicId?: string;
   comments?: IComment[];
+  assignee?: IUser;
+  reporter?: IUser;
 }
 
 interface IComment {

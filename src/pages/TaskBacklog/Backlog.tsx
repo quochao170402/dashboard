@@ -1,7 +1,14 @@
+import BacklogItem from "./components/BacklogItem";
+import useTaskHook from "./hooks/useTaskHook";
+
 const TaskBacklog = () => {
+  const { tasks } = useTaskHook();
+  console.log("🚀 ~ TaskBacklog ~ tasks:", tasks);
   return (
     <>
-      <h1>Backlog</h1>
+      {tasks?.map((x) => (
+        <BacklogItem task={x} />
+      ))}
     </>
   );
 };
