@@ -1,7 +1,6 @@
 import NoData from "@/components/no-data/NoData";
 import Title from "@/components/title/Title";
 import { Table } from "antd";
-import ProjectFilterBar from "./components/ProjectFilterBar";
 import UpsertProjectModal from "./components/UpsertProjectModal";
 import useProject from "./hooks/useProject";
 
@@ -15,13 +14,11 @@ const Project = () => {
     handleToggleModal,
     handlePageChange,
     handleDoubleClick,
-    handleRefetch,
   } = useProject();
-  
 
   return (
     <div>
-      <div className="flex items-center justify-between px-2 pb-2 border-b">
+      <div className="flex items-center justify-between mb-4">
         <Title title={"Project"} />
         <button
           className="py-2 px-4 rounded-md bg-green-500 text-white w-24"
@@ -32,9 +29,7 @@ const Project = () => {
           Create
         </button>
       </div>
-      <div>
-        <ProjectFilterBar handleRefetch={handleRefetch} />
-      </div>
+
       {projects.length > 0 ? (
         <div>
           <Table

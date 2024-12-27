@@ -16,37 +16,37 @@ export const projectMenuItems: MenuItemType[] = [
   {
     icon: () => <PanelsTopLeft size={24} />,
     label: "Overview",
-    path: "/projects/:projectId/overview",
+    path: "/projects/:projectKey/overview",
     component: <Dashboard />,
   },
   {
     icon: () => <Columns3 size={24} />,
     label: "Backlog",
-    path: "/projects/:projectId/backlog",
+    path: "/projects/:projectKey/backlog",
     component: <Task />,
   },
   {
     icon: () => <List size={24} />,
     label: "List",
-    path: "/projects/:projectId/list",
+    path: "/projects/:projectKey/list",
     component: <Task />,
   },
   {
     icon: () => <SquareKanban size={24} />,
     label: "Board",
-    path: "/projects/:projectId/board",
+    path: "/projects/:projectKey/board",
     component: <Task />,
   },
   {
     icon: () => <Users size={24} />,
     label: "Users",
-    path: "/projects/:projectId/users",
+    path: "/projects/:projectKey/users",
     component: <User />,
   },
   {
     icon: () => <Settings size={24} />,
     label: "Settings",
-    path: "/projects/:projectId/settings",
+    path: "/projects/:projectKey/settings",
     component: <Dashboard />,
   },
 ];

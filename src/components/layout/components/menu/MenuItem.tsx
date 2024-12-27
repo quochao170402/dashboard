@@ -8,9 +8,7 @@ interface Props {
 
 const MenuItem = ({ item, isMenuExpanded }: Props) => {
   const location = useLocation();
-  // const { projectId } = useParams();
 
-  // const path = item.path.replace(":projectId", projectId || "");
   const isActive = (path: string) => {
     return location.pathname.includes(path);
   };

@@ -46,6 +46,7 @@ const Modal = ({
     }
 
     return () => window.removeEventListener("keydown", handleKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible]);
 
   const getSubmitButton = (type: "form" | "confirm" | "notification") => {

@@ -6,7 +6,9 @@ import {
   CircleUserRound,
   Settings,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import Input from "../../../inputs/Input";
+import ProjectDropdown from "./project-dropdown/ProjectDropdown";
 
 const Header = () => {
   return (
@@ -15,7 +17,9 @@ const Header = () => {
         {/* left */}
         <div className="flex items-center gap-4">
           <div>
-            <JiraLogo />
+            <Link to={"/"}>
+              <JiraLogo />
+            </Link>
           </div>
           {/* nav bar */}
           <aside className="flex gap-2">
@@ -24,8 +28,7 @@ const Header = () => {
               <ChevronDown size={16} />
             </nav>
             <nav className="hover:bg-gray-100 p-2 rounded-md flex items-center gap-1 font-medium">
-              Projects
-              <ChevronDown size={16} />
+              <ProjectDropdown />
             </nav>
             <nav className="hover:bg-gray-100 p-2 rounded-md flex items-center gap-1 font-medium">
               Filters

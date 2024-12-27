@@ -6,23 +6,8 @@
 //   [TaskStatus.DONE]: "Done",
 // };
 
-import DatePicker from "@/components/date-picker/DatePicker";
-import { useState } from "react";
-
 const Dashboard = () => {
-  const [date, setDate] = useState(new Date());
-  return (
-    <>
-      <div className="w-48">
-        <DatePicker
-          value={date}
-          onChange={(e) => {
-            setDate(new Date(e.target.value));
-          }}
-        />
-      </div>
-    </>
-  );
+  return <></>;
 };
 
 export default Dashboard;

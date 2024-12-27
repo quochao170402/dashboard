@@ -6,17 +6,12 @@ interface Props {
   isExpanded: boolean;
   menuItems: MenuItemType[];
 }
-
-// Toggle Menu:
-// 1. Resize sidebar and main screen
-// 2. Hide menu label and style children menu as tooltip
-
 const Sidebar = ({ menuItems, isExpanded }: Props) => {
-  const { projectId } = useParams();
+  const { projectKey } = useParams();
   const selectProjectItems = menuItems.map((x) => {
     return {
       ...x,
-      path: x.path.replace(":projectId", projectId || ""),
+      path: x.path.replace(":projectKey", projectKey || ""),
     } as MenuItemType;
   });
   return (
