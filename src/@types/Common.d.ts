@@ -15,3 +15,8 @@ interface IOption<T> {
   label: ReactNode;
   value: T;
 }
+
+interface IOptionData {
+  key: string;
+  value: string;
+}

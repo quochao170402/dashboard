@@ -10,7 +10,7 @@ const ProjectApi = {
   updateProject: (id: string, project: IProject) =>
     API.put(`${endPoint}/UpdateProject/${id}`, project),
   deleteProject: (id: string) => API.delete(`${endPoint}/DeleteProject/${id}`),
-  getAll: () => API.get(`${endPoint}/GetAll`),
+  getProjectOptions: () => API.get(`${endPoint}/GetOptions`),
 };
 
 export default ProjectApi;

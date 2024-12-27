@@ -10,7 +10,7 @@ const TaskApi = {
     pageIndex: number
   ) =>
     API.get(`${endPoint}/FilterTask/${projectId}`, {
-      //   params: { keyword, pageSize, pageIndex },
+      params: { keyword, pageSize, pageIndex },
     }),
   createTask: (task: ITask) => API.post(`${endPoint}/CreateTask`, task),
   updateTask: (id: string, task: ITask) =>
