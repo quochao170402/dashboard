@@ -61,13 +61,13 @@ const ProjectSetting = ({ visible, onClose }: Props) => {
     },
   ];
 
-  const { control, handleSubmit } = useForm<FormValues>({
+  const { control } = useForm<FormValues>({
     defaultValues: {
       items: properties,
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields } = useFieldArray({
     control,
     name: "items",
   });
@@ -172,22 +172,6 @@ const ProjectSetting = ({ visible, onClose }: Props) => {
       disabled: record.name === "Disabled User", // Column configuration not to be checked
       name: record.name,
     }),
-  };
-
-  const handleAddRow = () => {
-    append({
-      id: "4",
-      isDeleted: false,
-      createdAt: new Date(),
-      createdBy: "123e4567-e89b-12d3-a456-426614174006",
-      latestUpdatedAt: new Date(),
-      latestUpdatedBy: "123e4567-e89b-12d3-a456-426614174007",
-      name: "TaskStatus",
-      label: "Task Status",
-      datatype: Datatype.Text,
-      note: "Status of the task",
-      updatable: true,
-    });
   };
 
   const handleClose = () => {

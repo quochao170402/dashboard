@@ -54,7 +54,14 @@ export default function App() {
                 <Route
                   key="settings"
                   path="settings"
-                  element={<ProjectSetting />}
+                  element={
+                    <ProjectSetting
+                      visible={false}
+                      onClose={function (): void {
+                        throw new Error("Function not implemented.");
+                      }}
+                    />
+                  }
                 />
               </Route>
             </Routes>

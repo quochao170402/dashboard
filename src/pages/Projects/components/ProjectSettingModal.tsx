@@ -1,17 +1,44 @@
-import { IProperty } from "@/@types/Property";
+import { PropertyType } from "@/@types/Enums";
+import { IProjectSetting } from "@/@types/Property";
+import SettingApi from "@/apis/Setting.Apis";
 import { DatatypeAliases } from "@/lib/utils";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Modal, Table, TableProps } from "antd";
 import { ColumnProps } from "antd/es/table/Column";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 interface Props {
-  properties: IProperty[];
-  setProperties: (properties: IProperty[]) => void;
   visible: boolean;
   onClose: () => void;
 }
 
-const ProjectSettingModal = ({ properties, visible, onClose }: Props) => {
-  const columns: ColumnProps<IProperty>[] = [
+const ProjectSettingModal = ({ visible, onClose }: Props) => {
+  const [usedIds, setUsedIds] = useState<string[]>([]);
+
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["get-projects-properties"],
+    queryFn: () => SettingApi.getProperties(PropertyType.Project),
+    select: (res) => {
+      const result = res.data.data;
+      return result as IProjectSetting[];
+    },
+  });
+
+  const { mutate } = useMutation({
+    mutationKey: ["update-projects-properties-setting"],
+    mutationFn: (request: { propertyId: string; isUsed: boolean }[]) =>
+      SettingApi.updateProjectSetting(request),
+    onSuccess: () => {
+      refetch();
+      toast.success("Update project setting successful");
+    },
+    onError: () => {
+      toast.error("Update project setting error");
+    },
+  });
+
+  const columns: ColumnProps<IProjectSetting>[] = [
     {
       title: "No",
       key: "index",
@@ -36,29 +63,47 @@ const ProjectSettingModal = ({ properties, visible, onClose }: Props) => {
   ];
 
   // rowSelection object indicates the need for row selection
-  const rowSelection: TableProps<IProperty>["rowSelection"] = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: IProperty[]) => {
+  const rowSelection: TableProps<IProjectSetting>["rowSelection"] = {
+    onChange: (
+      selectedRowKeys: React.Key[],
+      selectedRows: IProjectSetting[]
+    ) => {
       console.log(
         `selectedRowKeys: ${selectedRowKeys}`,
         "selectedRows: ",
         selectedRows
       );
+
+      setUsedIds(selectedRows.map((x) => x.id));
     },
-    getCheckboxProps: (record: IProperty) => ({
+    getCheckboxProps: (record: IProjectSetting) => ({
       disabled: record.name === "Disabled User", // Column configuration not to be checked
       name: record.name,
     }),
+    selectedRowKeys: usedIds || data?.filter((x) => x.isUsed).map((x) => x.id),
   };
 
   const handleClose = () => {
     onClose();
+    setUsedIds(data?.filter((x) => x.isUsed).map((x) => x.id) || []);
   };
 
-  const handleOk = () => {};
+  const handleOk = () => {
+    const properties = data as IProjectSetting[];
+    const request = properties.map((x) => {
+      return {
+        propertyId: x.id,
+        isUsed: usedIds.includes(x.id),
+      };
+    });
+
+    mutate(request);
+  };
 
   return (
     <>
       <Modal
+        loading={isLoading}
         width={800}
         title="Project properties"
         open={visible}
@@ -68,7 +113,7 @@ const ProjectSettingModal = ({ properties, visible, onClose }: Props) => {
         destroyOnClose
       >
         <Table
-          dataSource={properties}
+          dataSource={data}
           rowKey="id"
           columns={columns}
           pagination={false}

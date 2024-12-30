@@ -15,3 +15,7 @@ interface IProperty extends IEntity {
   datatype: Datatype;
   note: string;
 }
+
+interface IProjectSetting extends IProperty {
+  isUsed: boolean;
+}

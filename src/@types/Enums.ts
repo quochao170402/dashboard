@@ -39,3 +39,8 @@ export enum Datatype {
   MultiSelect = 10,
   Person = 11,
 }
+
+export enum PropertyType {
+  Project = 0,
+  Task = 1,
+}

@@ -1,8 +1,5 @@
-import { IProperty } from "@/@types/Property";
-import PropertyApi from "@/apis/Property.Apis";
 import NoData from "@/components/no-data/NoData";
 import Title from "@/components/title/Title";
-import { useMutation } from "@tanstack/react-query";
 import { Button, Table } from "antd";
 import { Settings2 } from "lucide-react";
 import { useState } from "react";
@@ -23,14 +20,6 @@ const Project = () => {
   } = useProject();
 
   const [visible, setVisible] = useState(false);
-  const [properties, setProperties] = useState<IProperty[]>([]);
-  const { mutate } = useMutation({
-    mutationKey: ["get-projects-properties"],
-    mutationFn: () => PropertyApi.getProperties(),
-    onSuccess: (res) => {
-      setProperties(res.data.data);
-    },
-  });
 
   return (
     <div>
@@ -54,7 +43,6 @@ const Project = () => {
             className="p-4 text-blue-500 outline-blue-500"
             onClick={() => {
               setVisible(true);
-              mutate();
             }}
           >
             Setting
@@ -107,9 +95,7 @@ const Project = () => {
           onClose={() => {
             setVisible(false);
           }}
-          properties={properties}
-          setProperties={setProperties}
-        ></ProjectSettingModal>
+        />
       </div>
     </div>
   );
