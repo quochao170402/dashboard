@@ -13,6 +13,8 @@ const Project = () => {
     pagination,
     columns,
     projects,
+    properties,
+    refetchProperties,
     upsertProjectData,
     handleToggleModal,
     handlePageChange,
@@ -91,6 +93,8 @@ const Project = () => {
       </div>
       <div>
         <ProjectSettingModal
+          properties={properties || []}
+          refetch={refetchProperties}
           visible={visible}
           onClose={() => {
             setVisible(false);

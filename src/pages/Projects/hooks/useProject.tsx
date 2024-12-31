@@ -1,6 +1,9 @@
 import { IPagination } from "@/@types/Common";
 
+import { PropertyType } from "@/@types/Enums";
+import { IProjectSetting } from "@/@types/Property";
 import ProjectApi from "@/apis/Project.Apis";
+import SettingApi from "@/apis/Setting.Apis";
 import { selectProject } from "@/features/ProjectSlice";
 import { RootState } from "@/stores/store";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -48,6 +51,19 @@ const useProject = () => {
       return result;
     },
     staleTime: Infinity,
+  });
+
+  const {
+    data: properties,
+    isLoading,
+    refetch: refetchProperties,
+  } = useQuery({
+    queryKey: ["get-projects-properties"],
+    queryFn: () => SettingApi.getProperties(PropertyType.Project),
+    select: (res) => {
+      const result = res.data.data;
+      return (result as IProjectSetting[]) ?? ([] as IProjectSetting[]);
+    },
   });
 
   const { mutate: handleAddProject } = useMutation({
@@ -122,6 +138,23 @@ const useProject = () => {
     setPagination({ ...pagination, current: 1 });
   };
 
+  const renderColumns = () => {
+    if (properties && properties.length > 0) {
+      const c = properties.map(
+        (property) =>
+          ({
+            dataIndex: property.name.toLowerCase(),
+            title: property.label,
+            align: "left",
+          } as ColumnProps<IProjectResponse>)
+      );
+      console.log("c :>> ", c);
+      return c;
+    } else {
+      return [];
+    }
+  };
+
   const columns: Array<ColumnProps<IProjectResponse>> = [
     {
       title: "No",
@@ -131,6 +164,7 @@ const useProject = () => {
         return <>{rowIndex + 1}</>;
       },
     },
+    ...renderColumns(),
     {
       dataIndex: "name",
       title: "Name",
@@ -202,6 +236,8 @@ const useProject = () => {
     pagination,
     columns,
     projects,
+    properties,
+    refetchProperties,
     upsertProjectData,
     handleToggleModal,
     handlePageChange,

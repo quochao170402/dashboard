@@ -1,29 +1,26 @@
-import { PropertyType } from "@/@types/Enums";
 import { IProjectSetting } from "@/@types/Property";
 import SettingApi from "@/apis/Setting.Apis";
 import { DatatypeAliases } from "@/lib/utils";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { Modal, Table, TableProps } from "antd";
 import { ColumnProps } from "antd/es/table/Column";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
 interface Props {
+  properties: IProjectSetting[];
+  refetch: () => void;
   visible: boolean;
   onClose: () => void;
 }
 
-const ProjectSettingModal = ({ visible, onClose }: Props) => {
+const ProjectSettingModal = ({
+  properties,
+  refetch,
+  visible,
+  onClose,
+}: Props) => {
   const [usedIds, setUsedIds] = useState<string[]>([]);
-
-  const { data, isLoading, refetch } = useQuery({
-    queryKey: ["get-projects-properties"],
-    queryFn: () => SettingApi.getProperties(PropertyType.Project),
-    select: (res) => {
-      const result = res.data.data;
-      return result as IProjectSetting[];
-    },
-  });
 
   const { mutate } = useMutation({
     mutationKey: ["update-projects-properties-setting"],
@@ -80,16 +77,16 @@ const ProjectSettingModal = ({ visible, onClose }: Props) => {
       disabled: record.name === "Disabled User", // Column configuration not to be checked
       name: record.name,
     }),
-    selectedRowKeys: usedIds || data?.filter((x) => x.isUsed).map((x) => x.id),
+    selectedRowKeys:
+      usedIds || properties?.filter((x) => x.isUsed).map((x) => x.id),
   };
 
   const handleClose = () => {
     onClose();
-    setUsedIds(data?.filter((x) => x.isUsed).map((x) => x.id) || []);
+    setUsedIds(properties?.filter((x) => x.isUsed).map((x) => x.id) || []);
   };
 
   const handleOk = () => {
-    const properties = data as IProjectSetting[];
     const request = properties.map((x) => {
       return {
         propertyId: x.id,
@@ -103,7 +100,6 @@ const ProjectSettingModal = ({ visible, onClose }: Props) => {
   return (
     <>
       <Modal
-        loading={isLoading}
         width={800}
         title="Project properties"
         open={visible}
@@ -113,7 +109,7 @@ const ProjectSettingModal = ({ visible, onClose }: Props) => {
         destroyOnClose
       >
         <Table
-          dataSource={data}
+          dataSource={properties}
           rowKey="id"
           columns={columns}
           pagination={false}
