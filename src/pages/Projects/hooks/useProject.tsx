@@ -11,7 +11,6 @@ import { ColumnProps } from "antd/es/table";
 import { SquarePen, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import IUpsertProject from "../common/IUpsertProject";
 
@@ -31,33 +30,29 @@ const useProject = () => {
     pageSize: 10,
   });
 
-  const [searchParams] = useSearchParams();
+  // const { data: { data: projects = [], count = 0 } = {}, refetch } = useQuery({
+  //   queryKey: [
+  //     "filter-project",
+  //     pagination.current,
+  //     pagination.pageSize,
+  //     searchParams.get("keyword"),
+  //   ],
+  //   queryFn: () =>
+  //     ProjectApi.getProject(
+  //       searchParams.get("keyword") ?? "",
+  //       pagination.pageSize,
+  //       pagination.current
+  //     ),
+  //   select: (res) => {
+  //     const result = res.data.data;
+  //     console.log("🚀 ~ useProject ~ result:", result);
 
-  const { data: { data: projects = [], count = 0 } = {}, refetch } = useQuery({
-    queryKey: [
-      "filter-project",
-      pagination.current,
-      pagination.pageSize,
-      searchParams.get("keyword"),
-    ],
-    queryFn: () =>
-      ProjectApi.getProject(
-        searchParams.get("keyword") ?? "",
-        pagination.pageSize,
-        pagination.current
-      ),
-    select: (res) => {
-      const result = res.data.data;
-      return result;
-    },
-    staleTime: Infinity,
-  });
+  //     return result;
+  //   },
+  //   staleTime: Infinity,
+  // });
 
-  const {
-    data: properties,
-    isLoading,
-    refetch: refetchProperties,
-  } = useQuery({
+  const { data: properties, refetch: refetchProperties } = useQuery({
     queryKey: ["get-projects-properties"],
     queryFn: () => SettingApi.getProperties(PropertyType.Project),
     select: (res) => {
@@ -74,7 +69,7 @@ const useProject = () => {
       refetch();
     },
     onError: () => {
-      toast.success("Create project error");
+      toast.error("Create project error");
     },
   });
 
@@ -100,6 +95,16 @@ const useProject = () => {
     },
     onError: () => {
       toast.error("Delete project error");
+    },
+  });
+
+  const { data: { data: projects = [], count = 0 } = {}, refetch } = useQuery({
+    queryKey: ["project-paging", pagination.current, pagination.pageSize],
+    queryFn: () =>
+      ProjectApi.getPaging(pagination.pageSize, pagination.current),
+    select: (res) => {
+      const result = res.data.data;
+      return result;
     },
   });
 
@@ -140,16 +145,16 @@ const useProject = () => {
 
   const renderColumns = () => {
     if (properties && properties.length > 0) {
-      const c = properties.map(
-        (property) =>
-          ({
-            dataIndex: property.name.toLowerCase(),
-            title: property.label,
-            align: "left",
-          } as ColumnProps<IProjectResponse>)
-      );
-      console.log("c :>> ", c);
-      return c;
+      return properties
+        .filter((x) => x.isUsed)
+        .map(
+          (property) =>
+            ({
+              dataIndex: property.name.toLowerCase(),
+              title: property.label,
+              align: "left",
+            } as ColumnProps<IProjectResponse>)
+        );
     } else {
       return [];
     }
@@ -165,53 +170,6 @@ const useProject = () => {
       },
     },
     ...renderColumns(),
-    {
-      dataIndex: "name",
-      title: "Name",
-      align: "left",
-      render: (_value, _row) => {
-        return (
-          <>
-            <Link to={`/projects/${_row.key}`} className="flex gap-4">
-              {_row.name}
-            </Link>
-          </>
-        );
-      },
-    },
-    {
-      dataIndex: "key",
-      width: 120,
-      title: "Key",
-      align: "left",
-    },
-    {
-      title: "Leader",
-      width: 200,
-      align: "left",
-      render: (_value, _row) => {
-        return (
-          <>
-            <div className="flex gap-4">{`Leader ${_row.name}`}</div>
-          </>
-        );
-      },
-    },
-    {
-      dataIndex: "url",
-      title: "Url",
-
-      align: "left",
-      render(value) {
-        return (
-          <>
-            <a href={value} className="text-blue-500 underline">
-              {value}
-            </a>
-          </>
-        );
-      },
-    },
     {
       title: "Actions",
       width: 100,

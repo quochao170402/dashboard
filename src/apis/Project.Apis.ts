@@ -12,6 +12,8 @@ const ProjectApi = {
   deleteProject: (id: string) => API.delete(`${endPoint}/DeleteProject/${id}`),
   getProjectOptions: () => API.get(`${endPoint}/GetOptions`),
   getProperties: () => API.get(`${endPoint}/GetProjectProperties`),
+  getPaging: (pageSize?: number, pageIndex?: number) =>
+    API.get(`${endPoint}/Get`, { params: { pageSize, pageIndex } }),
 };
 
 export default ProjectApi;

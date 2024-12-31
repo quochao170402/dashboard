@@ -4,7 +4,7 @@ import { DatatypeAliases } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { Modal, Table, TableProps } from "antd";
 import { ColumnProps } from "antd/es/table/Column";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 interface Props {
@@ -22,12 +22,22 @@ const ProjectSettingModal = ({
 }: Props) => {
   const [usedIds, setUsedIds] = useState<string[]>([]);
 
+  useEffect(() => {
+    if (properties && properties.length > 0) {
+      const defaultUsedIds = properties
+        .filter((x) => x.isUsed)
+        .map((x) => x.id);
+      setUsedIds(defaultUsedIds);
+    }
+  }, [properties]);
+
   const { mutate } = useMutation({
     mutationKey: ["update-projects-properties-setting"],
     mutationFn: (request: { propertyId: string; isUsed: boolean }[]) =>
       SettingApi.updateProjectSetting(request),
     onSuccess: () => {
       refetch();
+      handleClose();
       toast.success("Update project setting successful");
     },
     onError: () => {
@@ -71,14 +81,13 @@ const ProjectSettingModal = ({
         selectedRows
       );
 
-      setUsedIds(selectedRows.map((x) => x.id));
+      setUsedIds(selectedRowKeys.map((x) => x.toString()));
     },
     getCheckboxProps: (record: IProjectSetting) => ({
       disabled: record.name === "Disabled User", // Column configuration not to be checked
       name: record.name,
     }),
-    selectedRowKeys:
-      usedIds || properties?.filter((x) => x.isUsed).map((x) => x.id),
+    selectedRowKeys: usedIds,
   };
 
   const handleClose = () => {
