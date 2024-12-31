@@ -1,6 +1,9 @@
 import NoData from "@/components/no-data/NoData";
 import Title from "@/components/title/Title";
-import { Table } from "antd";
+import { Button, Table } from "antd";
+import { Settings2 } from "lucide-react";
+import { useState } from "react";
+import ProjectSettingModal from "./components/ProjectSettingModal";
 import UpsertProjectModal from "./components/UpsertProjectModal";
 import useProject from "./hooks/useProject";
 
@@ -10,24 +13,43 @@ const Project = () => {
     pagination,
     columns,
     projects,
+    properties,
+    refetchProperties,
     upsertProjectData,
     handleToggleModal,
     handlePageChange,
     handleDoubleClick,
   } = useProject();
 
+  const [visible, setVisible] = useState(false);
+
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
         <Title title={"Project"} />
-        <button
-          className="py-2 px-4 rounded-md bg-green-500 text-white w-24"
-          onClick={() => {
-            handleToggleModal(true);
-          }}
-        >
-          Create
-        </button>
+        <div className="flex gap-4">
+          <Button
+            variant="outlined"
+            // type="text"
+            className="p-4 text-green-500"
+            onClick={() => {
+              handleToggleModal(true);
+            }}
+          >
+            Create
+          </Button>
+          <Button
+            // color="default"
+            variant="outlined"
+            icon={<Settings2 />}
+            className="p-4 text-blue-500 outline-blue-500"
+            onClick={() => {
+              setVisible(true);
+            }}
+          >
+            Setting
+          </Button>
+        </div>
       </div>
 
       {projects.length > 0 ? (
@@ -67,6 +89,16 @@ const Project = () => {
           data={upsertProjectData.data}
           updatable={upsertProjectData.updatable}
           onSubmit={upsertProjectData.onSubmit}
+        />
+      </div>
+      <div>
+        <ProjectSettingModal
+          properties={properties || []}
+          refetch={refetchProperties}
+          visible={visible}
+          onClose={() => {
+            setVisible(false);
+          }}
         />
       </div>
     </div>

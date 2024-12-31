@@ -18,3 +18,29 @@ export enum ProjectStatus {
   COMPLETED = 2,
   CANCELLED = 3,
 }
+
+export enum Datatype {
+  Text = 0,
+  TextArea = 1,
+
+  Number = 2,
+  Decimal = 3,
+
+  DateTime = 4,
+  TimeSpan = 5,
+
+  Boolean = 6,
+
+  RadioButton = 7,
+  SelectList = 8,
+
+  File = 9,
+
+  MultiSelect = 10,
+  Person = 11,
+}
+
+export enum PropertyType {
+  Project = 0,
+  Task = 1,
+}

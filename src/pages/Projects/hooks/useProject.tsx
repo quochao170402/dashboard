@@ -1,6 +1,9 @@
 import { IPagination } from "@/@types/Common";
 
+import { PropertyType } from "@/@types/Enums";
+import { IProjectSetting } from "@/@types/Property";
 import ProjectApi from "@/apis/Project.Apis";
+import SettingApi from "@/apis/Setting.Apis";
 import { selectProject } from "@/features/ProjectSlice";
 import { RootState } from "@/stores/store";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -8,7 +11,6 @@ import { ColumnProps } from "antd/es/table";
 import { SquarePen, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import IUpsertProject from "../common/IUpsertProject";
 
@@ -28,26 +30,35 @@ const useProject = () => {
     pageSize: 10,
   });
 
-  const [searchParams] = useSearchParams();
+  // const { data: { data: projects = [], count = 0 } = {}, refetch } = useQuery({
+  //   queryKey: [
+  //     "filter-project",
+  //     pagination.current,
+  //     pagination.pageSize,
+  //     searchParams.get("keyword"),
+  //   ],
+  //   queryFn: () =>
+  //     ProjectApi.getProject(
+  //       searchParams.get("keyword") ?? "",
+  //       pagination.pageSize,
+  //       pagination.current
+  //     ),
+  //   select: (res) => {
+  //     const result = res.data.data;
+  //     console.log("🚀 ~ useProject ~ result:", result);
 
-  const { data: { data: projects = [], count = 0 } = {}, refetch } = useQuery({
-    queryKey: [
-      "filter-project",
-      pagination.current,
-      pagination.pageSize,
-      searchParams.get("keyword"),
-    ],
-    queryFn: () =>
-      ProjectApi.getProject(
-        searchParams.get("keyword") ?? "",
-        pagination.pageSize,
-        pagination.current
-      ),
+  //     return result;
+  //   },
+  //   staleTime: Infinity,
+  // });
+
+  const { data: properties, refetch: refetchProperties } = useQuery({
+    queryKey: ["get-projects-properties"],
+    queryFn: () => SettingApi.getProperties(PropertyType.Project),
     select: (res) => {
       const result = res.data.data;
-      return result;
+      return (result as IProjectSetting[]) ?? ([] as IProjectSetting[]);
     },
-    staleTime: Infinity,
   });
 
   const { mutate: handleAddProject } = useMutation({
@@ -58,7 +69,7 @@ const useProject = () => {
       refetch();
     },
     onError: () => {
-      toast.success("Create project error");
+      toast.error("Create project error");
     },
   });
 
@@ -84,6 +95,16 @@ const useProject = () => {
     },
     onError: () => {
       toast.error("Delete project error");
+    },
+  });
+
+  const { data: { data: projects = [], count = 0 } = {}, refetch } = useQuery({
+    queryKey: ["project-paging", pagination.current, pagination.pageSize],
+    queryFn: () =>
+      ProjectApi.getPaging(pagination.pageSize, pagination.current),
+    select: (res) => {
+      const result = res.data.data;
+      return result;
     },
   });
 
@@ -122,6 +143,23 @@ const useProject = () => {
     setPagination({ ...pagination, current: 1 });
   };
 
+  const renderColumns = () => {
+    if (properties && properties.length > 0) {
+      return properties
+        .filter((x) => x.isUsed)
+        .map(
+          (property) =>
+            ({
+              dataIndex: property.name.toLowerCase(),
+              title: property.label,
+              align: "left",
+            } as ColumnProps<IProjectResponse>)
+        );
+    } else {
+      return [];
+    }
+  };
+
   const columns: Array<ColumnProps<IProjectResponse>> = [
     {
       title: "No",
@@ -131,53 +169,7 @@ const useProject = () => {
         return <>{rowIndex + 1}</>;
       },
     },
-    {
-      dataIndex: "name",
-      title: "Name",
-      align: "left",
-      render: (_value, _row) => {
-        return (
-          <>
-            <Link to={`/projects/${_row.key}`} className="flex gap-4">
-              {_row.name}
-            </Link>
-          </>
-        );
-      },
-    },
-    {
-      dataIndex: "key",
-      width: 120,
-      title: "Key",
-      align: "left",
-    },
-    {
-      title: "Leader",
-      width: 200,
-      align: "left",
-      render: (_value, _row) => {
-        return (
-          <>
-            <div className="flex gap-4">{`Leader ${_row.name}`}</div>
-          </>
-        );
-      },
-    },
-    {
-      dataIndex: "url",
-      title: "Url",
-
-      align: "left",
-      render(value) {
-        return (
-          <>
-            <a href={value} className="text-blue-500 underline">
-              {value}
-            </a>
-          </>
-        );
-      },
-    },
+    ...renderColumns(),
     {
       title: "Actions",
       width: 100,
@@ -202,6 +194,8 @@ const useProject = () => {
     pagination,
     columns,
     projects,
+    properties,
+    refetchProperties,
     upsertProjectData,
     handleToggleModal,
     handlePageChange,
