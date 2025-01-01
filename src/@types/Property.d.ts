@@ -19,3 +19,13 @@ interface IProperty extends IEntity {
 interface IProjectSetting extends IProperty {
   isUsed: boolean;
 }
+
+interface Property {
+  id: string;
+  name: string;
+  label: string;
+  datatype: Datatype;
+  isDefault: boolean;
+  value: string;
+  isUsed: boolean;
+}

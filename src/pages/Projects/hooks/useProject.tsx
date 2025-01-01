@@ -1,7 +1,7 @@
 import { IPagination } from "@/@types/Common";
 
 import { PropertyType } from "@/@types/Enums";
-import { IProjectSetting } from "@/@types/Property";
+import { IProjectSetting, Property } from "@/@types/Property";
 import ProjectApi from "@/apis/Project.Apis";
 import SettingApi from "@/apis/Setting.Apis";
 import { selectProject } from "@/features/ProjectSlice";
@@ -14,15 +14,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import IUpsertProject from "../common/IUpsertProject";
 
-interface Property {
-  id: string; // Unique ID for the property
-  name: string; // Internal name of the property
-  label: string; // Display label of the property
-  datatype: number; // Type of data (e.g., 0: string, 1: text, 2: status, etc.)
-  isDefault: boolean; // Whether the property is a default field
-  value: string; // Value of the property
-  isUsed: boolean;
-}
 
 // Define the structure of an entity in the API data
 interface Entity {

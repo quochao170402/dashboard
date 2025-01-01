@@ -20,7 +20,6 @@ const Project = () => {
     upsertProjectData,
     handleToggleModal,
     handlePageChange,
-    handleDoubleClick,
   } = useProject();
 
   const [visible, setVisible] = useState(false);

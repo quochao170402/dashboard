@@ -1,6 +1,5 @@
 import { IProjectSetting } from "@/@types/Property";
 import SettingApi from "@/apis/Setting.Apis";
-import { DatatypeAliases } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { Modal, Table, TableProps } from "antd";
 import { ColumnProps } from "antd/es/table/Column";
@@ -63,9 +62,9 @@ const ProjectSettingModal = ({
       dataIndex: "datatype",
       key: "datatype",
       align: "right",
-      render: (_value, record) => {
-        return <>{DatatypeAliases[record.datatype]}</>;
-      },
+      // render: (_value, record) => {
+      //   // return <PropertyInput />; // {DatatypeAliases[record.datatype]}</PropertyInput>;
+      // },
     },
   ];
 
