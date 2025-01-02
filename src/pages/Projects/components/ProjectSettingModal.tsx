@@ -1,13 +1,13 @@
-import { IProjectSetting } from "@/@types/Property";
+import { ISettingModel } from "@/@types/Property";
 import SettingApi from "@/apis/Setting.Apis";
 import { useMutation } from "@tanstack/react-query";
-import { Modal, Table, TableProps } from "antd";
+import { Button, Modal, Table, TableProps } from "antd";
 import { ColumnProps } from "antd/es/table/Column";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 interface Props {
-  properties: IProjectSetting[];
+  properties: ISettingModel[];
   refetch: () => void;
   visible: boolean;
   onClose: () => void;
@@ -44,7 +44,7 @@ const ProjectSettingModal = ({
     },
   });
 
-  const columns: ColumnProps<IProjectSetting>[] = [
+  const columns: ColumnProps<ISettingModel>[] = [
     {
       title: "No",
       key: "index",
@@ -69,11 +69,8 @@ const ProjectSettingModal = ({
   ];
 
   // rowSelection object indicates the need for row selection
-  const rowSelection: TableProps<IProjectSetting>["rowSelection"] = {
-    onChange: (
-      selectedRowKeys: React.Key[],
-      selectedRows: IProjectSetting[]
-    ) => {
+  const rowSelection: TableProps<ISettingModel>["rowSelection"] = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: ISettingModel[]) => {
       console.log(
         `selectedRowKeys: ${selectedRowKeys}`,
         "selectedRows: ",
@@ -82,7 +79,7 @@ const ProjectSettingModal = ({
 
       setUsedIds(selectedRowKeys.map((x) => x.toString()));
     },
-    getCheckboxProps: (record: IProjectSetting) => ({
+    getCheckboxProps: (record: ISettingModel) => ({
       disabled: record.name === "Disabled User", // Column configuration not to be checked
       name: record.name,
     }),
@@ -109,12 +106,24 @@ const ProjectSettingModal = ({
     <>
       <Modal
         width={800}
-        title="Project properties"
+        title="Columns"
         open={visible}
         onOk={() => handleOk()}
         onClose={() => handleClose()}
         onCancel={() => handleClose()}
         destroyOnClose
+        footer={() => {
+          return (
+            <div className="flex justify-end gap-2">
+              <Button onClick={() => handleClose()} type="primary" danger>
+                Cancel
+              </Button>
+              <Button type="primary" onClick={() => handleOk()}>
+                Save
+              </Button>
+            </div>
+          );
+        }}
       >
         <Table
           dataSource={properties}

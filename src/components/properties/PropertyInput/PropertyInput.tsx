@@ -12,26 +12,69 @@ import {
   Upload,
   message,
 } from "antd";
-import React, { useState } from "react";
+import dayjs from "dayjs";
+import React, { useEffect, useState } from "react";
 
 interface Props {
   property: Property;
+  onChange: (propertyId: string, newValue: string) => void;
 }
 
 const { TextArea } = Input;
 const { Option } = Select;
 
-const PropertyInput = ({ property }: Props) => {
-  const [value, setValue] = useState<any>("");
+const PropertyInput = ({ property, onChange }: Props) => {
+  const [value, setValue] = useState<string>("");
+
+  // Convert API value to appropriate type
+  useEffect(() => {
+    let initialValue = property.value;
+
+    switch (property.datatype) {
+      case Datatype.Number:
+        initialValue = Number(property.value).toString();
+        break;
+
+      case Datatype.Decimal:
+        initialValue = parseFloat(property.value).toString();
+        break;
+
+      case Datatype.Boolean:
+        initialValue = property.value === "true" ? "true" : "false";
+        break;
+
+      case Datatype.DateTime:
+        initialValue = property.value; // Assuming the value is in ISO format (string)
+        break;
+
+      case Datatype.TimeSpan:
+        initialValue = property.value; // Assuming the value is a valid time span string
+        break;
+
+      case Datatype.SelectList:
+      case Datatype.MultiSelect:
+        // If it's a select or multi-select, handle it as an array of strings (for multi-select)
+        initialValue = property.value;
+        break;
+
+      case Datatype.RadioButton:
+        // If it's a radio button, cast to the appropriate value
+        initialValue = property.value;
+        break;
+
+      default:
+        break;
+    }
+
+    setValue(initialValue);
+  }, [property.value, property.datatype]);
 
   const handleChange = (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     e: React.ChangeEvent<HTMLInputElement> | string | number | any
   ) => {
-    if (e?.target) {
-      setValue(e.target.value); // For inputs like text, textarea
-    } else {
-      setValue(e); // For Select, DatePicker, etc.
-    }
+    setValue(e.target ? e.target.value : e);
+    onChange(property.id, e.target ? e.target.value : e);
   };
 
   switch (property.datatype) {
@@ -53,7 +96,7 @@ const PropertyInput = ({ property }: Props) => {
     case Datatype.Number:
       return (
         <InputNumber
-          value={value}
+          value={parseFloat(value)} // Ensure the value is a number
           onChange={handleChange}
           placeholder="Enter number"
           style={{ width: "100%" }}
@@ -63,7 +106,7 @@ const PropertyInput = ({ property }: Props) => {
     case Datatype.Decimal:
       return (
         <InputNumber
-          value={value}
+          value={parseFloat(value)} // Ensure the value is a decimal
           onChange={handleChange}
           placeholder="Enter decimal"
           style={{ width: "100%" }}
@@ -74,7 +117,7 @@ const PropertyInput = ({ property }: Props) => {
     case Datatype.DateTime:
       return (
         <DatePicker
-          value={value}
+          value={value ? dayjs(value) : null} // Assuming moment.js is used for date handling
           onChange={handleChange}
           showTime
           style={{ width: "100%" }}
@@ -84,7 +127,7 @@ const PropertyInput = ({ property }: Props) => {
     case Datatype.TimeSpan:
       return (
         <TimePicker
-          value={value}
+          value={value ? dayjs(value, "HH:mm:ss") : null} // Assuming time format handling
           onChange={handleChange}
           style={{ width: "100%" }}
         />
@@ -92,7 +135,10 @@ const PropertyInput = ({ property }: Props) => {
 
     case Datatype.Boolean:
       return (
-        <Checkbox checked={value} onChange={(e) => setValue(e.target.checked)}>
+        <Checkbox
+          checked={value === "true"}
+          onChange={(e) => setValue(e.target.checked ? "true" : "false")}
+        >
           Checkbox
         </Checkbox>
       );
@@ -100,8 +146,8 @@ const PropertyInput = ({ property }: Props) => {
     case Datatype.RadioButton:
       return (
         <Radio.Group onChange={handleChange} value={value}>
-          <Radio value={1}>Option 1</Radio>
-          <Radio value={2}>Option 2</Radio>
+          <Radio value="1">Option 1</Radio>
+          <Radio value="2">Option 2</Radio>
         </Radio.Group>
       );
 
@@ -122,8 +168,8 @@ const PropertyInput = ({ property }: Props) => {
       return (
         <Select
           mode="multiple"
-          value={value}
-          onChange={handleChange}
+          value={value.split(",")} // Convert comma-separated string to an array
+          onChange={(e) => handleChange(e.join(","))} // Convert array back to string on change
           style={{ width: "100%" }}
           placeholder="Select multiple options"
         >
@@ -133,7 +179,7 @@ const PropertyInput = ({ property }: Props) => {
         </Select>
       );
 
-    case Datatype.File:
+    case Datatype.File: {
       const props: UploadProps = {
         beforeUpload: (file) => {
           message.success(`${file.name} file uploaded successfully.`);
@@ -145,6 +191,7 @@ const PropertyInput = ({ property }: Props) => {
           <Input type="button" value="Upload File" />
         </Upload>
       );
+    }
 
     case Datatype.Person:
       return (

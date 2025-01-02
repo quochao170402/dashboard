@@ -1,7 +1,7 @@
 import NoData from "@/components/no-data/NoData";
 import Title from "@/components/title/Title";
 import { Button, Table, TablePaginationConfig } from "antd";
-import { Settings2 } from "lucide-react";
+import { BetweenVerticalStart } from "lucide-react";
 import { useMemo, useState } from "react";
 import ProjectSettingModal from "./components/ProjectSettingModal";
 import UpsertProjectModal from "./components/UpsertProjectModal";
@@ -55,13 +55,13 @@ const Project = () => {
           <Button
             // color="default"
             variant="outlined"
-            icon={<Settings2 />}
+            icon={<BetweenVerticalStart />}
             className="p-4 text-blue-500 outline-blue-500"
             onClick={() => {
               setVisible(true);
             }}
           >
-            Setting
+            Config
           </Button>
         </div>
       </div>

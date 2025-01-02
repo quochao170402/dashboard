@@ -1,7 +1,7 @@
 import { IPagination } from "@/@types/Common";
 
 import { PropertyType } from "@/@types/Enums";
-import { IProjectSetting, Property } from "@/@types/Property";
+import { ISettingModel, Property } from "@/@types/Property";
 import ProjectApi from "@/apis/Project.Apis";
 import SettingApi from "@/apis/Setting.Apis";
 import { selectProject } from "@/features/ProjectSlice";
@@ -13,7 +13,6 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import IUpsertProject from "../common/IUpsertProject";
-
 
 // Define the structure of an entity in the API data
 interface Entity {
@@ -64,7 +63,7 @@ const useProject = () => {
     queryFn: () => SettingApi.getProperties(PropertyType.Project),
     select: (res) => {
       const result = res.data.data;
-      return (result as IProjectSetting[]) ?? ([] as IProjectSetting[]);
+      return (result as ISettingModel[]) ?? ([] as ISettingModel[]);
     },
   });
 

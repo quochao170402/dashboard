@@ -20,5 +20,9 @@ interface IProject extends IEntity {
 
 interface IProjectResponse extends IProject {
   leaderName?: string;
-  
+}
+
+interface IProjectTableResponse {
+  id: string; // Unique ID for the entity
+  properties: Property[]; // List of properties for the entity
 }
