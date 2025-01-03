@@ -73,7 +73,7 @@ const ProjectModal = ({ properties, visible, onClose, onSubmit }: Props) => {
         title="Create Project"
         onOk={handleSubmit}
       >
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 max-h-[500px] overflow-y-auto no-scrollbar">
           {properties
             .filter((x) => x.isUsed)
             .map((property) => (

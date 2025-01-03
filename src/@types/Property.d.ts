@@ -16,6 +16,7 @@ interface IProperty extends IEntity {
   note: string;
   isDefault?: boolean;
   propertyType?: PropertyType;
+  options?: string[];
 }
 
 interface ISettingModel extends IProperty {

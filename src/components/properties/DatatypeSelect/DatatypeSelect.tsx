@@ -3,7 +3,7 @@ import { DatatypeAliases } from "@/lib/utils";
 import { Select } from "antd";
 
 interface IProps {
-  value: number;
+  value: Datatype;
   onChange: (value: number) => void;
 }
 

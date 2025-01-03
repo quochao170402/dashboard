@@ -1,12 +1,12 @@
 import { Datatype } from "@/@types/Enums";
 import { Property } from "@/@types/Property";
+import { people } from "@/lib/dummy";
 import type { UploadProps } from "antd";
 import {
   Checkbox,
   DatePicker,
   Input,
   InputNumber,
-  Radio,
   Select,
   TimePicker,
   Upload,
@@ -14,6 +14,9 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
+import PersonInput from "../PersonDatatype/PersonInput";
+import RadioInput from "../RadioDatatype/RadioInput";
+import SelectInput from "../SelectDatatype/SelectInput";
 
 interface Props {
   property: Property;
@@ -22,6 +25,11 @@ interface Props {
 
 const { TextArea } = Input;
 const { Option } = Select;
+
+const options = [
+  { label: "Option 1", value: "1" },
+  { label: "Option 2", value: "2" },
+];
 
 const PropertyInput = ({ property, onChange }: Props) => {
   const [value, setValue] = useState<string>("");
@@ -32,11 +40,8 @@ const PropertyInput = ({ property, onChange }: Props) => {
 
     switch (property.datatype) {
       case Datatype.Number:
-        initialValue = Number(property.value).toString();
-        break;
-
       case Datatype.Decimal:
-        initialValue = parseFloat(property.value).toString();
+        initialValue = Number(property.value).toString();
         break;
 
       case Datatype.Boolean:
@@ -145,38 +150,18 @@ const PropertyInput = ({ property, onChange }: Props) => {
 
     case Datatype.RadioButton:
       return (
-        <Radio.Group onChange={handleChange} value={value}>
-          <Radio value="1">Option 1</Radio>
-          <Radio value="2">Option 2</Radio>
-        </Radio.Group>
+        <RadioInput value={value} onChange={handleChange} options={options} />
       );
 
     case Datatype.SelectList:
-      return (
-        <Select
-          value={value}
-          onChange={handleChange}
-          style={{ width: "100%" }}
-          placeholder="Select an option"
-        >
-          <Option value="option1">Option 1</Option>
-          <Option value="option2">Option 2</Option>
-        </Select>
-      );
-
     case Datatype.MultiSelect:
       return (
-        <Select
-          mode="multiple"
-          value={value.split(",")} // Convert comma-separated string to an array
-          onChange={(e) => handleChange(e.join(","))} // Convert array back to string on change
-          style={{ width: "100%" }}
-          placeholder="Select multiple options"
-        >
-          <Option value="option1">Option 1</Option>
-          <Option value="option2">Option 2</Option>
-          <Option value="option3">Option 3</Option>
-        </Select>
+        <SelectInput
+          value={value}
+          onChange={handleChange}
+          options={options}
+          isMultiple
+        />
       );
 
     case Datatype.File: {
@@ -195,10 +180,11 @@ const PropertyInput = ({ property, onChange }: Props) => {
 
     case Datatype.Person:
       return (
-        <Input
+        <PersonInput
           value={value}
           onChange={handleChange}
-          placeholder="Enter person's name"
+          placeholder="Choose a person"
+          people={people}
         />
       );
 

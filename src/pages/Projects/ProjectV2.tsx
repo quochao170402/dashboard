@@ -47,7 +47,7 @@ const ProjectV2 = () => {
                 const value = record[propertyKey];
 
                 return (
-                  <div className="flex items-center justify-center">
+                  <div className="flex items-center justify-center min-w-20">
                     {value ?? "-"}
                   </div>
                 );
@@ -148,6 +148,8 @@ const ProjectV2 = () => {
       {projects.length > 0 ? (
         <div>
           <Table
+            className="max-w-full overflow-x-auto"
+            scroll={{ x: 1000 }}
             bordered
             columns={columns}
             dataSource={dataSource}

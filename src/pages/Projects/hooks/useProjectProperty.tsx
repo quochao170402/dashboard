@@ -6,8 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 const useProjectProperty = () => {
   // TODO: fetch properties table and config project table columns => api getProperties
   const { data: properties, refetch: refetchProperties } = useQuery({
-    queryKey: ["get-projects-properties"],
-    queryFn: () => SettingApi.getProperties(PropertyType.Project),
+    queryKey: ["get-all-properties"],
+    queryFn: () => SettingApi.getAllProperties(PropertyType.Project),
     select: (res) => {
       const result = res.data.data;
       return (result as ISettingModel[]) ?? ([] as ISettingModel[]);

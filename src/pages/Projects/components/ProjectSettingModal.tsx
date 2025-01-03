@@ -126,6 +126,7 @@ const ProjectSettingModal = ({
         }}
       >
         <Table
+          scroll={{ y: 500 }}
           dataSource={properties}
           rowKey="id"
           columns={columns}

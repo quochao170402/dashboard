@@ -1,3 +1,4 @@
+import { IPagination } from "@/@types/Common";
 import { Datatype, PropertyType } from "@/@types/Enums";
 import { ISettingModel } from "@/@types/Property";
 import SettingApi from "@/apis/Setting.Apis";
@@ -5,33 +6,49 @@ import DatatypeSelect from "@/components/properties/DatatypeSelect/DatatypeSelec
 import Title from "@/components/title/Title";
 import { DatatypeAliases } from "@/lib/utils";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Button, Checkbox, Input, Tooltip } from "antd";
-import Table, { ColumnProps } from "antd/es/table";
+import { Button, Checkbox, Input, Modal, Tooltip } from "antd";
+import Table, { ColumnProps, TablePaginationConfig } from "antd/es/table";
 import { CircleCheck, CircleX, SquarePen, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import PropertyForm from "./components/PropertyForm";
+import PropertyOptions from "./components/PropertyOption";
 
 type OpenType = "create" | "edit" | null;
 
 const Property = () => {
   const [open, setOpen] = useState<OpenType>(null);
-
+  const [options, setOptions] = useState<string[]>([]);
   const [newProperty, setNewProperty] = useState<ISettingModel | null>(null);
+  const [pagination, setPagination] = useState<IPagination>({
+    current: 1,
+    pageSize: 10,
+  });
 
   const { projectKey } = useParams();
-  const { data, refetch } = useQuery({
-    queryKey: ["get-projects-properties"],
-    queryFn: () =>
-      SettingApi.getProperties(
-        projectKey ? PropertyType.Task : PropertyType.Project
-      ),
-    select: (res) => {
-      const result = res.data.data;
-      return (result as ISettingModel[]) ?? ([] as ISettingModel[]);
-    },
-    
-  });
+  const { data: { data: properties = [], count = 0 } = {}, refetch } = useQuery(
+    {
+      queryKey: [
+        "get-projects-properties",
+        pagination.current,
+        pagination.pageSize,
+      ],
+      queryFn: () =>
+        SettingApi.getProperties(
+          projectKey ? PropertyType.Task : PropertyType.Project,
+          pagination.current,
+          pagination.pageSize
+        ),
+      select: (res) => {
+        const result = res.data.data as {
+          data: ISettingModel[];
+          count: number;
+        };
+        return result;
+      },
+    }
+  );
 
   const { mutate: addProperty } = useMutation({
     mutationKey: ["add-property"],
@@ -124,9 +141,17 @@ const Property = () => {
         <>
           {newProperty && record.id === newProperty.id ? (
             <DatatypeSelect
-              value={record.datatype}
+              value={newProperty.datatype}
               onChange={(value) => {
+                console.log("value :>> ", value);
                 setNewProperty({ ...newProperty, datatype: value });
+                if (
+                  value === Datatype.SelectList ||
+                  value === Datatype.MultiSelect ||
+                  value === Datatype.RadioButton
+                ) {
+                  setOptions(newProperty?.options || []); // Reset or keep options when switching datatypes
+                }
               }}
             />
           ) : (
@@ -271,6 +296,21 @@ const Property = () => {
     setNewProperty(open != null ? value : null);
   };
 
+  const paginationConfig = useMemo(() => {
+    const handlePageChange = (page: number, pageSize: number) => {
+      setPagination({ pageSize: pageSize, current: page });
+    };
+
+    return {
+      position: ["bottomRight"],
+      current: pagination.current,
+      pageSize: pagination.pageSize,
+      total: count,
+      onChange: handlePageChange,
+      showSizeChanger: true,
+    } as TablePaginationConfig;
+  }, [pagination, count]);
+
   return (
     <>
       <div className="flex items-center justify-between mb-4">
@@ -290,11 +330,11 @@ const Property = () => {
         columns={columns}
         dataSource={
           newProperty && newProperty.id.length === 0
-            ? [newProperty, ...(data ?? [])]
-            : data
+            ? [newProperty, ...(properties ?? [])]
+            : properties
         }
         rowKey="id"
-        pagination={false}
+        pagination={{ ...paginationConfig }}
         onRow={(record) => {
           return {
             onDoubleClick: () => {
@@ -303,6 +343,34 @@ const Property = () => {
           };
         }}
       />
+      {open && (
+        <PropertyForm
+          data={newProperty ?? undefined}
+          open={open !== null}
+          onClose={() => setOpen(null)}
+          onSubmit={open === "create" ? addProperty : updateProperty}
+        ></PropertyForm>
+      )}
+
+      {newProperty &&
+        (newProperty.datatype === Datatype.SelectList ||
+          newProperty.datatype === Datatype.MultiSelect ||
+          newProperty.datatype === Datatype.RadioButton) && (
+          <Modal
+            open={
+              (open === "create" || open === "edit") &&
+              (newProperty.datatype === Datatype.SelectList ||
+                newProperty.datatype === Datatype.MultiSelect ||
+                newProperty.datatype === Datatype.RadioButton)
+            }
+          >
+            <PropertyOptions
+              datatype={newProperty.datatype}
+              options={options}
+              onOptionsChange={setOptions}
+            />
+          </Modal>
+        )}
     </>
   );
 };

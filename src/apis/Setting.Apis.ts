@@ -5,8 +5,14 @@ import API from "@/utils/API";
 const endPoint = "projects/v1/Setting";
 
 const SettingApi = {
-  getProperties: (propertyType: PropertyType) =>
-    API.get(`${endPoint}/GetProperties/${propertyType}`),
+  getProperties: (
+    propertyType: PropertyType,
+    pageIndex?: number,
+    pageSize?: number
+  ) =>
+    API.get(
+      `${endPoint}/GetProperties/${propertyType}?pageIndex=${pageIndex}&pageSize=${pageSize}`
+    ),
   updateProjectSetting: (request: { propertyId: string; isUsed: boolean }[]) =>
     API.post(`${endPoint}/UpdateProjectSetting`, {
       settings: request,
@@ -15,6 +21,8 @@ const SettingApi = {
     API.post(`${endPoint}/AddProperty`, request),
   updateProperty: (request: ISettingModel) =>
     API.put(`${endPoint}/UpdateProperty/${request.id}`, request),
+  getAllProperties: (type: PropertyType) =>
+    API.get(`${endPoint}/GetAllProperties/${type}`),
 };
 
 export default SettingApi;
