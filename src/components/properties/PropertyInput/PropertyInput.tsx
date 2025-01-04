@@ -143,9 +143,7 @@ const PropertyInput = ({ property, onChange }: Props) => {
         <Checkbox
           checked={value === "true"}
           onChange={(e) => setValue(e.target.checked ? "true" : "false")}
-        >
-          Checkbox
-        </Checkbox>
+        ></Checkbox>
       );
 
     case Datatype.RadioButton:

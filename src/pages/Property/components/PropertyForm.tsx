@@ -22,13 +22,8 @@ interface Props {
   onSubmit: (data: ISettingModel) => void;
 }
 
-const PropertyForm = ({
-  open,
-  onClose,
-  onSubmit: onAddProperty,
-  data,
-}: Props) => {
-  const { control, handleSubmit, setValue, watch } = useForm<ISettingModel>({
+const PropertyForm = ({ open, onClose, onSubmit: submit, data }: Props) => {
+  const { control, handleSubmit, watch } = useForm<ISettingModel>({
     defaultValues: data || {
       name: "",
       label: "",
@@ -59,26 +54,29 @@ const PropertyForm = ({
   };
   const onSubmit = (data: ISettingModel) => {
     console.log("{ ...data, options } :>> ", { ...data, options });
-    onAddProperty({ ...data, options });
+    data.options = options;
+    submit(data);
+    onClose();
   };
 
   return (
     <Modal
       open={open}
+      onOk={handleSubmit(onSubmit)}
       onClose={onClose}
       onCancel={onClose}
       destroyOnClose
       title={data ? "Edit Property" : "Add Property"}
-      footer={() => {
-        return (
-          <div className="flex justify-end">
-            <Button onClick={onClose}>Cancel</Button>
-            <Button onClick={handleSubmit(onSubmit)} type="primary">
-              {data ? "Save" : "Add"}
-            </Button>
-          </div>
-        );
-      }}
+      // footer={() => {
+      //   return (
+      //     <div className="flex justify-end">
+      //       <Button onClick={onClose}>Cancel</Button>
+      //       <Button onClick={handleSubmit(onSubmit)} type="primary">
+      //         {data ? "Save" : "Add"}
+      //       </Button>
+      //     </div>
+      //   );
+      // }}
     >
       <form className="space-y-6">
         <div>
@@ -116,8 +114,10 @@ const PropertyForm = ({
           <Controller
             name="datatype"
             control={control}
+            // disabled={!!data?.id}
             render={({ field }) => (
               <Select
+                {...field}
                 style={{ width: "100%" }}
                 placeholder="Select Datatype"
                 options={Object.values(Datatype)
@@ -134,6 +134,8 @@ const PropertyForm = ({
                     value === Datatype.RadioButton
                   ) {
                     setOptions(data?.options ?? []); // Reset or keep options when switching datatypes
+                  } else {
+                    setOptions([]);
                   }
                 }}
               />
@@ -198,7 +200,7 @@ const PropertyForm = ({
             name="isDefault"
             control={control}
             render={({ field }) => (
-              <Checkbox {...field} className="mr-2">
+              <Checkbox {...field} checked={field.value} className="mr-2">
                 Default
               </Checkbox>
             )}
@@ -207,7 +209,7 @@ const PropertyForm = ({
             name="isUsed"
             control={control}
             render={({ field }) => (
-              <Checkbox {...field} className="mr-2">
+              <Checkbox {...field} checked={field.value} className="mr-2">
                 Used
               </Checkbox>
             )}

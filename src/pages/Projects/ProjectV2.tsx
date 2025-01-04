@@ -1,9 +1,12 @@
+import { Property } from "@/@types/Property";
 import NoData from "@/components/no-data/NoData";
+import PropertyInput from "@/components/properties/PropertyInput/PropertyInput";
+import PropertyView from "@/components/properties/PropertyView/PropertyView";
 import Title from "@/components/title/Title";
 import { Button, Table, TablePaginationConfig } from "antd";
 import { ColumnProps } from "antd/es/table";
 import { Settings2, SquarePen, Trash2 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProjectModal from "./components/ProjectModal";
 import ProjectSettingModal from "./components/ProjectSettingModal";
@@ -13,9 +16,10 @@ import useProjectV2 from "./hooks/useProjectV2";
 type ModalType = "add" | "update" | "property-table" | undefined;
 
 const ProjectV2 = () => {
+  const tableRef = useRef<HTMLDivElement>(null);
+
   const [activeModal, setActiveModal] = useState<ModalType>(undefined);
 
-  const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
 
   const { projects, count, addProject, pagination, setPagination } =
@@ -31,6 +35,16 @@ const ProjectV2 = () => {
     return row;
   });
 
+  const [selectedCell, setSelectedCell] = useState({
+    propertyId: "",
+    projectId: "",
+    value: "",
+  });
+
+  useEffect(() => {
+    console.log("Selected Cell", selectedCell);
+  }, [selectedCell]);
+
   const renderColumns = () => {
     if (properties && properties.length > 0) {
       return properties
@@ -45,12 +59,77 @@ const ProjectV2 = () => {
               render(_value, record, _index) {
                 const propertyKey = property.name;
                 const value = record[propertyKey];
+                // return (
+                //   <PropertyView property={{ ...property, value } as Property} />
+                // );
 
                 return (
-                  <div className="flex items-center justify-center min-w-20">
-                    {value ?? "-"}
+                  <div
+                    className="flex items-center justify-center min-w-20"
+                    onClick={() =>
+                      setSelectedCell({
+                        propertyId: property.id,
+                        projectId: record.id,
+                        value: value,
+                      })
+                    }
+                  >
+                    {selectedCell.propertyId === property.id ? (
+                      <PropertyInput
+                        property={{ ...property, value: value } as Property}
+                        onChange={(value) => {
+                          console.log(value);
+                        }}
+                      ></PropertyInput>
+                    ) : (
+                      <PropertyView
+                        property={{ ...property, value } as Property}
+                      />
+                    )}
                   </div>
                 );
+                // if (property.datatype === Datatype.Boolean) {
+                //   return (
+                //     <div className="flex items-center justify-center min-w-20">
+                //       <Checkbox disabled checked={value === "true"} />
+                //     </div>
+                //   );
+                // } else if (property.datatype === Datatype.DateTime) {
+                //   return (
+                //     <div className="flex items-center justify-center min-w-20">
+                //       {value ? dayjs(value).format("DD/MM/YYYY") : "-"}
+                //     </div>
+                //   );
+                // } else if (property.datatype === Datatype.Person) {
+                //   return (
+                //     <div className="flex items-center justify-center min-w-20">
+                //       <PersonView personId={value} people={people} />
+                //     </div>
+                //   );
+                // }
+                // return (
+                //   <div
+                //     className="flex items-center justify-center min-w-20"
+                //     onClick={() =>
+                //       setSelectedCell({
+                //         propertyId: property.id,
+                //         projectId: record.id,
+                //         value: value,
+                //       })
+                //     }
+                //   >
+                //     {selectedCell.propertyId === property.id ? (
+                //       <PropertyInput
+                //         property={{ ...property, value: value } as Property}
+                //         onChange={(value) => {
+                //           console.log(value);
+                //         }}
+                //       ></PropertyInput>
+                //     ) : (
+                //       value ?? "-"
+                //     )}
+                //   </div>
+                // );
               },
             } as ColumnProps<{ [key: string]: string }>)
         );
@@ -111,6 +190,20 @@ const ProjectV2 = () => {
     setActiveModal(undefined);
   };
   //#endregion
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (tableRef.current && !tableRef.current.contains(event.target as Node)) {
+      setSelectedCell({ propertyId: "", projectId: "", value: "" });
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
@@ -146,7 +239,7 @@ const ProjectV2 = () => {
       </div>
 
       {projects.length > 0 ? (
-        <div>
+        <div ref={tableRef}>
           <Table
             className="max-w-full overflow-x-auto"
             scroll={{ x: 1000 }}

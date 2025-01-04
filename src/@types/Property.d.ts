@@ -31,4 +31,5 @@ interface Property {
   isDefault: boolean;
   value: string;
   isUsed: boolean;
+  options?: string[];
 }

@@ -14,7 +14,7 @@ const SettingApi = {
       `${endPoint}/GetProperties/${propertyType}?pageIndex=${pageIndex}&pageSize=${pageSize}`
     ),
   updateProjectSetting: (request: { propertyId: string; isUsed: boolean }[]) =>
-    API.post(`${endPoint}/UpdateProjectSetting`, {
+    API.put(`${endPoint}/UpdateSetting`, {
       settings: request,
     }),
   addProperty: (request: ISettingModel) =>

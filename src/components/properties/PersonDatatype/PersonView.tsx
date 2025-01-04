@@ -17,7 +17,7 @@ const PersonView: React.FC<PersonViewProps> = ({ personId, people }) => {
   }
 
   return (
-    <Space>
+    <Space className="flex items-center gap-4">
       <Avatar src={person.avatar}>{person.name}</Avatar>
       <Text>{person.name}</Text>
     </Space>
