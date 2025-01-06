@@ -1,8 +1,8 @@
 import NoData from "@/components/no-data/NoData";
 import Title from "@/components/title/Title";
-import { Button, Table } from "antd";
-import { Settings2 } from "lucide-react";
-import { useState } from "react";
+import { Button, Table, TablePaginationConfig } from "antd";
+import { BetweenVerticalStart } from "lucide-react";
+import { useMemo, useState } from "react";
 import ProjectSettingModal from "./components/ProjectSettingModal";
 import UpsertProjectModal from "./components/UpsertProjectModal";
 import useProject from "./hooks/useProject";
@@ -11,17 +11,31 @@ const Project = () => {
   const {
     totalRecord,
     pagination,
-    columns,
+    // columns,
     projects,
     properties,
+    dynamicColumns,
+    dataSource,
     refetchProperties,
     upsertProjectData,
     handleToggleModal,
     handlePageChange,
-    handleDoubleClick,
   } = useProject();
 
   const [visible, setVisible] = useState(false);
+
+  const projectTablePagination = useMemo(
+    () =>
+      ({
+        position: ["bottomRight"],
+        current: pagination.current,
+        pageSize: pagination.pageSize,
+        total: totalRecord,
+        onChange: handlePageChange,
+        showSizeChanger: true,
+      } as TablePaginationConfig),
+    [pagination, totalRecord, handlePageChange]
+  );
 
   return (
     <div>
@@ -41,13 +55,13 @@ const Project = () => {
           <Button
             // color="default"
             variant="outlined"
-            icon={<Settings2 />}
+            icon={<BetweenVerticalStart />}
             className="p-4 text-blue-500 outline-blue-500"
             onClick={() => {
               setVisible(true);
             }}
           >
-            Setting
+            Config
           </Button>
         </div>
       </div>
@@ -56,27 +70,16 @@ const Project = () => {
         <div>
           <Table
             bordered
-            columns={columns}
-            dataSource={projects}
-            onRow={(record) => {
-              return {
-                onDoubleClick: () => {
-                  handleDoubleClick(record);
-                },
-              };
-            }}
-            pagination={{
-              position: ["bottomRight"],
-              defaultCurrent: 1,
-              defaultPageSize: 10,
-              current: pagination.current,
-              pageSize: pagination.pageSize,
-              total: totalRecord,
-              onChange(page, pageSize) {
-                handlePageChange(page, pageSize);
-              },
-              showSizeChanger: true,
-            }}
+            columns={dynamicColumns}
+            dataSource={dataSource}
+            // onRow={(record) => {
+            //   return {
+            //     onDoubleClick: () => {
+            //       handleDoubleClick(record);
+            //     },
+            //   };
+            // }}
+            pagination={projectTablePagination}
           />
         </div>
       ) : (

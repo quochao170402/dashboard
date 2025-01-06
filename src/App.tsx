@@ -9,8 +9,8 @@ import store from "@/stores/store"; // Your Redux store
 import { Provider } from "react-redux"; // Redux Provider
 import { Layout } from "./components/layout";
 import MainLayout from "./components/layout/MainLayout";
-import { Project } from "./pages/Projects";
-import ProjectSetting from "./pages/ProjectSetting/ProjectSetting";
+import ProjectV2 from "./pages/Projects/ProjectV2";
+import Property from "./pages/Property/Property";
 import TaskBacklog from "./pages/TaskBacklog/Backlog";
 import TaskKanban from "./pages/TaskKanban/TaskKanban";
 import TaskList from "./pages/TaskList/TaskList";
@@ -33,9 +33,10 @@ export default function App() {
             <ToastContainer />
             <Routes>
               <Route key="dashboard" path="" element={<MainLayout />}>
-                <Route key="projects" path="/" element={<Project />} />
-                <Route key="projects" path="projects" element={<Project />} />
+                <Route key="projects" path="/" element={<ProjectV2 />} />
+                <Route key="projects" path="projects" element={<ProjectV2 />} />
                 <Route key="users" path="users" element={<User />} />
+                <Route key="settings" path="settings" element={<Property />} />
               </Route>
               <Route
                 key="projects-detail"
@@ -51,18 +52,7 @@ export default function App() {
                 <Route key="list" path="list" element={<TaskList />} />
                 <Route key="board" path="board" element={<TaskKanban />} />
                 <Route key="users" path="users" element={<User />} />
-                <Route
-                  key="settings"
-                  path="settings"
-                  element={
-                    <ProjectSetting
-                      visible={false}
-                      onClose={function (): void {
-                        throw new Error("Function not implemented.");
-                      }}
-                    />
-                  }
-                />
+                <Route key="settings" path="settings" element={<Property />} />
               </Route>
             </Routes>
           </TaskProvider>
