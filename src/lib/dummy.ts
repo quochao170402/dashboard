@@ -1,5 +1,3 @@
-import { RadioOption } from "@/components/properties/RadioDatatype/RadioInput";
-
 export interface Person {
   id: string;
   name: string;
@@ -108,4 +106,3 @@ export const people: Person[] = [
     avatar: "https://randomuser.me/api/portraits/men/20.jpg",
   },
 ];
-

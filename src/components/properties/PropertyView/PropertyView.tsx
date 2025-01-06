@@ -1,13 +1,12 @@
 import { Datatype } from "@/@types/Enums";
 import { Property } from "@/@types/Property";
 import { people } from "@/lib/dummy";
-import { Select, Tag, Tooltip, Typography } from "antd";
+import { Tag, Tooltip, Typography } from "antd";
 import dayjs from "dayjs";
 import PersonView from "../PersonDatatype/PersonView";
 import RadioView from "../RadioDatatype/RadioView";
 
 const { Text, Paragraph } = Typography;
-const { Option } = Select;
 interface Props {
   property: Property;
 }
@@ -19,9 +18,15 @@ const PropertyView = ({ property }: Props) => {
         return <Text>{property.value ?? "-"}</Text>;
 
       case Datatype.TextArea:
-        return property.value.length < 50 ? (
-          <Paragraph>{property.value ?? "-"}</Paragraph>
-        ) : (
+        if (!property.value) {
+          return <Paragraph>-</Paragraph>;
+        }
+
+        if (property.value.length < 50) {
+          return <Paragraph>{property.value}</Paragraph>;
+        }
+
+        return (
           <Tooltip title={property.value}>
             <Paragraph className="!truncate">
               {property.value.slice(0, 40)}...

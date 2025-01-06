@@ -20,7 +20,6 @@ import SelectInput from "../SelectDatatype/SelectInput";
 interface Props {
   property: Property;
   onChange: (propertyId: string, newValue: string) => void;
-  className?: string;
 }
 
 const { TextArea } = Input;
@@ -30,7 +29,7 @@ const options = [
   { label: "Option 2", value: "2" },
 ];
 
-const PropertyInput = ({ property, onChange, className }: Props) => {
+const PropertyInput = ({ property, onChange }: Props) => {
   const [value, setValue] = useState<string>("");
 
   // Convert API value to appropriate type

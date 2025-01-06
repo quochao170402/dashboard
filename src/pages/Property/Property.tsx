@@ -83,6 +83,18 @@ const Property = () => {
     },
   });
 
+  const { mutate: deleteProperty } = useMutation({
+    mutationKey: ["delete-property"],
+    mutationFn: (id: string) => SettingApi.deleteProperty(id),
+    onSuccess: () => {
+      refetch();
+      toast.success("Property deleted successfully");
+    },
+    onError: () => {
+      toast.error(`Property deleted error`);
+    },
+  });
+
   const columns: Array<ColumnProps<ISettingModel>> = [
     {
       title: "No.",
@@ -144,7 +156,10 @@ const Property = () => {
             />
           </Tooltip>
           <Tooltip title="Delete">
-            <Button icon={<Trash2 size={18} color="red" />} />
+            <Button
+              onClick={() => deleteProperty(record.id)}
+              icon={<Trash2 size={18} color="red" />}
+            />
           </Tooltip>
         </div>
       ),
@@ -179,7 +194,7 @@ const Property = () => {
   return (
     <>
       <div className="flex items-center justify-between mb-4">
-        <Title title={"Project"} />
+        <Title title="Setting" />
         <div className="flex gap-4">
           <Button
             variant="outlined"
