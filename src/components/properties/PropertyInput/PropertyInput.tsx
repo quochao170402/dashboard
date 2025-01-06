@@ -7,7 +7,6 @@ import {
   DatePicker,
   Input,
   InputNumber,
-  Select,
   TimePicker,
   Upload,
   message,
@@ -21,17 +20,17 @@ import SelectInput from "../SelectDatatype/SelectInput";
 interface Props {
   property: Property;
   onChange: (propertyId: string, newValue: string) => void;
+  className?: string;
 }
 
 const { TextArea } = Input;
-const { Option } = Select;
 
 const options = [
   { label: "Option 1", value: "1" },
   { label: "Option 2", value: "2" },
 ];
 
-const PropertyInput = ({ property, onChange }: Props) => {
+const PropertyInput = ({ property, onChange, className }: Props) => {
   const [value, setValue] = useState<string>("");
 
   // Convert API value to appropriate type

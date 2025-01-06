@@ -2,6 +2,12 @@ import { PropertyType } from "@/@types/Enums";
 import { ISettingModel } from "@/@types/Property";
 import API from "@/utils/API";
 
+export interface UpdatePropertyRequest {
+  propertyId: string;
+  entityId: string;
+  value: string;
+}
+
 const endPoint = "projects/v1/Setting";
 
 const SettingApi = {
@@ -23,6 +29,8 @@ const SettingApi = {
     API.put(`${endPoint}/UpdateProperty/${request.id}`, request),
   getAllProperties: (type: PropertyType) =>
     API.get(`${endPoint}/GetAllProperties/${type}`),
+  updatePropertySetting: (request: UpdatePropertyRequest) =>
+    API.put(`${endPoint}/UpdatePropertySetting`, request),
 };
 
 export default SettingApi;

@@ -1,7 +1,7 @@
 import { Datatype } from "@/@types/Enums";
 import { Property } from "@/@types/Property";
 import { people } from "@/lib/dummy";
-import { Select, Tag, Typography } from "antd";
+import { Select, Tag, Tooltip, Typography } from "antd";
 import dayjs from "dayjs";
 import PersonView from "../PersonDatatype/PersonView";
 import RadioView from "../RadioDatatype/RadioView";
@@ -19,7 +19,15 @@ const PropertyView = ({ property }: Props) => {
         return <Text>{property.value ?? "-"}</Text>;
 
       case Datatype.TextArea:
-        return <Paragraph>{property.value ?? "-"}</Paragraph>;
+        return property.value.length < 50 ? (
+          <Paragraph>{property.value ?? "-"}</Paragraph>
+        ) : (
+          <Tooltip title={property.value}>
+            <Paragraph className="!truncate">
+              {property.value.slice(0, 40)}...
+            </Paragraph>
+          </Tooltip>
+        );
 
       case Datatype.Number:
       case Datatype.Decimal:

@@ -77,7 +77,7 @@ const useProjectV2 = () => {
     // Pagination
     pagination,
     setPagination,
-
+    refetch
     // // columns,
     // dynamicColumns,
     // dataSource,

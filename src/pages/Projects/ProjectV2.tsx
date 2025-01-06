@@ -1,13 +1,16 @@
 import { Property } from "@/@types/Property";
+import SettingApi, { UpdatePropertyRequest } from "@/apis/Setting.Apis";
 import NoData from "@/components/no-data/NoData";
 import PropertyInput from "@/components/properties/PropertyInput/PropertyInput";
 import PropertyView from "@/components/properties/PropertyView/PropertyView";
 import Title from "@/components/title/Title";
-import { Button, Table, TablePaginationConfig } from "antd";
+import { useMutation } from "@tanstack/react-query";
+import { Button, Table, TablePaginationConfig, Tooltip } from "antd";
 import { ColumnProps } from "antd/es/table";
-import { Settings2, SquarePen, Trash2 } from "lucide-react";
+import { SendHorizontal, Settings2, Trash2, XCircle } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import ProjectModal from "./components/ProjectModal";
 import ProjectSettingModal from "./components/ProjectSettingModal";
 import useProjectProperty from "./hooks/useProjectProperty";
@@ -22,10 +25,24 @@ const ProjectV2 = () => {
 
   const navigate = useNavigate();
 
-  const { projects, count, addProject, pagination, setPagination } =
+  const { projects, count, addProject, pagination, setPagination, refetch } =
     useProjectV2();
 
   const { properties, refetchProperties } = useProjectProperty();
+
+  const { mutate } = useMutation({
+    mutationKey: ["update-property-setting"],
+    mutationFn: (request: UpdatePropertyRequest) =>
+      SettingApi.updatePropertySetting(request),
+    onSuccess: () => {
+      toast.success("Update property setting successfully");
+      setSelectedCell({ propertyId: "", projectId: "", value: "" });
+      refetch();
+    },
+    onError: () => {
+      toast.error("Update property setting error");
+    },
+  });
 
   const dataSource = projects.map((entity) => {
     const row: { id: string; [key: string]: string } = { id: entity.id };
@@ -41,9 +58,7 @@ const ProjectV2 = () => {
     value: "",
   });
 
-  useEffect(() => {
-    console.log("Selected Cell", selectedCell);
-  }, [selectedCell]);
+  console.log("selectedCell :>> ", selectedCell);
 
   const renderColumns = () => {
     if (properties && properties.length > 0) {
@@ -59,13 +74,9 @@ const ProjectV2 = () => {
               render(_value, record, _index) {
                 const propertyKey = property.name;
                 const value = record[propertyKey];
-                // return (
-                //   <PropertyView property={{ ...property, value } as Property} />
-                // );
-
                 return (
                   <div
-                    className="flex items-center justify-center min-w-20"
+                    className="flex items-center justify-center w-full"
                     onClick={() =>
                       setSelectedCell({
                         propertyId: property.id,
@@ -77,10 +88,10 @@ const ProjectV2 = () => {
                     {selectedCell.propertyId === property.id ? (
                       <PropertyInput
                         property={{ ...property, value: value } as Property}
-                        onChange={(value) => {
-                          console.log(value);
+                        onChange={(_propertyId, value) => {
+                          setSelectedCell((prev) => ({ ...prev, value }));
                         }}
-                      ></PropertyInput>
+                      />
                     ) : (
                       <PropertyView
                         property={{ ...property, value } as Property}
@@ -88,48 +99,6 @@ const ProjectV2 = () => {
                     )}
                   </div>
                 );
-                // if (property.datatype === Datatype.Boolean) {
-                //   return (
-                //     <div className="flex items-center justify-center min-w-20">
-                //       <Checkbox disabled checked={value === "true"} />
-                //     </div>
-                //   );
-                // } else if (property.datatype === Datatype.DateTime) {
-                //   return (
-                //     <div className="flex items-center justify-center min-w-20">
-                //       {value ? dayjs(value).format("DD/MM/YYYY") : "-"}
-                //     </div>
-                //   );
-                // } else if (property.datatype === Datatype.Person) {
-                //   return (
-                //     <div className="flex items-center justify-center min-w-20">
-                //       <PersonView personId={value} people={people} />
-                //     </div>
-                //   );
-                // }
-                // return (
-                //   <div
-                //     className="flex items-center justify-center min-w-20"
-                //     onClick={() =>
-                //       setSelectedCell({
-                //         propertyId: property.id,
-                //         projectId: record.id,
-                //         value: value,
-                //       })
-                //     }
-                //   >
-                //     {selectedCell.propertyId === property.id ? (
-                //       <PropertyInput
-                //         property={{ ...property, value: value } as Property}
-                //         onChange={(value) => {
-                //           console.log(value);
-                //         }}
-                //       ></PropertyInput>
-                //     ) : (
-                //       value ?? "-"
-                //     )}
-                //   </div>
-                // );
               },
             } as ColumnProps<{ [key: string]: string }>)
         );
@@ -141,6 +110,7 @@ const ProjectV2 = () => {
   const columns: Array<ColumnProps<{ [key: string]: string }>> = [
     {
       title: "Index", // Fixed column for the entity ID
+      width: 50,
       render: (_value, _record, index) => {
         return <>{index + 1}</>;
       },
@@ -148,17 +118,39 @@ const ProjectV2 = () => {
     ...renderColumns(),
     {
       title: "Actions",
-      width: 100,
+      width: 50,
       align: "center",
       render: (_value, _row) => {
-        return (
-          <div className="flex gap-3 items-center justify-center">
-            <button>
-              <SquarePen size={18} color="#0c66e4" />
-            </button>
-            <button>
+        return selectedCell.projectId.length > 0 ? (
+          <div>
+            <Tooltip title="Cancel">
+              <XCircle
+                size={18}
+                color="red"
+                onClick={() =>
+                  setSelectedCell({ propertyId: "", projectId: "", value: "" })
+                }
+              />
+            </Tooltip>
+            <Tooltip title="Save">
+              <SendHorizontal
+                size={18}
+                color="green"
+                onClick={() =>
+                  mutate({
+                    propertyId: selectedCell.propertyId,
+                    entityId: selectedCell.projectId,
+                    value: selectedCell.value,
+                  } as UpdatePropertyRequest)
+                }
+              />
+            </Tooltip>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center">
+            <Tooltip title="Delete">
               <Trash2 size={18} color="red" />
-            </button>
+            </Tooltip>
           </div>
         );
       },
@@ -206,6 +198,12 @@ const ProjectV2 = () => {
 
   return (
     <div>
+      <style>
+        {`.ant-typography
+            {
+              margin-bottom: 0px !important;
+            }`}
+      </style>
       <div className="flex items-center justify-between mb-4">
         <Title title={"Project"} />
         <div className="flex gap-4">
