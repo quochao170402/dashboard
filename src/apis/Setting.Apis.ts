@@ -31,6 +31,7 @@ const SettingApi = {
     API.get(`${endPoint}/GetAllProperties/${type}`),
   updatePropertySetting: (request: UpdatePropertyRequest) =>
     API.put(`${endPoint}/UpdatePropertySetting`, request),
+  deleteProperty: (id: string) => API.delete(`${endPoint}/DeleteProperty/${id}`),
 };
 
 export default SettingApi;
