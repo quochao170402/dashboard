@@ -1,7 +1,6 @@
 import { TaskStatus } from "@/@types/Enums";
 import useTask from "../../hooks/useTask";
 import Stage from "./components/Stage";
-import useTaskGlobal from "@/hooks/useTaskGlobal";
 
 const stageNames: Record<TaskStatus, string> = {
   [TaskStatus.TODO]: "To Do",
@@ -13,8 +12,7 @@ const stageNames: Record<TaskStatus, string> = {
 const TaskBoard = () => {
   const { tasks } = useTask();
   const stages = Array.from(Object.values(TaskStatus), (status) => status);
-  const { task } = useTaskGlobal();
-  console.log("🚀 ~ TaskBoard ~ task:", task);
+
   return (
     <div className="flex gap-4 w-fit pr-4">
       {stages.map((stage) => (

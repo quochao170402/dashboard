@@ -1,5 +1,5 @@
 import { Card } from "@/components/card";
-import useTaskGlobal from "@/hooks/useTaskGlobal";
+
 import { ClipboardCheck, Copy, SquareCheck, UserCircle2 } from "lucide-react";
 import { ReactNode } from "react";
 
@@ -16,13 +16,8 @@ const taskType: Record<TaskType, ReactNode> = {
 };
 
 const StageItem = ({ data }: Props) => {
-  const { setTask } = useTaskGlobal();
-
   return (
-    <div
-      className="w-full h-full hover:cursor-pointer bg-white hover:bg-gray-50"
-      onClick={() => setTask(data)}
-    >
+    <div className="w-full h-full hover:cursor-pointer bg-white hover:bg-gray-50">
       <Card title={"Item"} isShowTitle={false}>
         <div className="flex flex-col gap-4">
           <span>{data.summary}</span>

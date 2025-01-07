@@ -5,7 +5,8 @@ import { useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 
 const useTaskHook = () => {
-  const { projectId } = useParams();
+  const { projectKey } = useParams();
+  console.log("🚀 ~ useTaskHook ~ projectKey:", projectKey);
   const [searchParams] = useSearchParams();
 
   const [pagination, setPagination] = useState<IPagination>({
@@ -20,14 +21,14 @@ const useTaskHook = () => {
   const { data: tasks, isLoading: tasksLoading } = useQuery({
     queryKey: [
       "tasks",
-      projectId,
+      projectKey,
       pagination.current,
       pagination.pageSize,
       searchParams.get("keyword"),
     ],
     queryFn: () =>
       TaskApi.getTasks(
-        projectId!,
+        projectKey!,
         searchParams.get("keyword") ?? "",
         pagination.current,
         pagination.pageSize

@@ -3,13 +3,13 @@ import { Property } from "@/@types/Property";
 import { people } from "@/lib/dummy";
 import type { UploadProps } from "antd";
 import {
-  Checkbox,
-  DatePicker,
-  Input,
-  InputNumber,
-  TimePicker,
-  Upload,
-  message,
+    Checkbox,
+    DatePicker,
+    Input,
+    InputNumber,
+    TimePicker,
+    Upload,
+    message,
 } from "antd";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
